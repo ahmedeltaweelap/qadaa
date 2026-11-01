@@ -396,6 +396,7 @@
         </div>
     </div>
 
+    <!-- لوحة الإدارة الشاملة (مع غرفة النسخ الاحتياطي والاسترداد JSON) -->
     <div id="adminModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[92vh] flex flex-col shadow-2xl border-2 border-judicial-gold overflow-hidden">
             <div class="bg-judicial-900 text-white p-3.5 flex justify-between items-center border-b border-judicial-gold">
@@ -408,7 +409,7 @@
                 <button type="button" onclick="switchAdminView('adm-branding')" id="admBtn-branding" class="adm-nav-btn bg-white px-3 py-1.5 rounded-lg border cursor-pointer">3. نصوص الموقع</button>
                 <button type="button" onclick="switchAdminView('adm-QuickAdd')" id="admBtn-QuickAdd" class="adm-nav-btn bg-white px-3 py-1.5 rounded-lg border cursor-pointer">4. إضافة المحتوى</button>
                 <button type="button" onclick="switchAdminView('adm-pending')" id="admBtn-pending" class="adm-nav-btn bg-white px-3 py-1.5 rounded-lg border cursor-pointer">5. المساهمات (<span id="pendingCountBadge">0</span>)</button>
-                <button type="button" onclick="switchAdminView('adm-logs')" id="admBtn-logs" class="adm-nav-btn bg-white px-3 py-1.5 rounded-lg border cursor-pointer">6. دستور الـ AI & السجل</button>
+                <button type="button" onclick="switchAdminView('adm-logs')" id="admBtn-logs" class="adm-nav-btn bg-white px-3 py-1.5 rounded-lg border cursor-pointer">6. دستور AI والنسخ الاحتياطي</button>
             </div>
             <div class="p-4 overflow-y-auto flex-1 custom-scroll">
                 <div id="adm-members" class="adm-view">
@@ -423,7 +424,7 @@
                 </div>
                 <div id="adm-vip" class="adm-view hidden space-y-4">
                     <div class="bg-emerald-50 border border-emerald-300 p-3.5 rounded-xl grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-xs">
-                        <div><label class="font-bold block mb-1">اسم المدعو:</label><input type="text" id="vip_label" class="w-full border rounded p-1.5 bg-white"></div>
+                        <div><label class="font-bold block mb-1">اسم المستشار / المدعو:</label><input type="text" id="vip_label" placeholder="مثال: أحمد طحان (وكيل عام)" class="w-full border rounded p-1.5 bg-white"></div>
                         <div><label class="font-bold block mb-1">الاستخدام:</label><select id="vip_max_uses" class="w-full border rounded p-1.5 bg-white font-bold"><option value="1">مرة واحدة</option><option value="3">3 مرات</option><option value="5">5 مرات</option></select></div>
                         <div><label class="font-bold block mb-1">قفل هاتف:</label><input type="text" id="vip_phone_lock" class="w-full border rounded p-1.5 bg-white"></div>
                         <div class="flex items-end"><button type="button" onclick="createSmartVipToken()" class="w-full bg-emerald-700 text-white font-bold py-2 rounded cursor-pointer">+ توليد كود</button></div>
@@ -453,31 +454,79 @@
                     <button type="button" onclick="openItemEditor('qayd')" class="p-4 bg-slate-50 border rounded-xl font-bold hover:bg-judicial-900 hover:text-judicial-gold cursor-pointer">+ إضافة قالب قيد ووصف</button>
                 </div>
                 <div id="adm-pending" class="adm-view hidden space-y-2"><div id="pendingListContainer"></div></div>
-                <div id="adm-logs" class="adm-view hidden space-y-3 text-xs">
+                <!-- الغرفة السادسة: دستور AI وخزنة النسخ الاحتياطي (Backup & Restore) -->
+                <div id="adm-logs" class="adm-view hidden space-y-4 text-xs">
+                    <div class="p-3.5 bg-emerald-50 border border-emerald-300 rounded-xl space-y-2">
+                        <label class="font-extrabold text-emerald-950 block"><i class="fa-solid fa-vault text-emerald-700 ml-1"></i> خزنة أمان وحماية البيانات (نسخ احتياطي واسترداد شامل):</label>
+                        <p class="text-slate-600 text-[11px]">يمكنك تحميل نسخة كاملة (JSON) من جميع بيانات المنصة (أعضاء، حيثيات، نماذج، قيود) على جهازك في أي وقت، أو استردادها فوراً.</p>
+                        <div class="flex gap-2 pt-1">
+                            <button type="button" onclick="downloadDatabaseBackup()" class="bg-emerald-700 hover:bg-emerald-600 text-white font-extrabold px-4 py-2 rounded-lg cursor-pointer shadow">📥 تحميل نسخة احتياطية كاملة (JSON)</button>
+                            <label class="bg-judicial-900 hover:bg-judicial-800 text-judicial-gold font-extrabold px-4 py-2 rounded-lg cursor-pointer shadow flex items-center gap-1.5">
+                                <i class="fa-solid fa-upload"></i> استرداد نسخة سابقة
+                                <input type="file" id="restoreFile" accept=".json" onchange="restoreDatabaseBackup(event)" class="hidden">
+                            </label>
+                        </div>
+                    </div>
                     <div class="p-3 bg-indigo-50 border border-indigo-300 rounded-xl space-y-1.5">
-                        <label class="font-extrabold text-indigo-950 block">دستور وتوجيهات الذكاء الاصطناعي (System Instructions - أضف وعدل تعليماتك هنا):</label>
-                        <textarea id="cfg_system_instructions" rows="5" class="w-full border rounded p-2 font-mono text-[11px] bg-white"></textarea>
+                        <label class="font-extrabold text-indigo-950 block">دستور وتوجيهات الذكاء الاصطناعي (System Instructions):</label>
+                        <textarea id="cfg_system_instructions" rows="4" class="w-full border rounded p-2 font-mono text-[11px] bg-white"></textarea>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="p-3 bg-slate-50 border rounded-xl space-y-1"><label class="font-bold block">مفتاح Gemini API:</label><input type="password" id="cfg_gemini_key" class="w-full border rounded p-1.5 font-mono bg-white"></div>
                         <div class="p-3 bg-emerald-50 border rounded-xl space-y-1"><label class="font-bold block">كود الدعوة العام:</label><input type="text" id="cfg_invite_code" class="w-full border rounded p-1.5 font-bold bg-white"></div>
                     </div>
-                    <button type="button" onclick="saveSystemSettings()" class="bg-judicial-900 text-judicial-gold font-extrabold px-5 py-2 rounded-lg cursor-pointer">حفظ دستور الـ AI والمفتاح سحابياً</button>
+                    <button type="button" onclick="saveSystemSettings()" class="bg-judicial-900 text-judicial-gold font-extrabold px-5 py-2 rounded-lg cursor-pointer">حفظ الإعدادات والدستور سحابياً</button>
                     <table class="w-full text-right text-[11px] border font-mono mt-3"><thead class="bg-slate-800 text-white"><tr><th class="p-2">التاريخ</th><th class="p-2">المسؤول</th><th class="p-2">الإجراء</th><th class="p-2">القسم</th><th class="p-2">التفاصيل</th></tr></thead><tbody id="auditLogsTableBody" class="divide-y"></tbody></table>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="contributeModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl border-2 border-judicial-gold space-y-3">
-            <h3 class="font-bold text-judicial-900 text-sm">إرسال مساهمة علمية</h3>
-            <input type="text" id="contrib_author" placeholder="الاسم والصفة" class="w-full border rounded p-2 text-xs">
-            <select id="contrib_sector" class="w-full border rounded p-2 text-xs"></select>
-            <input type="text" id="contrib_title" placeholder="عنوان المساهمة..." class="w-full border rounded p-2 text-xs">
-            <textarea id="contrib_content" rows="4" placeholder="النص..." class="w-full border rounded p-2 text-xs"></textarea>
-            <input type="text" id="contrib_ref" placeholder="السند القانوني" class="w-full border rounded p-2 text-xs">
-            <div class="flex justify-end gap-2"><button type="button" onclick="toggleModal('contributeModal')" class="px-4 py-1.5 text-xs cursor-pointer">إلغاء</button><button type="button" onclick="submitPublicContribution()" class="bg-judicial-900 text-judicial-gold px-4 py-1.5 rounded text-xs font-bold cursor-pointer">إرسال</button></div>
+    <!-- نافذة المساهمة الشاملة المحدثة للأقسام الخمسة -->
+    <div id="contributeModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl border-2 border-judicial-gold space-y-3 my-8">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-bold text-judicial-900 text-sm">إرسال مساهمة علمية أو قضائية للمنصة</h3>
+                <button type="button" onclick="toggleModal('contributeModal')" class="text-slate-500 text-xl cursor-pointer">&times;</button>
+            </div>
+            <div class="space-y-2.5 text-xs">
+                <div>
+                    <label class="font-bold block mb-1">اسم المساهم والصفة / الدرجة:</label>
+                    <input type="text" id="contrib_author" placeholder="مثال: المستشار / ..." class="w-full border rounded p-2">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-bold block mb-1">القسم المستهدف:</label>
+                        <select id="contrib_section_target" class="w-full border rounded p-2 font-bold bg-slate-50">
+                            <option value="defenses">3. الحيثيات والدفوع</option>
+                            <option value="library">1. المكتبة والمؤلفات (Google Drive)</option>
+                            <option value="checklists">4. قوائم التحقيق والأسئلة</option>
+                            <option value="forms">5. النماذج والمآخذ</option>
+                            <option value="qayds">6. قوالب القيود والأوصاف</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-1">القطاع الموضوعي:</label>
+                        <select id="contrib_sector" class="w-full border rounded p-2 font-bold bg-slate-50"></select>
+                    </div>
+                </div>
+                <div>
+                    <label class="font-bold block mb-1">عنوان المساهمة أو الواقعة:</label>
+                    <input type="text" id="contrib_title" placeholder="عنوان دقيق ومعبر..." class="w-full border rounded p-2">
+                </div>
+                <div>
+                    <label class="font-bold block mb-1">نص المساهمة أو المحتوى / الأسئلة:</label>
+                    <textarea id="contrib_content" rows="4" placeholder="اكتب النص الكامل هنا..." class="w-full border rounded p-2"></textarea>
+                </div>
+                <div>
+                    <label class="font-bold block mb-1">السند القانوني أو رابط Drive (اختياري):</label>
+                    <input type="text" id="contrib_ref" placeholder="مثال: المادة 58 ق 81/2016 أو رابط الملف" class="w-full border rounded p-2">
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-2 border-t">
+                <button type="button" onclick="toggleModal('contributeModal')" class="px-4 py-1.5 text-xs cursor-pointer">إلغاء</button>
+                <button type="button" onclick="submitPublicContribution()" class="bg-judicial-900 text-judicial-gold px-4 py-1.5 rounded text-xs font-bold cursor-pointer">إرسال للمراجعة والإقرار</button>
+            </div>
         </div>
     </div>
 
@@ -509,7 +558,7 @@
                 <span id="footerBrandBadge" class="bg-judicial-gold text-judicial-950 font-extrabold px-2 py-0.5 rounded">المُـعَـاوِن</span>
                 <span id="footerBrandText">الموسوعة البحثية التفاعلية للعلوم الإدارية والوظيفية &copy; 2026</span>
             </div>
-            <span class="text-slate-400 hidden sm:inline">Cloud Engine v9.5</span>
+            <span class="text-slate-400 hidden sm:inline">Cloud Engine v9.8</span>
         </div>
     </footer>
 
@@ -528,7 +577,11 @@
 
         const app = initializeApp(firebaseConfig);
         const firestoreDB = getFirestore(app);
-        const STATE_DOC_REF = doc(firestoreDB, "platform_data", "main_state_v8_clean");
+
+        // عزل بيئة التجريب تلقائياً: إذا فتحت الموقع من رابط غير Vercel الرسمي تتصل بوثيقة تجريبية معزولة
+        const isOfficialProduction = window.location.hostname.includes("vercel.app") && !window.location.hostname.includes("localhost");
+        const STATE_DOC_REF = doc(firestoreDB, "platform_data", isOfficialProduction ? "main_state_v8_clean" : "test_sandbox_state_v8");
+
         const DEFAULT_GEMINI_KEY = ["AQ.Ab8RN6L8tFNKZaKqRsZK", "-k54PrQ_cCdmPz5ssnjFKdTRQrdWLg"].join("");
 
         const COMPACT_SYSTEM_INSTRUCTIONS = `دور: مستشار صياغة بالنيابة الإدارية المصرية. أخرج النتيجة مقسمة بفاصل ===سند=== بين [الصياغة القضائية] و[السند والتوجيه الفني].
@@ -609,11 +662,48 @@
         }
 
         async function persistState(action = null, section = null, details = null) {
-            if (action) db.auditLogs.unshift({ id: "log_" + Date.now(), time: new Date().toLocaleString('ar-EG'), actor: currentUser ? `${currentUser.name} (${currentUser.title})` : "عضو", action, section: section || "-", details: details || "-" });
+            if (action) {
+                if (!db.auditLogs) db.auditLogs = [];
+                db.auditLogs.unshift({ id: "log_" + Date.now(), time: new Date().toLocaleString('ar-EG'), actor: currentUser ? `${currentUser.name} (${currentUser.title})` : "عضو", action, section: section || "-", details: details || "-" });
+                if (db.auditLogs.length > 100) db.auditLogs = db.auditLogs.slice(0, 100); // تقليم سجل الرقابة تلقائياً لتجنب تجاوز 1 ميجابايت
+            }
             localStorage.setItem("moawen_v8_backup", JSON.stringify(db));
             refreshAllUI();
             try { await setDoc(STATE_DOC_REF, db); } catch (e) {}
         }
+
+        // دوال الخزنة والنسخ الاحتياطي السحابي (Backup & Restore)
+        window.downloadDatabaseBackup = function() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `moawen_backup_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        };
+
+        window.restoreDatabaseBackup = function(event) {
+            const fileReader = new FileReader();
+            if (event.target.files[0]) {
+                fileReader.readAsText(event.target.files[0], "UTF-8");
+                fileReader.onload = async function(e) {
+                    try {
+                        const parsed = JSON.parse(e.target.result);
+                        if (parsed && parsed.sectors && parsed.members) {
+                            db = parsed;
+                            await persistState("استرداد نسخة احتياطية", "النظام", "استعادة كاملة");
+                            alert("✅ تم استرداد بيانات المنصة بنجاح تام!");
+                            location.reload();
+                        } else {
+                            alert("ملف النسخ الاحتياطي غير صالح.");
+                        }
+                    } catch (err) {
+                        alert("حدث خطأ أثناء قراءة ملف النسخ الاحتياطي.");
+                    }
+                }
+            }
+        };
 
         function checkUrlVipInvite() {
             const v = new URLSearchParams(window.location.search).get('vip');
@@ -747,17 +837,24 @@
 
         window.createSmartVipToken = async function() {
             if (!hasPerm('manageUsers')) return;
-            const label = document.getElementById('vip_label').value.trim() || "دعوة خاصة", maxUses = parseInt(document.getElementById('vip_max_uses').value) || 1, phoneLock = document.getElementById('vip_phone_lock').value.trim(), code = "VIP-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+            const label = document.getElementById('vip_label').value.trim() || "المستشار الجليل", maxUses = parseInt(document.getElementById('vip_max_uses').value) || 1, phoneLock = document.getElementById('vip_phone_lock').value.trim(), code = "VIP-" + Math.random().toString(36).substring(2, 6).toUpperCase();
             if (!db.vipTokens) db.vipTokens = [];
             db.vipTokens.unshift({ id: "tok_" + Date.now(), code, label, phoneLock, maxUses, usedCount: 0 });
             document.getElementById('vip_label').value = ""; document.getElementById('vip_phone_lock').value = "";
-            await persistState("توليد كود دعوة", "أكواد VIP", code);
+            await persistState("توليد كود دعوة", "أكواد VIP", `${code} (${label})`);
         };
 
+        // تطوير رسالة دعوة الواتساب لتشمل اللقب والدرجة الرسمية بشكل مهيب
         window.copyVipWhatsappInvite = function(code) {
+            const token = (db.vipTokens || []).find(t => t.code === code);
+            const label = token ? token.label : "المستشار الجليل";
+            const formalName = label.startsWith("المستشار") || label.startsWith("معالي") ? label : `معالي المستشار / ${label}`;
             const url = `${window.location.origin}${window.location.pathname}?vip=${code}`;
-            navigator.clipboard.writeText(`دعوة للانضمام لمنصة (${db.branding?.brandTitle || 'المُـعَـاوِن'}):\nكود التفعيل: ${code}\nالرابط: ${url}`);
-            alert("تم نسخ الدعوة!");
+            
+            const message = `باسم الإدارة العليا لمنصة (المُـعَـاوِن) البوابة البحثية للعلوم الإدارية والوظيفية،\n\nنتشرف بدعوة ${formalName} للانضمام للمنصة الرسمية.\n\n🔑 كود التفعيل الفوري (VIP): ${code}\n🔗 الرابط المباشر للتسجيل:\n${url}`;
+            
+            navigator.clipboard.writeText(message);
+            alert(`تم نسخ رسالة دعوة WhatsApp الرسمية الموجهة إلى (${formalName}) بنجاح!`);
         };
 
         window.deleteVipToken = async function(id) { db.vipTokens = (db.vipTokens || []).filter(t => t.id !== id); await persistState("حذف كود", "VIP", id); };
@@ -765,7 +862,7 @@
         function renderVipTokensTable() {
             const tb = document.getElementById('vipTokensTableBody');
             if (!tb) return;
-            tb.innerHTML = (db.vipTokens || []).map(t => `<tr><td class="p-2 font-mono font-bold">${t.code}</td><td class="p-2">${t.label}</td><td class="p-2">${t.phoneLock || 'متاح'}</td><td class="p-2 font-bold">${t.usedCount}/${t.maxUses}</td><td class="p-2 flex gap-1"><button type="button" onclick="copyVipWhatsappInvite('${t.code}')" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px] cursor-pointer">نسخ</button><button type="button" onclick="deleteVipToken('${t.id}')" class="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] cursor-pointer">حذف</button></td></tr>`).join('');
+            tb.innerHTML = (db.vipTokens || []).map(t => `<tr><td class="p-2 font-mono font-bold">${t.code}</td><td class="p-2">${t.label}</td><td class="p-2">${t.phoneLock || 'متاح'}</td><td class="p-2 font-bold">${t.usedCount}/${t.maxUses}</td><td class="p-2 flex gap-1"><button type="button" onclick="copyVipWhatsappInvite('${t.code}')" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px] cursor-pointer">نسخ دعوة</button><button type="button" onclick="deleteVipToken('${t.id}')" class="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] cursor-pointer">حذف</button></td></tr>`).join('');
         }
 
         window.openAdminModalDirect = function() {
@@ -852,7 +949,7 @@
                 out = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: تقيد الواقعة مخالفة إدارية ومالية ${courtArt}، والمواد (4، 12، 14) من القانون 117 لسنة 1958، والمواد (9، 15/أولاً، 19/1، 34) من قانون مجلس الدولة 47 لسنة 1972، ضد:\n- ${name} (الرقم القومي: ....................)\n\nلأنه في غضون ${date}، وبوصفه سالف البيان:\n${cleanWasf}\n\nثانياً: إحالة المتهم المذكور إلى المحكمة التأديبية المختصة.`;
                 rat = `• السند القضائي للإحالة: حُذفت المادة (60)، واستُبدلت (62/3) بـ (62/4)، وأُضيفت مواد قانون النيابة 117/1958 ومجلس الدولة 47/1972.\n• تنبيه (م 214 تعليمات): يلزم تدوين الرقم القومي للمتهم، وللمنتهية خدمته تُستبدل المادة (61) بالمادة (66) وتُضاف المادة (20) مجلس دولة.`;
             } else if (mode === 'hifz_ahamia') {
-                out = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: تقيد الواقعة مخالفة إدارية بنصوص المادتين 57/1، 58/1 من قانون الخدمة المدنية 81 لسنة 2016، ضد:\n- ${name}\n\nلأنه في غضون ${date}، وبوصفه سالف البيان:\n${cleanWasf}\n\nثانياً: حفظ ما أُسند للمتهم المذكور قطعياً لعدم الأهمية.`;
+                out = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: تقيد الواقعة مخالفة إدارية بنصوص المادتين 57/1، 58/1 من قانون الخدمة المدنية رقم 81 لسنة 2016، ضد:\n- ${name}\n\nلأنه في غضون ${date}، وبوصفه سالف البيان:\n${cleanWasf}\n\nثانياً: حفظ ما أُسند للمتهم المذكور قطعياً لعدم الأهمية.`;
                 rat = `• السند (م 213 و215 تعليمات): الحفظ القطعي لعدم الأهمية يستلزم قيداً ووصفاً وسابقة مواجهة المتهم، مع حذف المادة (61) لعدم توقيع جزاء.`;
             } else if (mode === 'hifz_saha') {
                 out = `وحيث أنه بشأن ما نُسب إلى/ ${name} من (${prop}) خلال ${date}، فإن الأوراق قد خلت من ثمة دليل، الأمر الذي نرى معه:\nحفظ الأوراق إدارياً (قطعياً لعدم الصحة).`;
@@ -1058,26 +1155,68 @@
         };
 
         window.submitPublicContribution = async function() {
-            const contributor = document.getElementById('contrib_author').value.trim() || "عضو", sector = document.getElementById('contrib_sector').value, title = document.getElementById('contrib_title').value.trim(), content = document.getElementById('contrib_content').value.trim(), ref = document.getElementById('contrib_ref').value.trim() || "مساهمات";
-            if (!title || !content) return alert("أدخل العنوان والنص!");
+            const contributor = document.getElementById('contrib_author').value.trim() || (currentUser ? `${currentUser.name} (${currentUser.title})` : "زائر / مساهم خارجي");
+            const sectionTarget = document.getElementById('contrib_section_target').value;
+            const sector = document.getElementById('contrib_sector').value;
+            const title = document.getElementById('contrib_title').value.trim();
+            const content = document.getElementById('contrib_content').value.trim();
+            const ref = document.getElementById('contrib_ref').value.trim() || "مساهمة عامة";
+
+            if (!title || !content) return alert("يرجى إدخال عنوان المساهمة والنص التفصيلي!");
+
             if (!db.pendingContributions) db.pendingContributions = [];
-            db.pendingContributions.unshift({ id: "pend_" + Date.now(), contributor, sector, title, content, ref });
-            await persistState("مساهمة جديدة", "المساهمات", title); toggleModal('contributeModal'); alert("تم الإرسال!");
+            db.pendingContributions.unshift({
+                id: "pend_" + Date.now(),
+                contributor,
+                sectionTarget,
+                sector,
+                title,
+                content,
+                ref,
+                time: new Date().toLocaleDateString('ar-EG')
+            });
+
+            await persistState("إرسال مساهمة جديدة", "المساهمات", `${title} [${sectionTarget}]`);
+            toggleModal('contributeModal');
+            alert("✅ تم إرسال مساهمتك بنجاح إلى إدارة المنصة للمراجعة والاعتماد الفوري!");
         };
 
         function renderPendingContributions() {
             const list = db.pendingContributions || [];
             document.getElementById('pendingCountBadge').innerText = list.length;
             const c = document.getElementById('pendingListContainer'); if (!c) return;
-            c.innerHTML = list.length ? list.map(p => `<div class="p-3 bg-amber-50 border rounded-xl space-y-1.5 text-xs"><div class="flex justify-between font-bold"><span>[${p.sector}] ${p.title}</span><span>${p.contributor}</span></div><p class="bg-white p-2 rounded border whitespace-pre-line">${p.content}</p><div class="flex justify-end gap-2"><button type="button" onclick="approveContribution('${p.id}')" class="bg-emerald-600 text-white px-3 py-1 rounded font-bold cursor-pointer">اعتماد</button><button type="button" onclick="rejectContribution('${p.id}')" class="bg-red-600 text-white px-3 py-1 rounded font-bold cursor-pointer">حذف</button></div></div>`).join('') : `<p class="text-center text-slate-400 text-xs py-4">لا توجد مساهمات.</p>`;
+            c.innerHTML = list.length ? list.map(p => `<div class="p-3 bg-amber-50 border rounded-xl space-y-1.5 text-xs"><div class="flex justify-between font-bold"><span>[${p.sector}] [${p.sectionTarget}] ${p.title}</span><span>${p.contributor}</span></div><p class="bg-white p-2 rounded border whitespace-pre-line">${p.content}</p><div class="flex justify-end gap-2"><button type="button" onclick="approveContribution('${p.id}')" class="bg-emerald-600 text-white px-3 py-1 rounded font-bold cursor-pointer">اعتماد ونشر</button><button type="button" onclick="rejectContribution('${p.id}')" class="bg-red-600 text-white px-3 py-1 rounded font-bold cursor-pointer">حذف</button></div></div>`).join('') : `<p class="text-center text-slate-400 text-xs py-4">لا توجد مساهمات معلقة.</p>`;
         }
 
-        window.approveContribution = async id => {
-            const item = (db.pendingContributions || []).find(p => p.id === id); if (!item) return;
-            db.defenses.unshift({ id: "def_" + Date.now(), sector: item.sector, category: "حيثيات الثبوت والرد على الدفوع", title: item.title, response: item.content, ref: item.ref, contributor: item.contributor });
+        window.approveContribution = async function(id) {
+            const item = (db.pendingContributions || []).find(p => p.id === id);
+            if (!item) return;
+
+            const targetSec = item.sectionTarget || 'defenses';
+            const newItemId = "item_" + Date.now();
+
+            if (targetSec === 'library') {
+                if (!db.library) db.library = [];
+                db.library.unshift({ id: newItemId, sector: item.sector, category: "مؤلفات السادة المستشارين", title: item.title, author: item.contributor, description: item.content, driveUrl: item.ref.startsWith('http') ? item.ref : '' });
+            } else if (targetSec === 'checklists') {
+                if (!db.checklists) db.checklists = [];
+                db.checklists.unshift({ id: newItemId, sector: item.sector, title: item.title, docs: ["مستندات التحقيق الأصلية"], witness_q: [item.content.substring(0, 100)], accused_q: ["ما قولك فيما نسب إليك؟"], tips: [item.ref] });
+            } else if (targetSec === 'forms') {
+                if (!db.forms) db.forms = [];
+                db.forms.unshift({ id: newItemId, sector: item.sector, category: "نماذج ومآخذ إجرائية", title: item.title, content: item.content });
+            } else if (targetSec === 'qayds') {
+                if (!db.qayds) db.qayds = [];
+                db.qayds.unshift({ id: newItemId, sector: item.sector, title: item.title, wasf: item.content, articles: item.ref });
+            } else {
+                if (!db.defenses) db.defenses = [];
+                db.defenses.unshift({ id: newItemId, sector: item.sector, category: "حيثيات الثبوت والرد على الدفوع", title: item.title, response: item.content, ref: item.ref, contributor: item.contributor });
+            }
+
             db.pendingContributions = db.pendingContributions.filter(p => p.id !== id);
-            await persistState("اعتماد مساهمة", "الحيثيات", item.title);
+            await persistState("اعتماد مساهمة ونشرها", targetSec, item.title);
+            alert(`✅ تم اعتماد ونشر المساهمة في قسم (${targetSec}) بنجاح!`);
         };
+
         window.rejectContribution = async id => { db.pendingContributions = (db.pendingContributions || []).filter(p => p.id !== id); await persistState("حذف مساهمة", "المساهمات", id); };
 
         function renderAuditLogs() {
@@ -1118,7 +1257,7 @@
                 bodyEl.innerHTML = `<div>التصنيف:<select id="ed_category" class="w-full border rounded p-1.5"><option value="ديباجات محاضر التحقيق والاطلاع">ديباجات محاضر الاطلاع والتحقيق</option><option value="نماذج المذكرات وتقرير الاتهام">نماذج المذكرات وتقرير الاتهام</option><option value="ضوابط التحقيق وتجنب المآخذ">ضوابط التحقيق وتجنب المآخذ</option></select></div><div>العنوان:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>النص:<textarea id="ed_content" rows="5" class="w-full border rounded p-1.5">${item.content}</textarea></div>`;
                 document.getElementById('ed_category').value = item.category || "ديباجات محاضر التحقيق والاطلاع";
             } else if (type === 'qayd') {
-                const item = editId ? db.qayds.find(q => q.id === editId) : { sector: db.sectors[1] || "الكل", title: "", wasf: "خرج على مقتضى الواجب الوظيفي ولم يؤدِّ العمل المنوط به بدقة بأن ({{الواقعة}}) - وذلك على النحو الموضح بالأوراق.", articles: "بنصوص المواد 57/1، 58/1، 60، 61، 62/3 من قانون الخدمة المدنية رقم 81 لسنة 2016، والمادتين 149/1، 150 من لائحته التنفيذية رقم 1216 لسنة 2017" };
+                const item = editId ? db.qayds.find(q => q.id === editId) : { sector: db.sectors[1] || "الكل", title: "", wasf: "خرج على مقتضى الواجب الوظيفي ولم يؤدِّ العمل المنوط به بدقة بأن ({{الواقعة}}) - وذلك على النحو الموضح بالأوراق.", articles: "بنصوص المواد 57/1، 58/1، 60، 61، 62/3 من القانون رقم 81 لسنة 2016، والمادتين 149/1، 150 من لائحته التنفيذية رقم 1216 لسنة 2017" };
                 titleEl.innerText = "قالب قيد ووصف قابل للتبديل";
                 bodyEl.innerHTML = `<div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>اسم القالب:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>مواد القيد:<textarea id="ed_articles" rows="2" class="w-full border rounded p-1.5">${item.articles}</textarea></div><div>الوصف (استخدم {{الواقعة}}):<textarea id="ed_wasf" rows="3" class="w-full border rounded p-1.5">${item.wasf}</textarea></div>`;
                 document.getElementById('ed_sector').value = item.sector;
