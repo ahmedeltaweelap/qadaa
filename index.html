@@ -652,7 +652,9 @@
         const app = initializeApp(firebaseConfig);
         const firestoreDB = getFirestore(app);
 
-        const isOfficialProduction = window.location.hostname.includes("vercel.app") && !window.location.hostname.includes("localhost");
+        // هنا التعديل السحري: تم ربط الكود إجبارياً بوثيقتك الصحيحة (main_state_v8_clean)
+        const STATE_DOC_REF = doc(firestoreDB, "platform_data", "main_state_v8_clean");
+
         const DEFAULT_GEMINI_KEY = ["AQ.Ab8RN6L8tFNKZaKqRsZK", "-k54PrQ_cCdmPz5ssnjFKdTRQrdWLg"].join("");
 
         const COMPACT_SYSTEM_INSTRUCTIONS = `دور: مستشار صياغة بالنيابة الإدارية المصرية. أخرج النتيجة مقسمة بفاصل ===سند=== بين [الصياغة القضائية] و[السند والتوجيه الفني].
@@ -673,7 +675,6 @@
 
         let currentUser = null, currentSector = "الكل", currentDefCategory = "الكل", currentEditorContext = null, basket = [];
 
-        // القاعدة الذهبية للفصل بين الواجهة والبيانات:
         // هذه الدالة تقوم "بسحب" البيانات الموجودة في السحابة فقط ودمجها مع المتغيرات المحلية دون أن ترفع شيئاً للسحابة.
         function pullDataFromCloud(cloudData) {
             if (!cloudData) return;
@@ -704,10 +705,8 @@
             try {
                 const snap = await getDoc(STATE_DOC_REF);
                 if (!snap.exists()) { 
-                    // لا يتم إنشاء ملف في السحابة إلا إذا كانت فارغة تماماً (أول تشغيل)
                     await setDoc(STATE_DOC_REF, db); 
                 } else {
-                    // سحب البيانات من السحابة بدون عمل أي Write
                     pullDataFromCloud(snap.data());
                 }
                 
@@ -742,7 +741,7 @@
         }
 
         // ============================================
-        // 1. دوال العرض والرسم (التي اختفت وعادت الآن بالكامل)
+        // 1. دوال العرض والرسم
         // ============================================
 
         function filterByCurrentSector(list) { return currentSector === "الكل" ? (list || []) : (list || []).filter(i => i.sector === currentSector || i.sector === "الكل"); }
