@@ -26,6 +26,13 @@
         .custom-scroll::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
         .blur-preview { filter: blur(4px); user-select: none; pointer-events: none; }
     </style>
+    <script>
+        // حماية واجهة المستخدم ضد النسخ العشوائي لفحص الكود فقط؛ أزرار النسخ والمسودة داخل المنصة تعمل عبر Clipboard API ولا تتأثر بهذا المنع.
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) || (e.ctrlKey && (e.key === 'u' || e.key === 'U'))) { e.preventDefault(); }
+        });
+    </script>
 </head>
 <body class="font-sans text-slate-800 pb-24">
 
@@ -40,7 +47,7 @@
                         <h1 id="headerBrandTitle" class="font-serif text-2xl text-judicial-gold">المُـعَـاوِن</h1>
                         <span class="bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">متصل سحابياً</span>
                     </div>
-                    <p id="headerBrandSub" class="text-[11px] text-slate-300">البوابة البحثية للعلوم الإدارية والوظيفية وصياغة القرارات</p>
+                    <p id="headerBrandSub" class="text-[11px] text-slate-300">مَرجعُك الرقمي المُنظَّم</p>
                 </div>
             </div>
 
@@ -107,7 +114,7 @@
             <button type="button" onclick="switchTab('tab-library')" id="btn-tab-library" class="tab-btn tab-active py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-book-atlas"></i> <span id="tabName-library">1. المكتبة والمؤلفات</span></button>
             <button type="button" onclick="switchTab('tab-tools')" id="btn-tab-tools" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-calculator"></i> <span id="tabName-tools">2. فاحص التقادم والاختصاص</span></button>
             <button type="button" onclick="switchTab('tab-defenses')" id="btn-tab-defenses" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-gavel"></i> <span id="tabName-defenses">3. الحيثيات والدفوع</span></button>
-            <button type="button" onclick="switchTab('tab-checklists')" id="btn-tab-checklists" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-list-check"></i> <span id="tabName-checklists">4. قوائم التحقيق 🔒</span></button>
+            <button type="button" onclick="switchTab('tab-checklists')" id="btn-tab-checklists" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-list-check"></i> <span id="tabName-checklists">4. قوائم التحقيق الاسترشادية 🔒</span></button>
             <button type="button" onclick="switchTab('tab-forms')" id="btn-tab-forms" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-file-signature"></i> <span id="tabName-forms">5. النماذج والمآخذ 🔒</span></button>
             <button type="button" onclick="switchTab('tab-qayds')" id="btn-tab-qayds" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> <span id="tabName-qayds">6. القوالب والـ AI 🔒</span></button>
         </div>
@@ -210,6 +217,7 @@
                         <button type="button" onclick="deleteCurrentChecklist()" class="admin-del-btn hidden bg-red-600 text-white px-2.5 py-1.5 rounded-lg text-xs cursor-pointer"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
+                <p id="checklistSectorHint" class="bg-amber-50 border border-judicial-gold/40 rounded-xl px-4 py-2 text-xs font-bold text-judicial-900"></p>
                 <div class="bg-white px-4 py-2.5 rounded-xl border flex items-center gap-3">
                     <span class="text-xs font-bold whitespace-nowrap">نسبة الاستيفاء:</span>
                     <div class="w-full bg-slate-200 rounded-full h-2"><div id="progressBar" class="bg-judicial-gold h-2 rounded-full transition-all" style="width:0%"></div></div>
@@ -360,23 +368,23 @@
                 <button type="button" onclick="submitMemberLogin()" class="w-full bg-judicial-900 text-judicial-gold font-extrabold py-2.5 rounded-lg text-sm cursor-pointer">دخول</button>
             </div>
             <div id="formMemberRegister" class="p-5 space-y-2.5 hidden">
-                <div><label class="block text-xs font-bold mb-1">الاسم رباعياً:</label><input type="text" id="reg_name" class="w-full border rounded-lg p-2 text-xs"></div>
+                <div><label class="block text-xs font-bold mb-1">الاسم رباعياً:</label><input type="text" id="reg_name" class="w-full border rounded-lg p-2 text-xs"><p class="text-[10px] text-slate-500">الاسم رباعياً كما بالملف الوظيفي.</p></div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-xs font-bold mb-1">الدرجة / الصفة:</label>
-                        <input type="text" id="reg_title" list="judicialRanksList" placeholder="اختر أو اكتب الدرجة" class="w-full border rounded-lg p-2 text-xs font-bold">
+                        <input type="text" id="reg_title" list="judicialRanksList" placeholder="اختر أو اكتب الدرجة" class="w-full border rounded-lg p-2 text-xs font-bold"><p class="text-[10px] text-slate-500">اختر الدرجة من القائمة أو اكتبها.</p>
                         <datalist id="judicialRanksList">
                             <option value="معاون نيابة إدارية"><option value="مساعد نيابة إدارية"><option value="وكيل نيابة إدارية"><option value="وكيل نيابة إدارية من الفئة الممتازة"><option value="رئيس نيابة إدارية"><option value="وكيل عام"><option value="نائب رئيس هيئة">
                         </datalist>
                     </div>
-                    <div><label class="block text-xs font-bold mb-1">النيابة / جهة العمل:</label><input type="text" id="reg_workplace" class="w-full border rounded-lg p-2 text-xs"></div>
+                    <div><label class="block text-xs font-bold mb-1">النيابة / جهة العمل:</label><input type="text" id="reg_workplace" class="w-full border rounded-lg p-2 text-xs"><p class="text-[10px] text-slate-500">جهة العمل الحالية (النيابة / جهة العمل).</p></div>
                 </div>
-                <div><label class="block text-xs font-bold mb-1">رقم الهاتف (واتساب):</label><input type="tel" id="reg_phone" class="w-full border rounded-lg p-2 text-xs"></div>
+                <div><label class="block text-xs font-bold mb-1">رقم الهاتف (واتساب):</label><input type="tel" id="reg_phone" class="w-full border rounded-lg p-2 text-xs"><p class="text-[10px] text-slate-500">رقم الواتساب للتأكيد والتواصل.</p></div>
                 <div class="grid grid-cols-2 gap-2">
-                    <div><label class="block text-xs font-bold mb-1">اسم المستخدم:</label><input type="text" id="reg_username" class="w-full border rounded-lg p-2 text-xs"></div>
-                    <div><label class="block text-xs font-bold mb-1">كلمة المرور:</label><input type="password" id="reg_pin" class="w-full border rounded-lg p-2 text-xs"></div>
+                    <div><label class="block text-xs font-bold mb-1">اسم المستخدم:</label><input type="text" id="reg_username" class="w-full border rounded-lg p-2 text-xs"><p class="text-[10px] text-slate-500">اسم مستخدم بحروف إنجليزية.</p></div>
+                    <div><label class="block text-xs font-bold mb-1">كلمة المرور:</label><input type="password" id="reg_pin" class="w-full border rounded-lg p-2 text-xs"><p class="text-[10px] text-slate-500">كلمة مرور خاصة بحسابك، احتفظ بها سراً.</p></div>
                 </div>
-                <div><label class="block text-[11px] font-bold text-emerald-800 mb-1">كود الدعوة الفوري (VIP):</label><input type="text" id="reg_invite" class="w-full bg-emerald-50 border border-emerald-300 rounded-lg p-2 text-xs font-mono"></div>
+                <div><label class="block text-[11px] font-bold text-emerald-800 mb-1">كود الدعوة الفوري (VIP):</label><input type="text" id="reg_invite" class="w-full bg-emerald-50 border border-emerald-300 rounded-lg p-2 text-xs font-mono"><p class="text-[10px] text-slate-500">اختياري — كود VIP للتفعيل الفوري دون انتظار مراجعة المدير.</p></div>
                 <button type="button" onclick="submitMemberRegister()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-lg text-sm cursor-pointer">تسجيل الحساب</button>
             </div>
         </div>
@@ -410,6 +418,7 @@
                 <button type="button" onclick="switchAdminView('adm-QuickAdd')" id="admBtn-QuickAdd" class="adm-nav-btn bg-white px-3 py-1.5 rounded-lg border cursor-pointer">4. إضافة المحتوى</button>
                 <button type="button" onclick="switchAdminView('adm-pending')" id="admBtn-pending" class="adm-nav-btn bg-white px-3 py-1.5 rounded-lg border cursor-pointer">5. المساهمات (<span id="pendingCountBadge">0</span>)</button>
                 <button type="button" onclick="switchAdminView('adm-logs')" id="admBtn-logs" class="adm-nav-btn bg-white px-3 py-1.5 rounded-lg border cursor-pointer">6. دستور AI والنسخ الاحتياطي</button>
+                <button type="button" onclick="switchAdminView('adm-bulk')" id="admBtn-bulk" class="adm-nav-btn bg-white px-3 py-1.5 rounded-lg border cursor-pointer">7. الرفع المجمع السريع</button>
             </div>
             <div class="p-4 overflow-y-auto flex-1 custom-scroll">
                 <div id="adm-members" class="adm-view">
@@ -477,6 +486,18 @@
                     </div>
                     <button type="button" onclick="saveSystemSettings()" class="bg-judicial-900 text-judicial-gold font-extrabold px-5 py-2 rounded-lg cursor-pointer">حفظ الإعدادات والدستور سحابياً</button>
                     <table class="w-full text-right text-[11px] border font-mono mt-3"><thead class="bg-slate-800 text-white"><tr><th class="p-2">التاريخ</th><th class="p-2">المسؤول</th><th class="p-2">الإجراء</th><th class="p-2">القسم</th><th class="p-2">التفاصيل</th></tr></thead><tbody id="auditLogsTableBody" class="divide-y"></tbody></table>
+                </div>
+                <div id="adm-bulk" class="adm-view hidden space-y-3 text-xs">
+                    <p class="bg-amber-50 border border-judicial-gold/40 rounded-xl p-3 text-[11px] leading-relaxed">ارفع عدة عناصر دفعة واحدة: اختر القسم والقطاع، ثم الصق النص وفق القالب الجاهز، ثم اضغط «تفكيك واعتماد الرفع المجمع». تُضاف العناصر فوق القائمة الحالية فقط (unshift)، ولا يُمسح أي محتوى قديم، ويتم الحفظ عبر زر الاعتماد فقط.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div><label class="font-bold block mb-1">القسم المستهدف:</label><select id="bulk_section_target" class="w-full border rounded p-2 font-bold bg-white"><option value="library">المكتبة</option><option value="defenses">الحيثيات</option><option value="checklists">قوائم التحقيق</option><option value="forms">النماذج</option></select></div>
+                        <div><label class="font-bold block mb-1">القطاع التخصصي:</label><select id="bulk_sector" class="w-full border rounded p-2 font-bold bg-white"><option value="الكل">الكل</option></select></div>
+                    </div>
+                    <div><label class="font-bold block mb-1">النص المُلصق للرفع المجمع:</label><textarea id="bulk_textarea" rows="10" placeholder="اضغط «تحميل القالب الجاهز» أولاً، ثم املأ العناصر وافصل بينها بسطر ===" class="w-full border rounded p-2 font-mono text-[11px] bg-white"></textarea></div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="loadBulkTemplate()" class="bg-slate-800 text-judicial-gold font-bold px-4 py-2 rounded-lg cursor-pointer">تحميل القالب الجاهز</button>
+                        <button type="button" onclick="processBulkUpload()" class="bg-emerald-700 text-white font-extrabold px-4 py-2 rounded-lg cursor-pointer">تفكيك واعتماد الرفع المجمع</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -556,7 +577,7 @@
         <div class="max-w-7xl mx-auto flex justify-between items-center text-[11px]">
             <div class="flex items-center gap-2">
                 <span id="footerBrandBadge" class="bg-judicial-gold text-judicial-950 font-extrabold px-2 py-0.5 rounded">المُـعَـاوِن</span>
-                <span id="footerBrandText">الموسوعة البحثية التفاعلية للعلوم الإدارية والوظيفية &copy; 2026</span>
+                <span id="footerBrandText">تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت © 2026</span>
             </div>
             <span class="text-slate-400 hidden sm:inline">Cloud Engine v9.8</span>
         </div>
@@ -596,14 +617,14 @@
         const initialPlatformState = {
             branding: {
                 brandTitle: "المُـعَـاوِن",
-                brandSub: "البوابة البحثية للعلوم الإدارية والوظيفية وصياغة القرارات",
+                brandSub: "مَرجعُك الرقمي المُنظَّم",
                 tab1: "1. المكتبة والمؤلفات",
                 tab2: "2. فاحص التقادم والاختصاص",
                 tab3: "3. الحيثيات والدفوع",
-                tab4: "4. قوائم التحقيق 🔒",
+                tab4: "4. قوائم التحقيق الاسترشادية 🔒",
                 tab5: "5. النماذج والمآخذ 🔒",
                 tab6: "6. القوالب والـ AI 🔒",
-                footerText: "الموسوعة البحثية التفاعلية للعلوم الإدارية والوظيفية © 2026"
+                footerText: "تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت © 2026"
             },
             settings: { inviteCode: "VIP2026", geminiApiKey: DEFAULT_GEMINI_KEY, systemInstructions: COMPACT_SYSTEM_INSTRUCTIONS },
             vipTokens: [],
@@ -725,7 +746,13 @@
         }
 
         function updateHybridAndAuthUI() {
-            const b = db.branding || initialPlatformState.branding;
+            const _rawBranding = db.branding || initialPlatformState.branding;
+            const b = { ..._rawBranding };
+            if (((_rawBranding.brandSub || '').includes('البوابة البحثية للعلوم الإدارية')) || ((_rawBranding.footerText || '').includes('الموسوعة البحثية'))) {
+                b.brandSub = 'مَرجعُك الرقمي المُنظَّم';
+                b.tab4 = '4. قوائم التحقيق الاسترشادية 🔒';
+                b.footerText = 'تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت © 2026';
+            }
             document.getElementById('siteMainTitle').innerText = `${b.brandTitle} | ${b.brandSub}`;
             document.getElementById('headerBrandTitle').innerText = b.brandTitle;
             document.getElementById('headerBrandSub').innerText = b.brandSub;
@@ -851,7 +878,7 @@
             const formalName = label.startsWith("المستشار") || label.startsWith("معالي") ? label : `معالي المستشار / ${label}`;
             const url = `${window.location.origin}${window.location.pathname}?vip=${code}`;
             
-            const message = `باسم الإدارة العليا لمنصة (المُـعَـاوِن) البوابة البحثية للعلوم الإدارية والوظيفية،\n\nنتشرف بدعوة ${formalName} للانضمام للمنصة الرسمية.\n\n🔑 كود التفعيل الفوري (VIP): ${code}\n🔗 الرابط المباشر للتسجيل:\n${url}`;
+            const message = `أتشرف بدعوة ${formalName} للانضمام إلى منصة «المُـعَـاوِن» — مَرجعُك الرقمي المُنظَّم (تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت).\n🔑 كود التفعيل الفوري الخاص بك: ${code}\n🔗 رابط الدخول المباشر: ${url}`;
             
             navigator.clipboard.writeText(message);
             alert(`تم نسخ رسالة دعوة WhatsApp الرسمية الموجهة إلى (${formalName}) بنجاح!`);
@@ -880,6 +907,8 @@
             document.getElementById('tab5_input').value = b.tab5 || "";
             document.getElementById('tab6_input').value = b.tab6 || "";
             document.getElementById('footer_text_input').value = b.footerText || "";
+            const _bulkSectorEl = document.getElementById('bulk_sector');
+            if (_bulkSectorEl) { const _prevBulkSector = _bulkSectorEl.value; _bulkSectorEl.innerHTML = (db.sectors || []).map(s => `<option value="${s}">${s}</option>`).join(''); if ((db.sectors || []).includes(_prevBulkSector)) _bulkSectorEl.value = _prevBulkSector; }
             toggleModal('adminModal');
         };
 
@@ -1097,15 +1126,32 @@
             cont.innerHTML = html || `<div class="bg-white p-6 rounded-xl text-center text-slate-400 text-xs">أضف الحيثيات والدفوع من زر (+ إضافة حيثية).</div>`;
         };
 
+        // قوائم استرشادية تأسيسية تُعرض في الذاكرة المحلية فقط عند فراغ db.checklists تماماً؛ لا تُكتب في db ولا تُحفظ في السحابة.
+        const FALLBACK_CHECKLISTS = [
+            { id: "fallback_health_cars", sector: "صحة وإسعاف", title: "تلفيات السيارات", docs: ["محضر إثبات حالة السيارة", "تقرير الفحص الفني", "مستندات الصيانة والإصلاح"], witness_q: ["ما ظروف اكتشاف التلف؟", "من المسؤول عن السيارة وقت الواقعة؟"], accused_q: ["ما قولك فيما نسب إليك بشأن تلفيات السيارة؟"], tips: ["تحقق من محضر الفحص الفني وتاريخ آخر صيانة قبل المواجهة."] },
+            { id: "fallback_health_fuel", sector: "صحة وإسعاف", title: "بونات الوقود", docs: ["دفتر بونات الوقود", "كشوف صرف الوقود", "سجل حركة السيارات"], witness_q: ["هل تم صرف الوقود وفق الضوابط المقررة؟", "من المختص باعتماد الصرف؟"], accused_q: ["ما قولك فيما نسب إليك بشأن بونات الوقود؟"], tips: ["طابق كشوف الصرف مع سجل الحركة والمسافات المقطوعة."] },
+            { id: "fallback_agri_building", sector: "زراعة وأملاك دولة", title: "التعدي بالبناء على الأرض الزراعية", docs: ["محضر المخالفة", "تقرير المعاينة على الطبيعة", "صحيفة الحالة الجنائية إن وجدت"], witness_q: ["متى تم رصد التعدي؟", "ما وصف البناء المخالف على الطبيعة؟"], accused_q: ["ما قولك فيما نسب إليك بشأن التعدي بالبناء؟"], tips: ["أثبت وصف الأرض وحالتها قبل البناء في محضر المعاينة."] },
+            { id: "fallback_local_removal", sector: "محليات وإدارة هندسية", title: "قرارات الإزالة", docs: ["قرار الإزالة", "محضر التنفيذ", "الرسومات والمستندات الهندسية"], witness_q: ["هل أُعلن المخالف بالقرار؟", "هل نُفذ القرار في الموعد المحدد؟"], accused_q: ["ما قولك فيما نسب إليك بشأن تنفيذ قرار الإزالة؟"], tips: ["تحقق من إعلان القرار واكتمال أركانه الشكلية قبل بحث الموضوع."] },
+            { id: "fallback_contracts_inspection", sector: "تعاقدات ومشتريات ومخازن", title: "محاضر الفحص", docs: ["محضر الفحص والاستلام", "أمر التوريد", "مستندات المطابقة الفنية"], witness_q: ["هل طابقت الأصناف الموردة المواصفات؟", "من أعضاء لجنة الفحص؟"], accused_q: ["ما قولك فيما نسب إليك بشأن محضر الفحص؟"], tips: ["قارن محضر الفحص بالمواصفات وأمر التوريد بنداً بنداً."] },
+            { id: "fallback_hr_absence", sector: "شؤون وظيفية وخدمة مدنية", title: "الانقطاع عن العمل", docs: ["بيان الحضور والانصراف", "سجل الإجازات", "الإنذارات الموجهة للموظف إن وجدت"], witness_q: ["ما مدة الانقطاع؟", "هل أُخطر الموظف أو أُنذر؟"], accused_q: ["ما قولك فيما نسب إليك بشأن الانقطاع عن العمل؟"], tips: ["حدد مدة الانقطاع المتصلة والمنفصلة بدقة قبل تطبيق نص المادة 46/3 من قانون 81 لسنة 2016."] }
+        ];
+        function getEffectiveChecklists() {
+            return (db.checklists && db.checklists.length) ? db.checklists : FALLBACK_CHECKLISTS;
+        }
         function renderChecklistsSection() {
-            const list = filterByCurrentSector(db.checklists), sel = document.getElementById('checklistSelector'), prev = sel.value;
+            const allChecklists = getEffectiveChecklists();
+            const isFallback = !(db.checklists && db.checklists.length);
+            const list = currentSector === "الكل" ? allChecklists : allChecklists.filter(c => c.sector === currentSector);
+            const sel = document.getElementById('checklistSelector'), prev = sel.value;
             sel.innerHTML = list.length ? list.map(c => `<option value="${c.id}">[${c.sector}] ${c.title}</option>`).join('') : `<option value="">لا توجد قوائم</option>`;
             if (list.some(c => c.id === prev)) sel.value = prev;
+            const hint = document.getElementById('checklistSectorHint');
+            if (hint) hint.innerText = `القطاع النشط حالياً: ${currentSector} — عدد القوائم الاسترشادية المتاحة: ${list.length}` + (isFallback ? ' (قوائم استرشادية تأسيسية معروضة محلياً فقط، ولم تُحفظ في السحابة)' : '');
             renderSelectedChecklist();
         }
 
         window.renderSelectedChecklist = function() {
-            const data = db.checklists.find(c => c.id === document.getElementById('checklistSelector').value), cont = document.getElementById('checklistContainer');
+            const data = getEffectiveChecklists().find(c => c.id === document.getElementById('checklistSelector').value), cont = document.getElementById('checklistContainer');
             if (!data) { cont.innerHTML = `<div class="col-span-2 bg-white p-6 rounded-xl text-center text-slate-400 text-xs">أضف قوائم الفحص والأسئلة من زر (+ قائمة).</div>`; return; }
             cont.innerHTML = `<div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-judicial-900"><h3 class="font-bold text-xs mb-2">أولاً: المستندات:</h3><div class="space-y-1.5">${data.docs.map(d => `<label class="flex items-start gap-2 text-xs cursor-pointer"><input type="checkbox" onchange="updateProgress()" class="chk-item mt-0.5"><span>${d}</span></label>`).join('')}</div></div><div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-blue-700"><h3 class="font-bold text-xs mb-2">ثانياً: أسئلة الشهود:</h3><div class="space-y-1.5">${data.witness_q.map(q => `<label class="flex items-start gap-2 text-xs font-semibold cursor-pointer"><input type="checkbox" onchange="updateProgress()" class="chk-item mt-0.5"><span>"${q}"</span></label>`).join('')}</div></div><div class="bg-white p-4 rounded-xl shadow-sm border-t-4 border-red-700"><h3 class="font-bold text-xs mb-2">ثالثاً: أسئلة المواجهة:</h3><div class="space-y-1.5">${data.accused_q.map(q => `<label class="flex items-start gap-2 text-xs font-semibold cursor-pointer"><input type="checkbox" onchange="updateProgress()" class="chk-item mt-0.5"><span>"${q}"</span></label>`).join('')}</div></div><div class="bg-amber-50 p-4 rounded-xl shadow-sm border-t-4 border-judicial-gold"><h3 class="font-bold text-xs mb-2">رابعاً: ضوابط فنية:</h3><ul class="space-y-1.5 list-disc list-inside text-xs">${data.tips.map(t => `<li class="p-1.5 bg-white rounded border">${t}</li>`).join('')}</ul></div>`;
             updateProgress();
@@ -1185,12 +1231,16 @@
             const list = db.pendingContributions || [];
             document.getElementById('pendingCountBadge').innerText = list.length;
             const c = document.getElementById('pendingListContainer'); if (!c) return;
-            c.innerHTML = list.length ? list.map(p => `<div class="p-3 bg-amber-50 border rounded-xl space-y-1.5 text-xs"><div class="flex justify-between font-bold"><span>[${p.sector}] [${p.sectionTarget}] ${p.title}</span><span>${p.contributor}</span></div><p class="bg-white p-2 rounded border whitespace-pre-line">${p.content}</p><div class="flex justify-end gap-2"><button type="button" onclick="approveContribution('${p.id}')" class="bg-emerald-600 text-white px-3 py-1 rounded font-bold cursor-pointer">اعتماد ونشر</button><button type="button" onclick="rejectContribution('${p.id}')" class="bg-red-600 text-white px-3 py-1 rounded font-bold cursor-pointer">حذف</button></div></div>`).join('') : `<p class="text-center text-slate-400 text-xs py-4">لا توجد مساهمات معلقة.</p>`;
+            c.innerHTML = list.length ? list.map(p => `<div class="p-3 bg-amber-50 border rounded-xl space-y-1.5 text-xs"><div class="flex justify-between font-bold"><span>[${p.sector}] [${p.sectionTarget}] ${p.title}</span><span>${p.contributor}</span></div><p class="bg-white p-2 rounded border whitespace-pre-line">${p.content}</p><div class="flex flex-wrap items-center gap-2"><label class="font-bold">القسم المستهدف:</label><select id="pend_section_${p.id}" class="border rounded p-1 font-bold bg-white">${[['defenses', '3. الحيثيات والدفوع'], ['library', '1. المكتبة والمؤلفات'], ['checklists', '4. قوائم التحقيق'], ['forms', '5. النماذج والمآخذ'], ['qayds', '6. قوالب القيود والأوصاف']].map(o => '<option value="' + o[0] + '"' + (o[0] === p.sectionTarget ? ' selected' : '') + '>' + o[1] + '</option>').join('')}</select><label class="font-bold">القطاع:</label><select id="pend_sector_${p.id}" class="border rounded p-1 font-bold bg-white">${(db.sectors || []).map(s => '<option value="' + s + '"' + (s === p.sector ? ' selected' : '') + '>' + s + '</option>').join('')}</select></div><div class="flex justify-end gap-2"><button type="button" onclick="approveContribution('${p.id}')" class="bg-emerald-600 text-white px-3 py-1 rounded font-bold cursor-pointer">اعتماد ونشر</button><button type="button" onclick="rejectContribution('${p.id}')" class="bg-red-600 text-white px-3 py-1 rounded font-bold cursor-pointer">حذف</button></div></div>`).join('') : `<p class="text-center text-slate-400 text-xs py-4">لا توجد مساهمات معلقة.</p>`;
         }
 
         window.approveContribution = async function(id) {
             const item = (db.pendingContributions || []).find(p => p.id === id);
             if (!item) return;
+            const _pendSectionSel = document.getElementById(`pend_section_${id}`);
+            const _pendSectorSel = document.getElementById(`pend_sector_${id}`);
+            if (_pendSectionSel && _pendSectionSel.value) item.sectionTarget = _pendSectionSel.value;
+            if (_pendSectorSel && _pendSectorSel.value) item.sector = _pendSectorSel.value;
 
             const targetSec = item.sectionTarget || 'defenses';
             const newItemId = "item_" + Date.now();
@@ -1200,7 +1250,7 @@
                 db.library.unshift({ id: newItemId, sector: item.sector, category: "مؤلفات السادة المستشارين", title: item.title, author: item.contributor, description: item.content, driveUrl: item.ref.startsWith('http') ? item.ref : '' });
             } else if (targetSec === 'checklists') {
                 if (!db.checklists) db.checklists = [];
-                db.checklists.unshift({ id: newItemId, sector: item.sector, title: item.title, docs: ["مستندات التحقيق الأصلية"], witness_q: [item.content.substring(0, 100)], accused_q: ["ما قولك فيما نسب إليك؟"], tips: [item.ref] });
+                const _checklistQuestions = (item.content || '').split('\n').map(s => s.trim()).filter(Boolean); db.checklists.unshift({ id: newItemId, sector: item.sector, title: item.title, docs: ["مستندات التحقيق الأصلية"], witness_q: _checklistQuestions.length ? _checklistQuestions : [item.content], accused_q: ["ما قولك فيما نسب إليك؟"], tips: [item.ref] });
             } else if (targetSec === 'forms') {
                 if (!db.forms) db.forms = [];
                 db.forms.unshift({ id: newItemId, sector: item.sector, category: "نماذج ومآخذ إجرائية", title: item.title, content: item.content });
@@ -1247,7 +1297,7 @@
                 bodyEl.innerHTML = `<div class="grid grid-cols-3 gap-2"><div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>التصنيف:<select id="ed_category" class="w-full border rounded p-1.5"><option value="حيثيات الحفظ القطعي">1. حيثيات الحفظ القطعي</option><option value="حيثيات الحفظ المؤقت">2. حيثيات الحفظ المؤقت</option><option value="حيثيات الإجراءات والاختصاص">3. الإجراءات والاختصاص</option><option value="حيثيات الثبوت والرد على الدفوع">4. الثبوت والرد على الدفوع</option></select></div><div>المساهم:<input type="text" id="ed_contrib" value="${item.contributor}" class="w-full border rounded p-1.5"></div></div><div>العنوان:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>النص:<textarea id="ed_response" rows="5" class="w-full border rounded p-1.5">${item.response}</textarea></div><div>السند:<input type="text" id="ed_ref" value="${item.ref}" class="w-full border rounded p-1.5"></div>`;
                 document.getElementById('ed_sector').value = item.sector; document.getElementById('ed_category').value = item.category;
             } else if (type === 'checklist') {
-                const item = editId ? db.checklists.find(c => c.id === editId) : { sector: db.sectors[1] || "الكل", title: "", docs: [], witness_q: [], accused_q: [], tips: [] };
+                const item = editId ? (db.checklists.find(c => c.id === editId) || getEffectiveChecklists().find(c => c.id === editId) || { sector: db.sectors[1] || "الكل", title: "", docs: [], witness_q: [], accused_q: [], tips: [] }) : { sector: db.sectors[1] || "الكل", title: "", docs: [], witness_q: [], accused_q: [], tips: [] };
                 titleEl.innerText = "قائمة فحص وتحقيق";
                 bodyEl.innerHTML = `<div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>العنوان:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>المستندات:<textarea id="ed_docs" rows="2" class="w-full border rounded p-1.5">${item.docs.join('\n')}</textarea></div><div>أسئلة الشهود:<textarea id="ed_witness" rows="2" class="w-full border rounded p-1.5">${item.witness_q.join('\n')}</textarea></div><div>أسئلة المواجهة:<textarea id="ed_accused" rows="2" class="w-full border rounded p-1.5">${item.accused_q.join('\n')}</textarea></div><div>ضوابط فنية:<textarea id="ed_tips" rows="2" class="w-full border rounded p-1.5">${item.tips.join('\n')}</textarea></div>`;
                 document.getElementById('ed_sector').value = item.sector;
@@ -1279,7 +1329,7 @@
                 if (editId) db.defenses[db.defenses.findIndex(d => d.id === editId)] = obj; else db.defenses.unshift(obj);
             } else if (type === 'checklist') {
                 const obj = { id: editId || "chk_" + Date.now(), sector: document.getElementById('ed_sector').value, title, docs: document.getElementById('ed_docs').value.split('\n').map(s=>s.trim()).filter(Boolean), witness_q: document.getElementById('ed_witness').value.split('\n').map(s=>s.trim()).filter(Boolean), accused_q: document.getElementById('ed_accused').value.split('\n').map(s=>s.trim()).filter(Boolean), tips: document.getElementById('ed_tips').value.split('\n').map(s=>s.trim()).filter(Boolean) };
-                if (editId) db.checklists[db.checklists.findIndex(c => c.id === editId)] = obj; else db.checklists.unshift(obj);
+                const _chkIdx = editId ? db.checklists.findIndex(c => c.id === editId) : -1; if (_chkIdx >= 0) db.checklists[_chkIdx] = obj; else { if (editId && String(editId).startsWith('fallback_')) obj.id = "chk_" + Date.now(); db.checklists.unshift(obj); }
             } else if (type === 'form') {
                 const obj = { id: editId || "form_" + Date.now(), sector: "الكل", category: document.getElementById('ed_category').value, title, content: document.getElementById('ed_content').value.trim() };
                 if (editId) db.forms[db.forms.findIndex(f => f.id === editId)] = obj; else db.forms.unshift(obj);
@@ -1301,9 +1351,81 @@
         };
 
         window.editCurrentChecklist = () => { const id = document.getElementById('checklistSelector').value; if (id) openItemEditor('checklist', id); };
-        window.deleteCurrentChecklist = async () => { if (!hasPerm('delete')) return; const id = document.getElementById('checklistSelector').value; if (id && confirm("حذف القائمة؟")) { db.checklists = db.checklists.filter(c => c.id !== id); await persistState("حذف", "قوائم التحقيق", id); } };
+        window.deleteCurrentChecklist = async () => { if (!hasPerm('delete')) return; const id = document.getElementById('checklistSelector').value; if (id && String(id).startsWith('fallback_')) return alert("هذه قائمة استرشادية تأسيسية معروضة محلياً فقط، ولا توجد نسخة سحابية لحذفها."); if (id && confirm("حذف القائمة؟")) { db.checklists = db.checklists.filter(c => c.id !== id); await persistState("حذف", "قوائم التحقيق", id); } };
         window.editCurrentQayd = () => { const id = document.getElementById('qaydSelector').value; if (id) openItemEditor('qayd', id); };
         window.deleteCurrentQayd = async () => { if (!hasPerm('delete')) return; const id = document.getElementById('qaydSelector').value; if (id && confirm("حذف القالب؟")) { db.qayds = db.qayds.filter(q => q.id !== id); await persistState("حذف", "القوالب", id); } };
+
+
+        function parseBulkBlocks(rawText) {
+            const blocks = rawText.split(/\n\s*===\s*\n|\n\s*---\s*\n/).map(b => b.trim()).filter(Boolean);
+            return blocks.map(block => {
+                const item = { title: "", contentLines: [], docs: [], witness_q: [], accused_q: [], tips: [], ref: "", sectorOverride: "" };
+                let mode = "content";
+                block.split('\n').forEach(rawLine => {
+                    const line = rawLine.trim();
+                    if (!line) return;
+                    const after = (label) => line.slice(label.length).trim();
+                    if (line.startsWith('العنوان:')) { item.title = after('العنوان:'); mode = "content"; }
+                    else if (line.startsWith('القطاع:')) { item.sectorOverride = after('القطاع:'); }
+                    else if (line.startsWith('السند:')) { item.ref = after('السند:'); }
+                    else if (line.startsWith('المرجع:')) { item.ref = after('المرجع:'); }
+                    else if (line.startsWith('الرابط:')) { item.ref = after('الرابط:'); }
+                    else if (line.startsWith('المحتوى:')) { mode = "content"; const v = after('المحتوى:'); if (v) item.contentLines.push(v); }
+                    else if (line.startsWith('المستندات:')) { mode = "docs"; const v = after('المستندات:'); if (v) item.docs.push(v); }
+                    else if (line.startsWith('أسئلة الشهود:')) { mode = "witness_q"; const v = after('أسئلة الشهود:'); if (v) item.witness_q.push(v); }
+                    else if (line.startsWith('أسئلة المواجهة:')) { mode = "accused_q"; const v = after('أسئلة المواجهة:'); if (v) item.accused_q.push(v); }
+                    else if (line.startsWith('ضوابط')) { mode = "tips"; const v = line.includes(':') ? line.slice(line.indexOf(':') + 1).trim() : ''; if (v) item.tips.push(v); }
+                    else {
+                        const clean = line.startsWith('- ') ? line.slice(2).trim() : line;
+                        if (mode === "docs") item.docs.push(clean);
+                        else if (mode === "witness_q") item.witness_q.push(clean);
+                        else if (mode === "accused_q") item.accused_q.push(clean);
+                        else if (mode === "tips") item.tips.push(clean);
+                        else item.contentLines.push(clean);
+                    }
+                });
+                return item;
+            }).filter(i => i.title);
+        }
+
+        window.loadBulkTemplate = function() {
+            const target = document.getElementById('bulk_section_target') ? document.getElementById('bulk_section_target').value : 'defenses';
+            const ta = document.getElementById('bulk_textarea'); if (!ta) return;
+            if (target === 'checklists') {
+                ta.value = "العنوان: مثال: قائمة استرشادية جديدة\nالمستندات:\n- المستند الأول\n- المستند الثاني\nأسئلة الشهود:\n- سؤال الشاهد الأول؟\n- سؤال الشاهد الثاني؟\nأسئلة المواجهة:\n- ما قولك فيما نسب إليك؟\nضوابط فنية:\n- ضابط فني أول\n===\nالعنوان: عنصر ثانٍ\nالمستندات:\n- مستند واحد\nأسئلة الشهود:\n- سؤال واحد؟\nأسئلة المواجهة:\n- ما قولك فيما نسب إليك؟\nضوابط فنية:\n- ضابط واحد";
+            } else if (target === 'library') {
+                ta.value = "العنوان: مثال لعنوان كتاب\nالمحتوى:\nوصف الكتاب أو البحث هنا.\nالسند: رابط Google Drive إن وجد\n===\nالعنوان: عنصر ثانٍ\nالمحتوى:\nوصف العنصر الثاني هنا.";
+            } else if (target === 'forms') {
+                ta.value = "العنوان: مثال لنموذج إجرائي\nالمحتوى:\nنص النموذج كاملاً هنا.\n===\nالعنوان: عنصر ثانٍ\nالمحتوى:\nنص العنصر الثاني هنا.";
+            } else {
+                ta.value = "العنوان: مثال لحيثية\nالمحتوى:\nنص الحيثية أو الرد على الدفع هنا.\nالسند: المادة 58 من قانون 81 لسنة 2016\n===\nالعنوان: عنصر ثانٍ\nالمحتوى:\nنص العنصر الثاني هنا.";
+            }
+        };
+
+        window.processBulkUpload = async function() {
+            if (!hasPerm('add')) return alert("لا تملك صلاحية الإضافة!");
+            const target = document.getElementById('bulk_section_target') ? document.getElementById('bulk_section_target').value : '';
+            const sector = document.getElementById('bulk_sector') ? document.getElementById('bulk_sector').value : 'الكل';
+            const raw = document.getElementById('bulk_textarea') ? document.getElementById('bulk_textarea').value.trim() : '';
+            if (!target || !raw) return alert("اختر القسم المستهدف والصق نصاً للرفع المجمع أولاً!");
+            const parsed = parseBulkBlocks(raw);
+            if (!parsed.length) return alert("لم يتم العثور على عناصر صالحة. تأكد أن كل عنصر يبدأ بسطر «العنوان:».");
+            const built = parsed.map(p => {
+                const sec = p.sectorOverride || sector;
+                const content = p.contentLines.join('\n');
+                if (target === 'library') return { id: "lib_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6), sector: sec, category: "مؤلفات السادة المستشارين", title: p.title, author: currentUser ? currentUser.name : "إدارة المنصة", description: content, driveUrl: p.ref.startsWith('http') ? p.ref : '' };
+                if (target === 'checklists') return { id: "chk_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6), sector: sec, title: p.title, docs: p.docs.length ? p.docs : ["مستندات التحقيق الأصلية"], witness_q: p.witness_q.length ? p.witness_q : (content ? content.split('\n').map(s => s.trim()).filter(Boolean) : []), accused_q: p.accused_q.length ? p.accused_q : ["ما قولك فيما نسب إليك؟"], tips: p.tips.length ? p.tips : (p.ref ? [p.ref] : []) };
+                if (target === 'forms') return { id: "form_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6), sector: sec, category: "نماذج ومآخذ إجرائية", title: p.title, content: content };
+                return { id: "def_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6), sector: sec, category: "حيثيات الثبوت والرد على الدفوع", title: p.title, response: content, ref: p.ref || "مساهمة إدارية", contributor: currentUser ? currentUser.name : "إدارة المنصة" };
+            });
+            if (target === 'library') { if (!db.library) db.library = []; built.slice().reverse().forEach(o => db.library.unshift(o)); }
+            else if (target === 'checklists') { if (!db.checklists) db.checklists = []; built.slice().reverse().forEach(o => db.checklists.unshift(o)); }
+            else if (target === 'forms') { if (!db.forms) db.forms = []; built.slice().reverse().forEach(o => db.forms.unshift(o)); }
+            else { if (!db.defenses) db.defenses = []; built.slice().reverse().forEach(o => db.defenses.unshift(o)); }
+            await persistState("رفع مجمع سريع", target, `${built.length} عنصر`);
+            document.getElementById('bulk_textarea').value = "";
+            alert(`✅ تم تفكيك واعتماد ${built.length} عنصراً وإضافتها فوق القائمة الحالية دون مسح القديم.`);
+        };
 
         function refreshAllUI() {
             updateHybridAndAuthUI(); renderSectorsBar(); renderLibrarySection(); renderJurisdictions();
@@ -1323,6 +1445,10 @@
             document.querySelectorAll('.adm-nav-btn').forEach(b => b.classList.remove('adm-nav-active'));
             document.getElementById(viewId).classList.remove('hidden');
             document.getElementById('admBtn-' + viewId.replace('adm-', ''))?.classList.add('adm-nav-active');
+            if (viewId === 'adm-bulk') {
+                const _bs = document.getElementById('bulk_sector');
+                if (_bs) { const _prev = _bs.value; _bs.innerHTML = (db.sectors || []).map(s => `<option value="${s}">${s}</option>`).join(''); if ((db.sectors || []).includes(_prev)) _bs.value = _prev; }
+            }
         };
 
         window.toggleModal = id => document.getElementById(id).classList.toggle('hidden');
