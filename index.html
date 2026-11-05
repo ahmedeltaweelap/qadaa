@@ -6,10 +6,6 @@
     <title id="siteMainTitle">المُـعَـاوِن | مَرجعُك الرقمي المُنظَّم</title>
     <meta name="author" content="Ahmed Talaat El-Tawil">
     <meta name="description" content="المُـعَـاوِن — مَرجعُك الرقمي المُنظَّم. تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت.">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="المُـعَـاوِن | مَرجعُك الرقمي المُنظَّم">
-    <meta property="og:description" content="تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت — المكتبة الرقمية، الحيثيات، قوائم التحقيق الاسترشادية، والنماذج الإجرائية.">
-    <meta name="twitter:card" content="summary_large_image">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -49,7 +45,7 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 id="headerBrandTitle" class="font-serif text-2xl text-judicial-gold">المُـعَـاوِن</h1>
-                        <span id="cloudStatusBadge" class="bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">v11.5 Hybrid Cloud</span>
+                        <span id="cloudStatusBadge" class="bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">Sharded 8MB Global</span>
                     </div>
                     <p id="headerBrandSub" class="text-[11px] text-slate-300">مَرجعُك الرقمي المُنظَّم</p>
                 </div>
@@ -362,7 +358,6 @@
         </div>
     </div>
 
-    <!-- نافذة دخول وتسجيل الأعضاء -->
     <div id="memberAuthModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border-2 border-judicial-gold my-8">
             <div class="bg-judicial-900 text-white p-4 flex justify-between items-center">
@@ -402,7 +397,6 @@
         </div>
     </div>
 
-    <!-- إدارة القطاعات -->
     <div id="sectorManagerModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl border-2 border-judicial-gold space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
@@ -421,7 +415,7 @@
     <div id="adminModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[92vh] flex flex-col shadow-2xl border-2 border-judicial-gold overflow-hidden">
             <div class="bg-judicial-900 text-white p-3.5 flex justify-between items-center border-b border-judicial-gold">
-                <h3 class="font-bold text-judicial-gold text-sm">لوحة الإدارة المركزية الشاملة</h3>
+                <h3 class="font-bold text-judicial-gold text-sm">لوحة الإدارة المركزية الشاملة (Sharded Architecture v11.5)</h3>
                 <button type="button" onclick="toggleModal('adminModal')" class="text-white text-2xl cursor-pointer">&times;</button>
             </div>
             <div class="bg-slate-100 p-2 border-b flex flex-wrap gap-1.5 text-xs font-bold">
@@ -447,7 +441,7 @@
                 <div id="adm-vip" class="adm-view hidden space-y-4">
                     <div class="bg-emerald-50 border border-emerald-300 p-3.5 rounded-xl grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-xs">
                         <div><label class="font-bold block mb-1">اسم المستشار / المدعو:</label><input type="text" id="vip_label" placeholder="مثال: أحمد زناتي" class="w-full border rounded p-1.5 bg-white"></div>
-                        <div><label class="font-bold block mb-1">الاستخدام:</label><select id="vip_max_uses" class="w-full border rounded p-1.5 bg-white font-bold"><option value="1">مرة واحدة</option><option value="3">3 مرات</option><option value="5">5 مرات</option></select></div>
+                        <div><label class="font-bold block mb-1">الاستخدام:</label><select id="vip_max_uses" class="w-full border rounded p-1.5 bg-white font-bold"><option value="1">مرة واحدة</option><option value="3">3 مرات</option><option value="5">5 مرات</option><option value="20">20 مرة</option></select></div>
                         <div><label class="font-bold block mb-1">قفل هاتف:</label><input type="text" id="vip_phone_lock" class="w-full border rounded p-1.5 bg-white"></div>
                         <div class="flex items-end"><button type="button" onclick="createSmartVipToken()" class="w-full bg-emerald-700 text-white font-bold py-2 rounded cursor-pointer">+ توليد كود</button></div>
                     </div>
@@ -478,32 +472,31 @@
                 <div id="adm-pending" class="adm-view hidden space-y-2"><div id="pendingListContainer"></div></div>
                 <div id="adm-logs" class="adm-view hidden space-y-4 text-xs">
                     
-                    <!-- أداة الترحيل والتحويل السحابي المقسم المحكومة بيدك -->
+                    <!-- لوحة التحكم في البنية السحابية المزدوجة -->
                     <div class="p-4 bg-gradient-to-l from-slate-900 to-indigo-950 text-white border-2 border-judicial-gold rounded-xl space-y-3">
                         <div class="flex flex-wrap justify-between items-center gap-2">
                             <div>
-                                <h4 class="font-extrabold text-judicial-gold text-sm"><i class="fa-solid fa-server ml-1"></i> محرك التخزين السحابي (Cloud Engine Architecture):</h4>
-                                <p class="text-[11px] text-slate-300 mt-0.5">النظام الحالي يعمل بـ: <span id="currentEngineLabel" class="font-bold text-emerald-400">النمط الموحد الآمن (Legacy 1MB)</span></p>
+                                <h4 class="font-extrabold text-judicial-gold text-sm"><i class="fa-solid fa-server ml-1"></i> محرك التخزين السحابي العالمي المزدوج:</h4>
+                                <p class="text-[11px] text-slate-300 mt-0.5">الوضع الفعال عالمياً لجميع الأجهزة: <span id="currentEngineLabel" class="font-bold text-emerald-400">جاري الكشف...</span></p>
                             </div>
                             <div class="flex gap-2">
-                                <button type="button" onclick="switchStorageEngine('sharded')" id="btnEnableSharded" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer shadow">تفعيل النمط المقسم (8MB)</button>
-                                <button type="button" onclick="switchStorageEngine('legacy')" id="btnEnableLegacy" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer">النمط الموحد</button>
+                                <button type="button" onclick="setGlobalStorageEngine('sharded')" id="btnEnableSharded" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer shadow">تفعيل النمط المقسم عالمياً (8MB)</button>
+                                <button type="button" onclick="setGlobalStorageEngine('legacy')" id="btnEnableLegacy" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer">النمط الموحد عالمياً</button>
                             </div>
                         </div>
 
                         <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 space-y-2">
                             <div class="flex justify-between items-center text-[11px]">
-                                <span class="font-bold text-slate-300">مؤشر السعة التخزينية:</span>
+                                <span class="font-bold text-slate-300">مؤشر السعة التخزينية المباشرة:</span>
                                 <span id="storageMeterBadge" class="font-bold text-judicial-gold">0 KB</span>
                             </div>
                             <div id="shardedMetersGrid" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-[10px]"></div>
                         </div>
 
                         <div class="pt-1 flex flex-wrap items-center gap-2">
-                            <button type="button" onclick="migrateAndShardNow()" class="bg-judicial-gold hover:bg-yellow-500 text-judicial-950 font-extrabold px-4 py-2 rounded-lg text-xs cursor-pointer shadow">
-                                <i class="fa-solid fa-cloud-arrow-up ml-1"></i> 1. ترحيل وتوزيع البيانات على الوثائق الـ 8 المستقلة الآن
+                            <button type="button" onclick="migrateLegacyToShardedGlobal()" class="bg-judicial-gold hover:bg-yellow-500 text-judicial-950 font-extrabold px-4 py-2 rounded-lg text-xs cursor-pointer shadow">
+                                <i class="fa-solid fa-cloud-arrow-up ml-1"></i> إعادة ترحيل ومزامنة الوثائق الـ 8 من main_state_v8_clean
                             </button>
-                            <span class="text-[10px] text-slate-400">تظل الوثيقة القديمة (main_state_v8_clean) محفوظة دائماً دون أي مساس بها[cite: 1, 3].</span>
                         </div>
                     </div>
 
@@ -628,7 +621,7 @@
                 <span id="footerBrandBadge" class="bg-judicial-gold text-judicial-950 font-extrabold px-2 py-0.5 rounded">المُـعَـاوِن</span>
                 <span id="footerBrandText">تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت © 2026</span>
             </div>
-            <span class="text-slate-400 hidden sm:inline">Engine v11.5 Hybrid</span>
+            <span class="text-slate-400 hidden sm:inline">Engine v11.5 Hybrid Global</span>
         </div>
     </footer>
 
@@ -648,10 +641,10 @@
         const app = initializeApp(firebaseConfig);
         const firestoreDB = getFirestore(app);
 
-        // 1. الوثيقة الأساسية الشاملة المعتمدة السليمة (التي تحتوي على بياناتك الأصلية)
+        // 1. الوثيقة الموحدة الأصلية الشاملة
         const LEGACY_MAIN_REF = doc(firestoreDB, "platform_data", "main_state_v8_clean");
 
-        // 2. مراجع الوثائق الـ 8 المقسمة (سعة إجمالية 8 ميجابايت)
+        // 2. مراجع الوثائق الـ 8 المستقلة
         const SHARD_REFS = {
             config: doc(firestoreDB, "platform_data", "sec_config"),
             members: doc(firestoreDB, "platform_data", "sec_members"),
@@ -663,10 +656,9 @@
             qayds: doc(firestoreDB, "platform_data", "sec_qayds")
         };
 
-        // نمط التخزين النشط: يبدأ افتراضياً بـ 'legacy' المتصل بـ main_state_v8_clean لضمان عدم تصفير البيانات نهائياً
-        let activeStorageMode = localStorage.getItem("moawen_storage_mode") || "legacy";
+        // النمط الافتراضي يُقرأ سحابياً وليس من متصفح فردي
+        let globalStorageEngine = "legacy";
 
-        // بصمة SHA-256 لكلمة سر المدير
         const SUPER_ADMIN_PIN_HASH = "e44f72f8f7c4f0a4b0b9560c028a21261a192a22526a674566039402e232443f";
         async function hashPin(pin) {
             const raw = String(pin || "").trim();
@@ -724,7 +716,7 @@
         let currentUser = null, currentSector = "الكل", currentDefCategory = "الكل", currentEditorContext = null, basket = [];
 
         function buildShardPayload(shardKey) {
-            if (shardKey === 'config') return { branding: db.branding, settings: db.settings, sectors: db.sectors, pendingContributions: db.pendingContributions, auditLogs: db.auditLogs };
+            if (shardKey === 'config') return { branding: db.branding, settings: db.settings, sectors: db.sectors, pendingContributions: db.pendingContributions, auditLogs: db.auditLogs, globalEngineMode: globalStorageEngine };
             if (shardKey === 'members') return { members: db.members, vipTokens: db.vipTokens };
             if (shardKey === 'library') return { items: db.library };
             if (shardKey === 'jurisdictions') return { items: db.jurisdictions };
@@ -745,6 +737,7 @@
                 if (Array.isArray(data.sectors) && data.sectors.length) db.sectors = data.sectors;
                 db.pendingContributions = data.pendingContributions || [];
                 db.auditLogs = data.auditLogs || [];
+                if (data.globalEngineMode) globalStorageEngine = data.globalEngineMode;
             } else if (shardKey === 'members') {
                 if (Array.isArray(data.members) && data.members.length) db.members = data.members;
                 db.vipTokens = data.vipTokens || [];
@@ -756,39 +749,35 @@
             else if (shardKey === 'qayds') { db.qayds = (data.items && data.items.length) ? data.items : initialPlatformState.qayds; }
         }
 
-        // أداة الترحيل المحكومة بيدك: نسخ وتوزيع بيانات main_state_v8_clean إلى الوثائق الـ 8 المستقلة بضغطة زر واحدة
-        window.migrateAndShardNow = async function() {
+        // تفعيل النمط عالمياً في السحابة بحيث يسري على كل الأجهزة والمتصفحات فوراً
+        window.setGlobalStorageEngine = async function(mode) {
             if (!hasPerm('manageUsers')) return;
-            if (!confirm("سيتم الآن قراءة وثيقتك الأساسية (main_state_v8_clean) وتوزيع كافة عناصرها على الوثائق الـ 8 المستقلة في السحابة.\n\nالوثيقة الأصلية ستظل محفوظة بأمان دون حذف. هل تود البدء؟")) return;
+            globalStorageEngine = mode;
+            await persistState(`تفعيل النمط ${mode} عالمياً`, "النظام", mode);
+            alert(`✅ تم اعتماد (${mode === 'sharded' ? 'النمط المقسم 8MB' : 'النمط الموحد'}) عالمياً في السحابة!\nالآن سيقرأ أي متصفح أو جهاز في العالم نفس البيانات المقسمة فوراً.`);
+            location.reload();
+        };
+
+        // إعادة ترحيل ومزامنة الوثائق الـ 8 من main_state_v8_clean
+        window.migrateLegacyToShardedGlobal = async function() {
+            if (!hasPerm('manageUsers')) return;
+            if (!confirm("سيتم الآن قراءة وثيقتك الأساسية (main_state_v8_clean) وتوزيع كافة عناصرها على الوثائق الـ 8 المستقلة في السحابة مع الحفاظ التام عليها. متابعة؟")) return;
             try {
                 const snap = await getDoc(LEGACY_MAIN_REF);
-                if (!snap.exists()) return alert("الوثيقة الأساسية main_state_v8_clean غير موجودة بالسحابة.");
+                if (!snap.exists()) return alert("الوثيقة الأساسية main_state_v8_clean غير موجودة.");
                 const c = snap.data();
-                db = {
-                    ...initialPlatformState,
-                    ...c,
-                    branding: { ...initialPlatformState.branding, ...(c.branding || {}) },
-                    settings: { ...initialPlatformState.settings, ...(c.settings || {}) }
-                };
+                db = { ...initialPlatformState, ...c, branding: { ...initialPlatformState.branding, ...(c.branding || {}) }, settings: { ...initialPlatformState.settings, ...(c.settings || {}) } };
+                globalStorageEngine = "sharded";
                 const batch = writeBatch(firestoreDB);
                 Object.keys(SHARD_REFS).forEach(k => {
                     batch.set(SHARD_REFS[k], buildShardPayload(k));
                 });
                 await batch.commit();
-                alert("✅ تم ترحيل وتوزيع البيانات على الوثائق الـ 8 المستقلة بنجاح تام!\nيمكنك الآن الضغط على «تفعيل النمط المقسم (8MB)» لاعتماده.");
-                refreshAllUI();
+                alert("✅ تم ترحيل وتوزيع البيانات على الوثائق الـ 8 المستقلة بنجاح، وتفعيل النمط المقسم عالمياً!");
+                location.reload();
             } catch (err) {
                 alert("حدث خطأ أثناء الترحيل السحابي.");
             }
-        };
-
-        // التبديل بين النمط الموحد والمقسم
-        window.switchStorageEngine = function(mode) {
-            if (!hasPerm('manageUsers')) return;
-            activeStorageMode = mode;
-            localStorage.setItem("moawen_storage_mode", mode);
-            alert(`تم التبديل إلى: ${mode === 'sharded' ? 'النمط المقسم (8MB Sharded)' : 'النمط الموحد (Legacy 1MB)'}.\nسيتم إعادة تحميل الصفحة للتطبيق.`);
-            location.reload();
         };
 
         function updateStorageMeters() {
@@ -797,24 +786,26 @@
             const grid = document.getElementById('shardedMetersGrid');
             if (!label || !meter) return;
 
-            if (activeStorageMode === 'sharded') {
-                label.innerText = "النمط المقسم النشط (8MB Sharded Engine)";
+            if (globalStorageEngine === 'sharded') {
+                label.innerText = "النمط المقسم العالمي (8MB Sharded Engine - شغال عند الكل)";
                 label.className = "font-bold text-emerald-400";
-                grid.classList.remove('hidden');
-                const labels = { config: "الإعدادات", members: "الأعضاء", library: "المكتبة", jurisdictions: "الاختصاص", defenses: "الحيثيات", checklists: "قوائم التحقيق", forms: "النماذج", qayds: "القوالب" };
-                let totalBytes = 0;
-                grid.innerHTML = Object.keys(SHARD_REFS).map(k => {
-                    const bytes = new Blob([JSON.stringify(buildShardPayload(k))]).size;
-                    totalBytes += bytes;
-                    const kb = (bytes / 1024).toFixed(1);
-                    const pct = Math.min(100, ((bytes / 1048576) * 100)).toFixed(1);
-                    return `<div class="bg-slate-900 p-1.5 rounded border border-slate-700"><div class="flex justify-between font-bold text-judicial-gold"><span>${labels[k]}</span><span>${kb} KB</span></div><div class="w-full bg-slate-700 h-1 rounded mt-1"><div class="bg-emerald-400 h-1 rounded" style="width:${pct}%"></div></div></div>`;
-                }).join('');
-                meter.innerText = `الإجمالي: ${(totalBytes / 1024).toFixed(1)} KB من 8,192 KB`;
+                if (grid) {
+                    grid.classList.remove('hidden');
+                    const labels = { config: "الإعدادات", members: "الأعضاء", library: "المكتبة", jurisdictions: "الاختصاص", defenses: "الحيثيات", checklists: "قوائم التحقيق", forms: "النماذج", qayds: "القوالب" };
+                    let totalBytes = 0;
+                    grid.innerHTML = Object.keys(SHARD_REFS).map(k => {
+                        const bytes = new Blob([JSON.stringify(buildShardPayload(k))]).size;
+                        totalBytes += bytes;
+                        const kb = (bytes / 1024).toFixed(1);
+                        const pct = Math.min(100, ((bytes / 1048576) * 100)).toFixed(1);
+                        return `<div class="bg-slate-900 p-1.5 rounded border border-slate-700"><div class="flex justify-between font-bold text-judicial-gold"><span>${labels[k]}</span><span>${kb} KB</span></div><div class="w-full bg-slate-700 h-1 rounded mt-1"><div class="bg-emerald-400 h-1 rounded" style="width:${pct}%"></div></div></div>`;
+                    }).join('');
+                    meter.innerText = `الإجمالي: ${(totalBytes / 1024).toFixed(1)} KB من 8,192 KB`;
+                }
             } else {
-                label.innerText = "النمط الموحد الآمن (Legacy main_state_v8_clean)";
+                label.innerText = "النمط الموحد العالمي (main_state_v8_clean)";
                 label.className = "font-bold text-amber-400";
-                grid.classList.add('hidden');
+                if (grid) grid.classList.add('hidden');
                 const bytes = new Blob([JSON.stringify(db)]).size;
                 const kb = (bytes / 1024).toFixed(1);
                 const pct = Math.min(100, ((bytes / 1048576) * 100)).toFixed(1);
@@ -824,15 +815,16 @@
 
         async function initCloudSync() {
             try {
-                if (activeStorageMode === 'sharded') {
-                    // القراءة من الوثائق الـ 8 المستقلة
-                    const cfgSnap = await getDoc(SHARD_REFS.config);
-                    if (cfgSnap.exists()) {
-                        applyShardData('config', cfgSnap.data());
-                        const keys = ['members', 'library', 'jurisdictions', 'defenses', 'checklists', 'forms', 'qayds'];
-                        const snaps = await Promise.all(keys.map(k => getDoc(SHARD_REFS[k])));
-                        snaps.forEach((s, idx) => { if (s.exists()) applyShardData(keys[idx], s.data()); });
-                    }
+                // الكشف أولاً عن الإعداد العام للسحابة من وثيقة sec_config
+                const cfgSnap = await getDoc(SHARD_REFS.config);
+                if (cfgSnap.exists() && cfgSnap.data()?.globalEngineMode === "sharded") {
+                    globalStorageEngine = "sharded";
+                    applyShardData('config', cfgSnap.data());
+                    const keys = ['members', 'library', 'jurisdictions', 'defenses', 'checklists', 'forms', 'qayds'];
+                    const snaps = await Promise.all(keys.map(k => getDoc(SHARD_REFS[k])));
+                    snaps.forEach((s, idx) => { if (s.exists()) applyShardData(keys[idx], s.data()); });
+
+                    // مراقبة حية لجميع الوثائق المقسمة
                     Object.keys(SHARD_REFS).forEach(k => {
                         onSnapshot(SHARD_REFS[k], (docSnap) => {
                             if (docSnap.exists()) {
@@ -846,7 +838,8 @@
                         });
                     });
                 } else {
-                    // القراءة الافتراضية المستقرة من main_state_v8_clean
+                    // إذا لم تكن مقسمة، يقرأ الجميع بأمان من main_state_v8_clean
+                    globalStorageEngine = "legacy";
                     const snap = await getDoc(LEGACY_MAIN_REF);
                     if (snap.exists()) {
                         const c = snap.data();
@@ -900,8 +893,7 @@
             localStorage.setItem("moawen_v8_backup", JSON.stringify(db));
             refreshAllUI();
             try {
-                if (activeStorageMode === 'sharded') {
-                    // حفظ القسم المعدل فقط في وثيقته المستقلة
+                if (globalStorageEngine === 'sharded') {
                     const targetShards = resolveTargetShards(section);
                     const batch = writeBatch(firestoreDB);
                     targetShards.forEach(k => {
@@ -909,7 +901,6 @@
                     });
                     await batch.commit();
                 } else {
-                    // الحفظ في الوثيقة الموحدة
                     await setDoc(LEGACY_MAIN_REF, db);
                 }
             } catch (e) {}
