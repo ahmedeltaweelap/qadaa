@@ -22,6 +22,7 @@
     <style>
         body { background-color: #F8FAFC; color: #1E293B; }
         .hub-card-active { border-color: #C5A059 !important; background-color: #FFFFFF !important; box-shadow: 0 4px 20px -2px rgba(197, 160, 89, 0.35) !important; transform: translateY(-2px); }
+        .stage-step-active { background-color: #0B132B !important; color: #C5A059 !important; border-color: #C5A059 !important; font-weight: 800; box-shadow: 0 2px 10px rgba(11, 19, 43, 0.2); }
         .def-subtab-active, .compass-tab-active, .sector-active { background-color: #0B132B !important; color: #C5A059 !important; font-weight: 700; border-color: #C5A059 !important; }
         .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
@@ -30,11 +31,11 @@
 </head>
 <body class="font-sans antialiased pb-20">
 
-    <!-- الترويسة الرئيسية مع الشعار القانوني الأيقوني المستقل والوصف المستقر -->
+    <!-- الترويسة الرئيسية -->
     <header class="bg-judicial-900 text-white shadow-md sticky top-0 z-40 border-b-2 border-judicial-gold">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center gap-3 cursor-pointer" onclick="scrollToTopHub()">
-                <!-- الشعار القانوني الأيقوني الفاخر (ميزان + سن قلم ذهبي) -->
+                <!-- الشعار القانوني الأيقوني المستقل -->
                 <div id="mainLogoContainer" class="w-10 h-10 rounded-xl bg-judicial-800 border border-judicial-gold flex items-center justify-center shadow-inner overflow-hidden p-1.5">
                     <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
                         <path d="M32 4L38 16H26L32 4Z" fill="#C5A059"/>
@@ -52,15 +53,14 @@
                         <h1 id="headerBrandTitle" class="font-serif text-xl md:text-2xl text-judicial-gold font-bold tracking-wide">المُـعَـاوِن</h1>
                         <span id="cloudStatusBadge" class="bg-emerald-950 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">سحابي متصل</span>
                     </div>
-                    <!-- تم ضبط النص الابتدائي ليتطابق مع السحابة لمنع الوميض -->
                     <p id="headerBrandSub" class="text-[11px] text-slate-300">مَرجعُك الرقمي المُنظَّم</p>
                 </div>
             </div>
 
-            <!-- صندوق البحث الذكي (فارغ تماماً ومشروط بالضغط أو مفتاح Enter) -->
+            <!-- شريط البحث (مشروط بالضغط ومفرغ تماماً) -->
             <div class="order-3 md:order-2 w-full md:flex-1 md:max-w-md relative flex items-center gap-1.5">
                 <div class="relative flex-1">
-                    <input type="text" id="globalSearch" onkeyup="if(event.key==='Enter') executeGlobalSearch()" placeholder="ابحث في المنصة واضغط Enter أو زر بحث..." value=""
+                    <input type="text" id="globalSearch" onkeyup="if(event.key==='Enter') executeGlobalSearch()" placeholder="ابحث في أقسام المنصة واضغط Enter أو زر بحث..." value=""
                            class="w-full bg-judicial-800 text-white placeholder-slate-400 rounded-lg py-1.5 pr-8 pl-8 border border-slate-600 focus:outline-none focus:border-judicial-gold text-xs">
                     <i class="fa-solid fa-magnifying-glass absolute right-2.5 top-2.5 text-judicial-gold text-xs pointer-events-none"></i>
                     <button type="button" id="clearSearchBtn" onclick="clearGlobalSearch()" class="hidden absolute left-2 top-1.5 text-slate-400 hover:text-white text-xs cursor-pointer font-bold">&times;</button>
@@ -87,7 +87,7 @@
         </div>
     </header>
 
-    <!-- شريط البروتوكول والترحيب بالسادة المستشارين + إبراز الدرجة ونيابة ملوي -->
+    <!-- شريط البروتوكول القضائي والترحيب بالسادة المستشارين ووسام نيابة ملوي -->
     <div id="userStatusBar" class="hidden bg-gradient-to-r from-judicial-950 via-judicial-900 to-judicial-950 text-white px-4 py-2 text-xs border-b border-judicial-gold/40 shadow-sm">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
             <div class="flex items-center gap-2">
@@ -107,7 +107,7 @@
         </div>
     </div>
 
-    <!-- نتائج البحث المشروط بالضغط -->
+    <!-- نتائج البحث المشروط -->
     <div id="globalSearchResultsSection" class="hidden max-w-7xl mx-auto px-4 mt-3">
         <div class="bg-white p-4 rounded-xl shadow-md border-2 border-judicial-gold space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
@@ -120,65 +120,47 @@
         </div>
     </div>
 
-    <!-- شبكة بطاقات الأقسام العلوية الدائمة (فاتحة ومريحة وتفتح محتواها بالأسفل مباشرة) -->
+    <!-- شبكة بطاقات الأقسام العلوية الدائمة -->
     <div class="max-w-7xl mx-auto px-4 mt-4">
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5">
             
-            <!-- بطاقة 1: المكتبة -->
             <div onclick="selectHubSection('tab-library')" id="hubCard-tab-library" class="hub-card hub-card-active bg-white border-2 border-judicial-gold/60 rounded-xl p-3 flex flex-col items-center text-center cursor-pointer transition shadow-sm hover:border-judicial-gold">
-                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-judicial-gold/50 flex items-center justify-center text-judicial-gold text-lg mb-2 shadow-sm">
-                    <i class="fa-solid fa-book-bookmark"></i>
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-judicial-gold/50 flex items-center justify-center text-judicial-gold text-lg mb-2 shadow-sm"><i class="fa-solid fa-book-bookmark"></i></div>
                 <h3 class="font-bold text-xs text-judicial-900">1. المكتبة والمؤلفات</h3>
                 <p class="text-[10px] text-slate-500 mt-0.5">مؤلفات السادة المستشارين والكتب</p>
             </div>
 
-            <!-- بطاقة 2: البوصلة الإجرائية -->
             <div onclick="selectHubSection('tab-compass')" id="hubCard-tab-compass" class="hub-card bg-white border-2 border-slate-200 rounded-xl p-3 flex flex-col items-center text-center cursor-pointer transition shadow-sm hover:border-judicial-gold relative">
                 <span class="absolute top-2 left-2 text-judicial-gold text-[11px]"><i class="fa-solid fa-lock"></i></span>
-                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-cyan-500/40 flex items-center justify-center text-cyan-600 text-lg mb-2 shadow-sm">
-                    <i class="fa-solid fa-compass"></i>
-                </div>
-                <h3 class="font-bold text-xs text-judicial-900">2. البوصلة الإجرائية</h3>
-                <p class="text-[10px] text-slate-500 mt-0.5">سلطة التصرف ومسقطات الدعوى</p>
+                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-cyan-500/40 flex items-center justify-center text-cyan-600 text-lg mb-2 shadow-sm"><i class="fa-solid fa-compass"></i></div>
+                <h3 class="font-bold text-xs text-judicial-900">2. البوصلة ومسار القضية</h3>
+                <p class="text-[10px] text-slate-500 mt-0.5">دورة حياة القضية ومسقطات الدعوى</p>
             </div>
 
-            <!-- بطاقة 3: الحيثيات والدفوع -->
             <div onclick="selectHubSection('tab-defenses')" id="hubCard-tab-defenses" class="hub-card bg-white border-2 border-slate-200 rounded-xl p-3 flex flex-col items-center text-center cursor-pointer transition shadow-sm hover:border-judicial-gold relative">
                 <span class="absolute top-2 left-2 text-judicial-gold text-[11px]"><i class="fa-solid fa-lock"></i></span>
-                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-blue-500/40 flex items-center justify-center text-blue-700 text-lg mb-2 shadow-sm">
-                    <i class="fa-solid fa-gavel"></i>
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-blue-500/40 flex items-center justify-center text-blue-700 text-lg mb-2 shadow-sm"><i class="fa-solid fa-gavel"></i></div>
                 <h3 class="font-bold text-xs text-judicial-900">3. الحيثيات والدفوع</h3>
                 <p class="text-[10px] text-slate-500 mt-0.5">أحكام الإدارية العليا والردود</p>
             </div>
 
-            <!-- بطاقة 4: قوائم التحقيق الاسترشادية -->
             <div onclick="selectHubSection('tab-checklists')" id="hubCard-tab-checklists" class="hub-card bg-white border-2 border-slate-200 rounded-xl p-3 flex flex-col items-center text-center cursor-pointer transition shadow-sm hover:border-judicial-gold relative">
                 <span class="absolute top-2 left-2 text-judicial-gold text-[11px]"><i class="fa-solid fa-lock"></i></span>
-                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-emerald-500/40 flex items-center justify-center text-emerald-600 text-lg mb-2 shadow-sm">
-                    <i class="fa-solid fa-clipboard-question"></i>
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-emerald-500/40 flex items-center justify-center text-emerald-600 text-lg mb-2 shadow-sm"><i class="fa-solid fa-clipboard-question"></i></div>
                 <h3 class="font-bold text-xs text-judicial-900">4. قوائم الفحص والتحقيق</h3>
                 <p class="text-[10px] text-slate-500 mt-0.5">المستندات والأسئلة والضوابط</p>
             </div>
 
-            <!-- بطاقة 5: النماذج والمآخذ -->
             <div onclick="selectHubSection('tab-forms')" id="hubCard-tab-forms" class="hub-card bg-white border-2 border-slate-200 rounded-xl p-3 flex flex-col items-center text-center cursor-pointer transition shadow-sm hover:border-judicial-gold relative">
                 <span class="absolute top-2 left-2 text-judicial-gold text-[11px]"><i class="fa-solid fa-lock"></i></span>
-                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-rose-500/40 flex items-center justify-center text-rose-600 text-lg mb-2 shadow-sm">
-                    <i class="fa-solid fa-file-signature"></i>
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-rose-500/40 flex items-center justify-center text-rose-600 text-lg mb-2 shadow-sm"><i class="fa-solid fa-file-signature"></i></div>
                 <h3 class="font-bold text-xs text-judicial-900">5. النماذج والمآخذ</h3>
                 <p class="text-[10px] text-slate-500 mt-0.5">القرارات التنظيمية وصيغ التصرف</p>
             </div>
 
-            <!-- بطاقة 6: القيود والأوصاف والـ AI -->
             <div onclick="selectHubSection('tab-qayds')" id="hubCard-tab-qayds" class="hub-card bg-white border-2 border-slate-200 rounded-xl p-3 flex flex-col items-center text-center cursor-pointer transition shadow-sm hover:border-judicial-gold relative">
                 <span class="absolute top-2 left-2 text-judicial-gold text-[11px]"><i class="fa-solid fa-lock"></i></span>
-                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-amber-500/40 flex items-center justify-center text-amber-600 text-lg mb-2 shadow-sm">
-                    <i class="fa-solid fa-feather-pointed"></i>
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-amber-500/40 flex items-center justify-center text-amber-600 text-lg mb-2 shadow-sm"><i class="fa-solid fa-feather-pointed"></i></div>
                 <h3 class="font-bold text-xs text-judicial-900">6. مولّد القيود والأوصاف</h3>
                 <p class="text-[10px] text-slate-500 mt-0.5">صياغة الوقائع والتكييف القانوني</p>
             </div>
@@ -186,7 +168,7 @@
         </div>
     </div>
 
-    <!-- حاوية عرض المحتوى المباشر أسفل البطاقات -->
+    <!-- حاوية عرض المحتوى المباشر -->
     <main id="mainContentArea" class="max-w-7xl mx-auto px-4 mt-4">
 
         <!-- 1. المكتبة والمؤلفات -->
@@ -209,120 +191,67 @@
             <div id="libraryContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
         </section>
 
-        <!-- 2. البوصلة الإجرائية وموجه التصرفات (مع القفل التشويقي الجذاب) -->
+        <!-- 2. البوصلة الإجرائية ومسار القضية التفاعلي (المحطات الخمس) -->
         <section id="tab-compass" class="tab-content hidden space-y-4">
             <div class="bg-judicial-900 p-3.5 rounded-xl text-white flex flex-wrap justify-between items-center gap-3 border border-judicial-gold">
                 <div>
                     <h2 class="text-sm md:text-base font-bold text-judicial-gold flex items-center gap-2">
-                        <i class="fa-solid fa-compass text-amber-400"></i> «البوصلة الإجرائية» — مرجع قواعد التحقيق والتصرف (طبعة 2026)
+                        <i class="fa-solid fa-compass text-amber-400"></i> خريطة مسار القضية والدليل الإجرائي المترابط (طبعة 2026)
                     </h2>
-                    <p class="text-[11px] text-slate-300">أداة عملية لحسم سلطة التصرف، فحص الاختصاص، ومراجعة الإحالة الوجوبية ومبادئ الإدارية العليا.</p>
+                    <p class="text-[11px] text-slate-300">دليل عملي يأخذ بيد المحقق خطوة بخطوة من استلام البلاغ وفحص الاختصاص حتى صياغة المذكرة والاعتماد.</p>
                 </div>
                 <button type="button" onclick="syncProceduralCompassData()" class="admin-action-btn hidden bg-amber-500 hover:bg-yellow-400 text-judicial-950 font-extrabold px-3 py-1.5 rounded-lg text-xs cursor-pointer shadow transition flex items-center gap-1.5">
                     <i class="fa-solid fa-rotate"></i> <span>🔄 تحديث التعليمات القضائية والتصرفات لطبعة أكتوبر 2026</span>
                 </button>
             </div>
 
-            <!-- شبكة الأدوات التفاعلية الثلاث -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                <!-- أداة 1: موجّه مسار القضية وسلطة التصرف -->
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-2.5 flex flex-col justify-between">
-                    <div class="space-y-2">
-                        <h3 class="font-bold text-judicial-900 text-xs border-b pb-1.5 flex items-center gap-1.5">
-                            <i class="fa-solid fa-diagram-project text-judicial-gold"></i> 1. موجّه مسار القضية وسلطة التصرف
-                        </h3>
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-0.5">درجة وصفة المتهم:</label>
-                            <select id="compass_emp_rank" class="w-full border rounded p-1.5 text-xs bg-slate-50 font-semibold">
-                                <option value="normal">شاغل درجات ما دون مدير عام (خاضع للخدمة المدنية)</option>
-                                <option value="normal_non_civil">شاغل درجات ما دون مدير عام (غير خاضع للخدمة المدنية كشركات)</option>
-                                <option value="dg_non_civil">شاغل درجة مدير عام (من غير الخاضعين للخدمة المدنية)</option>
-                                <option value="higher">شاغل وظيفة قيادية أو عليا (عالية / ممتازة)</option>
-                                <option value="retired">منتهية خدمته (تتبع مالي خلال 5 سنوات / بدأ التحقيق قبله)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-0.5">التصرف المقترح في القضية:</label>
-                            <select id="compass_action_type" class="w-full border rounded p-1.5 text-xs bg-slate-50 font-semibold">
-                                <option value="majaza">مجازاة تأديبية إدارية (إلزام الرقم القومي قرار 172/2025)</option>
-                                <option value="hifz_adary">حفظ إداري قطعي لعدم الصحة أو المخالفة (إخطار 15 يوماً)</option>
-                                <option value="hifz_ahamia">حفظ قطعي لعدم الأهمية (إلزام الرقم القومي قرار 172/2025)</option>
-                                <option value="ihala_court">إحالة إلى المحكمة التأديبية</option>
-                                <option value="ergaa_bat">إرجاء البت في المسئولية التأديبية</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="button" onclick="runCompassRouter()" class="w-full bg-judicial-900 hover:bg-judicial-800 text-judicial-gold font-bold py-2 rounded-lg text-xs cursor-pointer shadow">
-                        استخراج المسار وسلطة التصرف
+            <!-- شريط المحطات الإجرائية الخمس (Workflow Stepper) -->
+            <div class="bg-white p-2 rounded-xl shadow-sm border border-slate-200">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-center text-xs">
+                    <button type="button" onclick="switchStageStep(1)" id="stageBtn-1" class="stage-step stage-step-active py-2 px-2 rounded-lg border border-slate-200 transition cursor-pointer flex flex-col items-center gap-1">
+                        <span class="text-xs font-mono font-extrabold text-judicial-gold">المحطة 1</span>
+                        <span class="font-bold text-judicial-900">الورود والاختصاص والطلب</span>
                     </button>
-                    <div id="compassRouterOutput" class="hidden p-2.5 rounded-lg text-[11px] leading-relaxed border bg-slate-50"></div>
-                </div>
-
-                <!-- أداة 2: فاحص الفئات الخاصة والطلب والإذن -->
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-2.5 flex flex-col justify-between">
-                    <div class="space-y-2">
-                        <h3 class="font-bold text-judicial-900 text-xs border-b pb-1.5 flex items-center gap-1.5">
-                            <i class="fa-solid fa-building-user text-blue-700"></i> 2. فاحص الفئات الخاصة والطلب والإذن
-                        </h3>
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-0.5">اختر الفئة أو الجهة لفحص الحكم الإجرائي:</label>
-                            <select id="compass_special_entity" class="w-full border rounded p-1.5 text-xs bg-slate-50 font-semibold">
-                                <option value="azhar">أعضاء هيئة التدريس بجامعة الأزهر (م 62/1)</option>
-                                <option value="universities">العاملون بالجامعات من غير هيئة التدريس (م 62/2)</option>
-                                <option value="holding">العاملون بالشركات القابضة والتابعة (م 62/5 ومنشور 3/2025)</option>
-                                <option value="taxes">موظفو الضرائب ذوو الضبطية القضائية ولجان الطعن (م 57)</option>
-                                <option value="coba">أعضاء الجهاز المركزي للمحاسبات (م 146)</option>
-                                <option value="exams">معلمو وإداريو الامتحانات والكنترول (منشور 4 لسنة 2025)</option>
-                                <option value="spatial">قضايا المتغيرات المكانية (قرار 414 لسنة 2026)</option>
-                                <option value="coop">مجالس إدارات الجمعيات التعاونية (م 62/6)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="button" onclick="runSpecialEntityCheck()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 rounded-lg text-xs cursor-pointer shadow">
-                        فحص السند والإجراء المطلوب
+                    <button type="button" onclick="switchStageStep(2)" id="stageBtn-2" class="stage-step py-2 px-2 rounded-lg border border-slate-200 transition cursor-pointer flex flex-col items-center gap-1 bg-slate-50">
+                        <span class="text-xs font-mono font-extrabold text-slate-500">المحطة 2</span>
+                        <span class="font-bold text-slate-700">إجراءات التحقيق والإعلان</span>
                     </button>
-                    <div id="compassEntityOutput" class="hidden p-2.5 rounded-lg text-[11px] leading-relaxed border bg-blue-50/70"></div>
-                </div>
-
-                <!-- أداة 3: الإحالة الوجوبية وعوارض التحقيق -->
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-2.5 flex flex-col justify-between">
-                    <div class="space-y-2">
-                        <h3 class="font-bold text-judicial-900 text-xs border-b pb-1.5 flex items-center gap-1.5">
-                            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 3. الإحالة الوجوبية وعوارض التحقيق
-                        </h3>
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-0.5">اختر الواقعة أو العارض القضائي:</label>
-                            <select id="compass_incident_type" class="w-full border rounded p-1.5 text-xs bg-slate-50 font-semibold">
-                                <option value="mandatory_rumors">نشر شائعات بسوء قصد لتكدير السلم العام (بند 9 م 210)</option>
-                                <option value="mandatory_assault">هتك العرض والاعتداء على أطفال ذوي الإعاقة (بنود 10 و11 م 210)</option>
-                                <option value="mandatory_supply">الإخلال العمدي بتوزيع السلع والتموين (بند 12 م 210)</option>
-                                <option value="mandatory_classic">الرشوة، الاختلاس، التزوير، مخالفات البناء (م 210)</option>
-                                <option value="incident_tasadi">الوقوف بالإجراءات لسابقة التصدي (كتاب دوري 14 لسنة 2024)</option>
-                                <option value="incident_whatsapp">إثبات رقم الواتساب وحجية الإعلان (منشور 6 لسنة 2026)</option>
-                                <option value="incident_recs">محظورات وضوابط التوصيات (المادتان 218 و219)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="button" onclick="runIncidentCheck()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2 rounded-lg text-xs cursor-pointer shadow">
-                        عرض الضابط والنتيجة الوجوبية
+                    <button type="button" onclick="switchStageStep(3)" id="stageBtn-3" class="stage-step py-2 px-2 rounded-lg border border-slate-200 transition cursor-pointer flex flex-col items-center gap-1 bg-slate-50">
+                        <span class="text-xs font-mono font-extrabold text-slate-500">المحطة 3</span>
+                        <span class="font-bold text-slate-700">عوارض التحقيق والتصدي</span>
                     </button>
-                    <div id="compassIncidentOutput" class="hidden p-2.5 rounded-lg text-[11px] leading-relaxed border bg-amber-50/70"></div>
+                    <button type="button" onclick="switchStageStep(4)" id="stageBtn-4" class="stage-step py-2 px-2 rounded-lg border border-slate-200 transition cursor-pointer flex flex-col items-center gap-1 bg-slate-50">
+                        <span class="text-xs font-mono font-extrabold text-slate-500">المحطة 4</span>
+                        <span class="font-bold text-slate-700">التكييف والقيد والوصف</span>
+                    </button>
+                    <button type="button" onclick="switchStageStep(5)" id="stageBtn-5" class="stage-step py-2 px-2 rounded-lg border border-slate-200 transition cursor-pointer flex flex-col items-center gap-1 bg-slate-50">
+                        <span class="text-xs font-mono font-extrabold text-slate-500">المحطة 5</span>
+                        <span class="font-bold text-slate-700">سلطة التصرف والاعتماد</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- القسم الرابع: الموسوعة التفاعلية المشروحة لطبعة 2026 -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border space-y-3">
+            <!-- لوحة المحتوى المشترك للمحطة المحددة (تنقسم إلى: ضوابط إجرائية ملزمة + حاسم فني ومخرجات نسخ) -->
+            <div id="stageContentPanel" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <!-- المحتوى يتغير ديناميكياً بواسطة الدالة renderCurrentStage() -->
+            </div>
+
+            <!-- القسم الثاني: المصنف المشروح للتعليمات ومبادئ الإدارية العليا 2026 -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3">
                 <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-2">
-                    <h3 class="font-bold text-judicial-900 text-xs md:text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-layer-group text-judicial-gold"></i> 4. الموسوعة الإجرائية المشروحة ومبادئ الإدارية العليا (طبعة 2026)
-                    </h3>
+                    <div>
+                        <h3 class="font-bold text-judicial-900 text-xs md:text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-judicial-gold"></i> المصنّف الإجرائي المشروح ومبادئ الإدارية العليا (طبعة 2026)
+                        </h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5">سند المادة القانونية مدعوماً بالكتاب الدوري المعاصر والتطبيق العملي ومبدأ المحكمة العليا.</p>
+                    </div>
                     <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
                         <button type="button" onclick="filterCompassEncyclopedia('الكل')" data-compcat="الكل" class="compass-subtab compass-tab-active px-2.5 py-1 rounded text-xs border cursor-pointer">الكل</button>
-                        <button type="button" onclick="filterCompassEncyclopedia('الاختصاص والطلب')" data-compcat="الاختصاص والطلب" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">الاختصاص والطلب</button>
-                        <button type="button" onclick="filterCompassEncyclopedia('ضوابط التحقيق')" data-compcat="ضوابط التحقيق" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">ضوابط التحقيق واللجان</button>
-                        <button type="button" onclick="filterCompassEncyclopedia('أوجه التصرف')" data-compcat="أوجه التصرف" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">أوجه التصرف والحفظ</button>
-                        <button type="button" onclick="filterCompassEncyclopedia('الكتب والقرارات 2026')" data-compcat="الكتب والقرارات 2026" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">الكتب والقرارات الحديثة</button>
-                        <button type="button" onclick="filterCompassEncyclopedia('مبادئ الإدارية العليا')" data-compcat="مبادئ الإدارية العليا" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">مبادئ الإدارية العليا</button>
+                        <button type="button" onclick="filterCompassEncyclopedia('الاختصاص والطلب')" data-compcat="الاختصاص والطلب" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">1. الاختصاص والطلب</button>
+                        <button type="button" onclick="filterCompassEncyclopedia('ضوابط التحقيق')" data-compcat="ضوابط التحقيق" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">2. التحقيق والإعلان</button>
+                        <button type="button" onclick="filterCompassEncyclopedia('أوجه التصرف')" data-compcat="أوجه التصرف" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">3. عوارض وتصرفات</button>
+                        <button type="button" onclick="filterCompassEncyclopedia('الكتب والقرارات 2026')" data-compcat="الكتب والقرارات 2026" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">4. قرارات ومنشورات 2026</button>
+                        <button type="button" onclick="filterCompassEncyclopedia('مبادئ الإدارية العليا')" data-compcat="مبادئ الإدارية العليا" class="compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer">5. الإدارية العليا</button>
                     </div>
                 </div>
                 <div id="compassEncyclopediaContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[460px] overflow-y-auto custom-scroll"></div>
@@ -347,7 +276,7 @@
             <div id="defensesContainer" class="space-y-3"></div>
         </section>
 
-        <!-- 4. قوائم التحقيق الاسترشادية (شريط القطاعات هنا حصرياً) -->
+        <!-- 4. قوائم التحقيق الاسترشادية -->
         <section id="tab-checklists" class="tab-content hidden space-y-3">
             <div id="checklistsLockedBanner" class="hidden bg-white p-8 rounded-2xl shadow border-2 border-judicial-gold text-center space-y-2">
                 <i class="fa-solid fa-lock text-3xl text-judicial-gold"></i>
@@ -355,7 +284,6 @@
                 <button type="button" onclick="openMemberAuthModal()" class="bg-judicial-900 text-judicial-gold font-bold px-4 py-1.5 rounded-lg text-xs cursor-pointer">تسجيل الدخول</button>
             </div>
             <div id="checklistsUnlockedContent" class="space-y-3">
-                <!-- شريط القطاعات المدمج حصرياً في هذا القسم -->
                 <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
                     <div id="sectorsBar" class="flex items-center gap-1.5 py-0.5"></div>
                     <button type="button" onclick="openSectorManagerModal()" class="admin-action-btn hidden bg-slate-800 text-judicial-gold text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap cursor-pointer">
@@ -405,7 +333,7 @@
             </div>
         </section>
 
-        <!-- 6. المُركِّب الذكي للقيود والأوصاف (نظام المستشار أحمد العدوي + التصنيفات المستقلة) -->
+        <!-- 6. المُركِّب الذكي للقيود والأوصاف -->
         <section id="tab-qayds" class="tab-content hidden space-y-4">
             <div id="qaydsLockedBanner" class="hidden bg-white p-8 rounded-2xl shadow border-2 border-judicial-gold text-center space-y-2">
                 <i class="fa-solid fa-feather text-3xl text-judicial-gold"></i>
@@ -416,7 +344,6 @@
             <div id="qaydsUnlockedContent" class="space-y-4">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
                     
-                    <!-- لوحة التحكم في تركيب القيد (يسار الشاشة) -->
                     <div class="lg:col-span-5 bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3">
                         <div class="flex justify-between items-center border-b pb-2">
                             <h3 class="font-bold text-judicial-900 text-xs flex items-center gap-1.5">
@@ -428,7 +355,6 @@
                             </div>
                         </div>
 
-                        <!-- 1. التصنيف التشريعي المستقل للقيود -->
                         <div>
                             <label class="block text-[11px] font-bold text-slate-700 mb-1">تصنيف القيد والتشريع المنظم:</label>
                             <select id="qayd_legal_category" onchange="handleLegalCategoryChange()" class="w-full bg-slate-50 border rounded-lg p-2 text-xs font-bold text-judicial-900">
@@ -442,7 +368,6 @@
                             </select>
                         </div>
 
-                        <!-- 2. نوع التصرف القضائي -->
                         <div>
                             <label class="block text-[11px] font-bold text-emerald-800 mb-1">نوع التصرف في القضية:</label>
                             <select id="qayd_action_mode" onchange="composeSmartQayd()" class="w-full bg-emerald-50 border border-emerald-500 rounded-lg p-2 text-xs font-extrabold text-emerald-950">
@@ -456,7 +381,6 @@
                             </select>
                         </div>
 
-                        <!-- 3. خيارات الإحالة لمجلس الدولة -->
                         <div id="courtOptionsBox" class="hidden p-2.5 bg-blue-50/70 border border-blue-300 rounded-lg space-y-2 text-[11px]">
                             <strong class="text-blue-900 block font-bold">مواد قانون النيابة الإدارية ومجلس الدولة للإحالة:</strong>
                             <div class="grid grid-cols-2 gap-1.5">
@@ -467,7 +391,6 @@
                             </div>
                         </div>
 
-                        <!-- 4. محددات اللائحة التنفيذية -->
                         <div id="executiveRulesBox" class="p-2.5 bg-slate-50 border rounded-lg space-y-2 max-h-48 overflow-y-auto custom-scroll text-[11px]">
                             <strong class="text-slate-800 block font-bold border-b pb-1">اختر بنود الواجبات والمحظورات المنطبقة (تجميع مرن):</strong>
                             <div class="space-y-1">
@@ -483,10 +406,9 @@
                             </div>
                         </div>
 
-                        <!-- 5. بيانات المتهم والواقعة -->
                         <div class="space-y-2 text-xs">
                             <div><label class="block text-[11px] font-bold mb-0.5">اسم المخالف وصفته ودرجته:</label><input type="text" id="q_name" oninput="composeSmartQayd()" placeholder="فلان الفلاني - بوظيفته وبالدرجة..." class="w-full border rounded p-1.5 text-xs"></div>
-                            <div><label class="block text-[11px] font-bold mb-0.5 text-emerald-800">الرقم القومي (14 رقماً - وجوبي):</label><input type="text" id="q_nid" oninput="composeSmartQayd()" placeholder="2980915..." class="w-full border rounded p-1.5 text-xs font-mono"></div>
+                            <div><label class="block text-[11px] font-bold mb-0.5 text-emerald-800">الرقم القومي (14 رقماً - وجوبي قرار 172/2025):</label><input type="text" id="q_nid" oninput="composeSmartQayd()" placeholder="2980915..." class="w-full border rounded p-1.5 text-xs font-mono"></div>
                             <div class="grid grid-cols-2 gap-1.5">
                                 <div><label class="block text-[11px] font-bold mb-0.5">الفترة الزمنية:</label><input type="text" id="q_date" oninput="composeSmartQayd()" placeholder="خلال عام 2025" class="w-full border rounded p-1.5 text-xs"></div>
                                 <div><label class="block text-[11px] font-bold mb-0.5">جهة ومقر العمل:</label><input type="text" id="q_workplace" oninput="composeSmartQayd()" placeholder="بدائرة..." class="w-full border rounded p-1.5 text-xs"></div>
@@ -495,21 +417,18 @@
                         </div>
                     </div>
 
-                    <!-- لوحة المخرجات المباشرة (يمين الشاشة) -->
                     <div class="lg:col-span-7 bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between space-y-3">
                         <div class="space-y-3">
-                            <!-- المخرج 1: فقرة التكييف في ختام الحيثيات -->
                             <div class="border rounded-xl p-3 bg-amber-50/50 border-judicial-gold/50 space-y-1.5">
                                 <div class="flex justify-between items-center border-b border-judicial-gold/30 pb-1">
                                     <h4 class="font-extrabold text-judicial-900 text-xs flex items-center gap-1.5">
-                                        <i class="fa-solid fa-paragraph text-amber-600"></i> أ) فقرة التكييف القانوني (توضع في ختام الأسباب قبل عبارة "لذلك")
+                                        <i class="fa-solid fa-paragraph text-amber-600"></i> أ) فقرة التكييف القانوني (ختام الأسباب قبل عبارة "لذلك")
                                     </h4>
                                     <button type="button" onclick="copyText('qaydTaakeefBox')" class="text-judicial-900 hover:text-judicial-gold text-xs font-bold cursor-pointer">نسخ التكييف</button>
                                 </div>
                                 <div id="qaydTaakeefBox" contenteditable="true" class="text-slate-800 font-serif text-base leading-relaxed whitespace-pre-line focus:outline-none"></div>
                             </div>
 
-                            <!-- المخرج 2: نموذج القيد والوصف الكامل -->
                             <div class="border rounded-xl p-3 bg-slate-50 border-slate-300 space-y-1.5">
                                 <div class="flex justify-between items-center border-b pb-1">
                                     <h4 class="font-extrabold text-judicial-900 text-xs flex items-center gap-1.5">
@@ -524,7 +443,6 @@
                             </div>
                         </div>
 
-                        <!-- أزرار الإجراءات والمسودة -->
                         <div class="flex flex-wrap gap-2 justify-end border-t pt-2.5">
                             <button type="button" onclick="copyCombinedQayd()" class="bg-judicial-900 hover:bg-judicial-800 text-judicial-gold px-4 py-1.5 rounded-lg text-xs font-bold cursor-pointer shadow">نسخ التكييف والقيد معاً</button>
                             <button type="button" onclick="exportElementToWord('qaydFullOutputBox', 'القيد_والوصف')" class="bg-blue-800 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold cursor-pointer shadow"><i class="fa-solid fa-file-word ml-1"></i> تصدير Word</button>
@@ -552,7 +470,7 @@
         </div>
     </div>
 
-    <!-- نافذة دخول وتسجيل الأعضاء مع الدرجات القضائية العشر -->
+    <!-- نافذة دخول وتسجيل الأعضاء -->
     <div id="memberAuthModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border-2 border-judicial-gold my-8">
             <div class="bg-judicial-900 text-white p-3.5 flex justify-between items-center">
@@ -600,7 +518,7 @@
         </div>
     </div>
 
-    <!-- نافذة كلمة الوفاء والتقدير القابلة للتعديل سحابياً -->
+    <!-- نافذة كلمة الوفاء والتقدير -->
     <div id="aboutModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl border-2 border-judicial-gold space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
@@ -724,7 +642,7 @@
                             </label>
                         </div>
                     </div>
-                    <table class="w-full text-right text-[11px] border font-mono mt-3"><thead class="bg-slate-800 text-white"><tr><th class="p-2">التاريخ</th><th class="p-2">المسؤول</th><th class="p-2">الإجراء</th><th class="p-2">القسم</th><th class="p-2">التفاصيل</th></tr></thead><tbody id="auditLogsTableBody" class="divide-y"></tbody></table>
+                    <table class="w-full text-right text-[11px] border font-mono mt-3"><thead class="bg-slate-800 text-white"><tr><th class="p-2">التاريخ</th><th class="p-2.5">المسؤول</th><th class="p-2">الإجراء</th><th class="p-2">القسم</th><th class="p-2">التفاصيل</th></tr></thead><tbody id="auditLogsTableBody" class="divide-y"></tbody></table>
                 </div>
                 <div id="adm-bulk" class="adm-view hidden space-y-3 text-xs">
                     <p class="bg-amber-50 border border-judicial-gold/40 rounded-xl p-3 text-[11px] leading-relaxed">رفع مجمع للبيانات من قوالب النصوص المجهزة مسبقاً.</p>
@@ -806,7 +724,7 @@
         </div>
     </div>
 
-    <!-- الفوتر الثابت القابل للتعديل سحابياً بالكامل -->
+    <!-- الفوتر الثابت -->
     <footer class="fixed bottom-0 left-0 right-0 bg-judicial-900 text-white py-1.5 px-4 border-t border-judicial-gold z-30 shadow-lg">
         <div class="max-w-7xl mx-auto flex justify-between items-center text-[11px]">
             <div class="flex items-center gap-2">
@@ -879,18 +797,18 @@
 
         const DEFAULT_MALLAWI_WORD = `«كلمة وفاء وتقدير»\n\nانبثقت فكرة منصة «المُـعَـاوِن» من واقع العمل اليومي والحرص على جمع الشتات الإجرائي واختصار الوقت بما يكفل تحقيق العدالة الناجزة وسلامة التصرف القضائي.\n\nويطيب لي أن أُسجل كلمة تقدير وعرفان لأساتذتي وزملائي الأفاضل بـ نيابة ملوي، الذين كانت لحواراتهم المهنية البنّاءة، وحرصهم الدائم على سلامة الإجراء والسبك القانوني الرصين، أكبر الأثر في إنضاج هذا العمل وإخراجه ليكون عوناً لكل زميل في محراب العدالة، راجياً أن يكون جهداً خالصاً يخدم رسالة هيئتنا القضائية العريقة.`;
 
+        // بيانات المصنف المشروح لطبعة أكتوبر 2026 (نظيفة وخالية من الشوائب ومقسمة)
         const OCT_2026_ENCYCLOPEDIA = [
-            { id: "enc_1", category: "أوجه التصرف", title: "وجوب إدراج الرقم القومي في القيد والوصف (قرار 172 لسنة 2025)", content: "يلتزم عضو النيابة بإدراج الرقم القومي للمتهمين وجوباً في القيد والوصف بمذكرة التصرف في حالات: (المجازاة التأديبية، أو الحفظ القطعي لعدم الأهمية، أو الإحالة للمحكمة التأديبية)، وتدرجه لجان التأديب بمشروع الجزاء أو القرار التأديبي (المادة 212 من التعليمات المعدلة).", ref: "قرار رئيس الهيئة رقم 172 لسنة 2025 الصادر في 17/5/2025 والمادة 212" },
-            { id: "enc_2", category: "الكتب والقرارات 2026", title: "إثبات رقم الواتساب وحجية الإعلان بالمحاضر (منشور 6 لسنة 2026)", content: "عند إثبات بيانات الشاهد أو المتهم بمحضر التحقيق يُدون رقم هاتفه المُفعل عليه تطبيق 'واتس آب' مع إثبات إقراره بأن إخطاره أو إعلانه بواسطته يعد منتجاً لأثره القانوني والتزامه بإخطار النيابة رسمياً بأي تغيير يطرأ عليه.", ref: "منشور رئيس الهيئة رقم 6 لسنة 2026 الصادر في 23/8/2026 تفعيلاً للمادة 74" },
-            { id: "enc_3", category: "الاختصاص والطلب", title: "اختصاص تحقيقات أعمال الامتحانات والكنترول (منشور 4 لسنة 2025)", content: "تختص بمخالفات المعلمين والإداريين بقطاع التعليم أثناء ندبهم لأعمال الامتحانات النيابة التي يخضع لها العاملون بقطاع التعليم الذي يوجد به مقر لجنة الإدارة أو لجنة النظام والمراقبة أو لجنة التصحيح (الكنترول) بحسب الأحوال، أياً كانت جهة عملهم الأصلية.", ref: "منشور رئيس الهيئة رقم 4 لسنة 2025 الصادر في 28/1/2025 مفسراً للمادة 48" },
-            { id: "enc_4", category: "أوجه التصرف", title: "مهلة إخطار الشاكي وأثرها في طلب إعادة النظر (م 58 وكتاب 4/2026)", content: "إذا تعلقت الشكوى بمصلحة شخصية للشاكي وحفظت لعدم الصحة أو عدم المخالفة، وجب إخطاره بالنتيجة خلال 15 يوماً من صيرورة التصرف نهائياً وإثباته بالملف الفرعي، وميعاد الـ 60 يوماً لطلب إعادة النظر لا يعمل في حقه إلا من تاريخ إخطاره الرسمي.", ref: "المادة 58 معدلة بالقرار 461/2025 والكتاب الدوري رقم 4 لسنة 2026" },
-            { id: "enc_5", category: "ضوابط التحقيق", title: "الوقوف بالإجراءات لسابقة التصدي (كتاب دوري 14 لسنة 2024)", content: "يجوز الوقوف بالإجراءات إذا كانت الواقعة محلاً للتحقيق في قضية أخرى، ويطلع العضو على ملف القضية أو مذكرتها بالملف الفرعي ويعرض على مدير النيابة للتأشير بالضم أو الوقوف في الشق السابق تحقيقه.", ref: "الكتاب الدوري رقم 14 لسنة 2024 والمادة 209" },
-            { id: "enc_6", category: "أوجه التصرف", title: "الإحالة الوجوبية للمحكمة التأديبية - 12 حالة (مادة 210 المعدلة)", content: "أصبحت حالات الإحالة الوجوبية للمحكمة التأديبية 12 حالة بعد إضافة البنود (9 إلى 12) بالقرار 461 لسنة 2025 وتشمل: نشر شائعات كاذبة بسوء قصد لتكدير السلم العام، جرائم هتك العرض، الاعتداء على أطفال ذوي إعاقة أو استغلالهم، والإخلال العمدي بنظام توزيع السلع التموينية.", ref: "المادة 210 معدلة بالقرار 461 لسنة 2025 والكتاب الدوري 10 لسنة 2024" },
-            { id: "enc_7", category: "مبادئ الإدارية العليا", title: "حجية الحكم الجنائي بالبراءة أمام التأديب (الطعن 3845 لسنة 40 ق.ع)", content: "حجية الحكم الجنائي مقصورة على ما فصل فيه فصلاً لازماً في وقوع الفعل ونسبته إلى فاعله، وتثبت للمنطوق وللأسباب المرتبطة به وثيقاً، والبراءة لعدم كفاية الأدلة أو للشك لا تحول دون المساءلة التأديبية متى كان الفعل يشكل ذنباً إدارياً.", ref: "المحكمة الإدارية العليا - الطعن رقم 3845 لسنة 40 ق.ع جلسة 1/2/1997" },
-            { id: "enc_8", category: "مبادئ الإدارية العليا", title: "مسؤولية الرئيس الإشرافية لا تقوم إلا بخطأ شخصي (الطعن 235 لسنة 40 ق.ع)", content: "مسؤولية الرئيس الإشرافية لا تقوم إلا حيث يثبت خطأ شخصي في جانبه في الإشراف على مرؤوسيه، ولا يسأل الرئيس عن كل خطأ يقع من مرؤوسيه في أداء أعمالهم إذ إن ذلك يقتضي قيامه بأعمالهم جميعاً وهو ما يتعارض مع مبدأ توزيع الاختصاصات.", ref: "المحكمة الإدارية العليا - الطعن رقم 235 لسنة 40 ق.ع جلسة 18/1/1997" }
+            { id: "enc_1", category: "أوجه التصرف", title: "وجوب إدراج الرقم القومي في القيد والوصف (قرار 172 لسنة 2025)", content: "يلتزم عضو النيابة بإدراج الرقم القومي للمتهمين وجوباً في القيد والوصف بمذكرة التصرف في حالات: (المجازاة التأديبية، أو الحفظ القطعي لعدم الأهمية، أو الإحالة للمحكمة التأديبية)، وتدرجه لجان التأديب بمشروع الجزاء أو القرار التأديبي إعمالاً لأحكام المادة 212 من التعليمات القضائية.", ref: "قرار رئيس الهيئة رقم 172 لسنة 2025 الصادر في 17/5/2025 والمادة 212" },
+            { id: "enc_2", category: "الكتب والقرارات 2026", title: "إثبات رقم الواتساب وحجية الإعلان بالمحاضر (منشور 6 لسنة 2026)", content: "عند إثبات بيانات الشاهد أو المتهم بمحضر التحقيق يُدون رقم هاتفه المُفعل عليه تطبيق 'واتس آب' مع إثبات إقراره بأن إخطاره أو إعلانه بواسطته يعد منتجاً لأثره القانوني والتزامه بإخطار النيابة رسمياً بأي تغيير يطرأ عليه.", ref: "منشور رئيس الهيئة رقم 6 لسنة 2026 تفعيلاً للمادة 74" },
+            { id: "enc_3", category: "الاختصاص والطلب", title: "اختصاص تحقيقات أعمال الامتحانات والكنترول (منشور 4 لسنة 2025)", content: "تختص بمخالفات المعلمين والإداريين بقطاع التعليم أثناء ندبهم لأعمال الامتحانات النيابة التي يخضع لها العاملون بقطاع التعليم الذي يوجد به مقر لجنة الإدارة أو لجنة النظام والمراقبة أو لجنة التصحيح (الكنترول) بحسب الأحوال، أياً كانت جهة عملهم الأصلية.", ref: "منشور رئيس الهيئة رقم 4 لسنة 2025 والمادة 48" },
+            { id: "enc_4", category: "أوجه التصرف", title: "مهلة إخطار الشاكي وأثرها في طلب إعادة النظر (م 58 وكتاب 4/2026)", content: "إذا تعلقت الشكوى بمصلحة شخصية للشاكي وحفظت لعدم الصحة أو عدم المخالفة، وجب إخطاره بالنتيجة خلال 15 يوماً من صيرورة التصرف نهائياً وإثباته بالملف الفرعي، وميعاد الـ 60 يوماً لطلب إعادة النظر لا يعمل في حقه إلا من تاريخ إخطاره الرسمي.", ref: "المادة 58 معدلة بالقرار 461 لسنة 2025 والكتاب الدوري رقم 4 لسنة 2026" },
+            { id: "enc_5", category: "ضوابط التحقيق", title: "الوقوف بالإجراءات لسابقة التصدي (كتاب دوري 14 لسنة 2024)", content: "يجوز الوقوف بالإجراءات لسابقة التصدي إذا كشف التحقيق أن واقعة أو أكثر كانت محلاً للتحقيق أو التصرف في قضية أخرى، ويطلع العضو على ملف القضية أو مذكرتها بالملف الفرعي ويعرض على مدير النيابة للتأشير بالضم أو الوقوف في الشق السابق تحقيقه.", ref: "الكتاب الدوري رقم 14 لسنة 2024 والمادة 209" },
+            { id: "enc_6", category: "أوجه التصرف", title: "الإحالة الوجوبية للمحكمة التأديبية - 12 حالة (مادة 210 المعدلة)", content: "أصبحت حالات الإحالة الوجوبية للمحكمة التأديبية 12 حالة بعد إضافة البنود (9 إلى 12) بالقرار 461 لسنة 2025 وتشمل: نشر شائعات كاذبة بسوء قصد لتكدير السلم العام، جرائم هتك العرض، الاعتداء على أطفال ذوي إعاقة أو استغلالهم، والإخلال العمدي بنظام توزيع السلع التموينية.", ref: "المادة 210 معدلة بالقرار 461 لسنة 2025" },
+            { id: "enc_7", category: "مبادئ الإدارية العليا", title: "حجية الحكم الجنائي بالبراءة أمام التأديب (الطعن 3845 لسنة 40 ق.ع)", content: "حجية الحكم الجنائي مقصورة على ما فصل فيه فصلاً لازماً في وقوع الفعل ونسبته إلى فاعله، وتثبت للمنطوق وللأسباب المرتبطة به وثيقاً، والبراءة لعدم كفاية الأدلة أو للشك لا تحول دون المساءلة التأديبية متى كان الفعل يشكل ذنباً إدارياً.", ref: "المحكمة الإدارية العليا - الطعن رقم 3845 لسنة 40 ق.ع" },
+            { id: "enc_8", category: "مبادئ الإدارية العليا", title: "مسؤولية الرئيس الإشرافية لا تقوم إلا بخطأ شخصي (الطعن 235 لسنة 40 ق.ع)", content: "مسؤولية الرئيس الإشرافية لا تقوم إلا حيث يثبت خطأ شخصي في جانبه في الإشراف على مرؤوسيه، ولا يسأل الرئيس عن كل خطأ يقع من مرؤوسيه في أداء أعمالهم إذ إن ذلك يقتضي قيامه بأعمالهم جميعاً وهو ما يتعارض مع مبدأ توزيع الاختصاصات.", ref: "المحكمة الإدارية العليا - الطعن رقم 235 لسنة 40 ق.ع" }
         ];
 
-        // مصفوفة الحالة الابتدائية متطابقة 100% مع السحابة لضمان ثبات الواجهة
         const initialPlatformState = {
             branding: {
                 brandTitle: "المُـعَـاوِن",
@@ -925,6 +843,172 @@
 
         let db = JSON.parse(JSON.stringify(initialPlatformState));
         let currentUser = null, currentSector = "الكل", currentDefCategory = "الكل", currentCompassCat = "الكل", currentEditorContext = null, basket = [];
+        let currentWorkflowStage = 1;
+
+        // خريطة المحطات الإجرائية الخمس المتكاملة
+        const WORKFLOW_STAGES = {
+            1: {
+                title: "المحطة الأولى: الورود وفحص الاختصاص والطلب (قبل فتح المحضر)",
+                goldenRules: [
+                    "التأكد من قيد الأوراق رسمياً بدفتر حصر تحقيقات النيابة وإثبات تاريخ وساعة الورود ورقم القضية.",
+                    "فحص الاختصاص المكاني بحسب دائرة وقوع المخالفة أو مقر عمل الموظف وقت ارتكابها.",
+                    "التحقق من صفة الشاكي وما إذا كانت الشكوى مجهولة أو كيدية تستوجب الاستيفاء المبدئي (م 44)."
+                ],
+                toolTitle: "فاحص الفئات الخاصة والطلب والإذن (حماية التحقيق من البطلان):",
+                toolOptions: [
+                    { id: "azhar", label: "أعضاء هيئة التدريس بجامعة الأزهر (م 62/1)", desc: "لا يجوز بدء التحقيق إلا بطلب كتابي صريح من رئيس الجامعة (م 67 ق 103/1961)." },
+                    { id: "universities", label: "العاملون بالجامعات من غير هيئة التدريس (م 62/2)", desc: "يلزم طلب كتابي من رئيس الجامعة أو وزير التعليم العالي قبل البدء في التحقيق." },
+                    { id: "holding", label: "شركات قطاع الأعمال العام القابضة والتابعة (م 62/5)", desc: "يلزم طلب من الوزير المختص أو رئيس مجلس الإدارة، ولا ترسل الأوراق لإدارات قانونية مستقلة (منشور 3/2025)." },
+                    { id: "taxes", label: "مأمورو الضرائب ذوو الضبطية القضائية ولجان الطعن (م 57)", desc: "وجوب إرسال صورة الشكوى لوزارة المالية أو مصلحة الضرائب لورود تقرير فني يُعتد به عند التصرف." },
+                    { id: "exams", label: "أعمال الامتحانات والكنترول (منشور 4 لسنة 2025)", desc: "ينعقد الاختصاص حصرياً للنيابة التي يقع بدائرتها مقر لجنة الإدارة أو التصحيح أياً كانت جهة عمل المعلم الأصلية." }
+                ],
+                copySnippetTitle: "صيغة طلب التحقيق / إحالة الأوراق للسلطة المختصة",
+                copySnippet: "السيد الأستاذ الدكتور / رئيس جامعة (...)\nتحية طيبة وبعد،،،\nإيماءً إلى الأوراق الواردة للنيابة الإدارية برقم (...) لسنة (...)؛ وحيث كشفت الفحوص عن خضوع المشكو في حقه لأحكام المادة (62) من التعليمات القضائية؛ يرجى التفضل بالنظر نحو الموافاة بطلب التحقيق الرسمي للمضي قدماً في الإجراءات."
+            },
+            2: {
+                title: "المحطة الثانية: إدارة التحقيق وسؤال الأطراف (داخل غرفة التحقيق)",
+                goldenRules: [
+                    "إثبات ديباجة فتح المحضر تفصيلاً: (اليوم، التاريخ، الساعة، المقر، واسم كاتب التحقيق).",
+                    "تحليف الشهود اليمين القانونية والتنبيه عليهم بصدق الشهادة وسؤالهم فرادى دون حضور المتهم (م 76).",
+                    "فض الأحراز ومناظرتها وإثبات أوصافها وسلامة أختامها بالمحضر قبل فحصها."
+                ],
+                toolTitle: "تطبيق المنشور رقم 6 لسنة 2026 (إثبات الواتساب وحجية الإعلان):",
+                toolOptions: [
+                    { id: "whatsapp_rule", label: "ضابط إثبات تطبيق واتساب", desc: "يلتزم المحقق بتدوين رقم الهاتف المُفعل عليه تطبيق WhatsApp للشاهد والمتهم، وتثبيت إقراره الصريح بأن إعلانه عليه يعد منتجاً لآثاره القانونية الرسمية مع التزامه بإخطار النيابة بأي تغيير." }
+                ],
+                copySnippetTitle: "صيغة إثبات وسيلة الإعلان الإلكتروني (منشور 6 لسنة 2026)",
+                copySnippet: "وبسؤال الشاهد/المتهم عن وسيلة إعلانه الرسمية وتواصله بالتحقيقات، قرر أن رقم هاتفه المحمول هو (................) والمُفعل عليه تطبيق 'واتس آب'، وأقر صراحة بأن إخطاره أو إعلانه بأي مكاتبة أو طلب حضور عبر هذا التطبيق يعد إعلاناً قانونياً صحيحاً منتجاً لكافة آثاره، وتعهد بإخطار النيابة فوراً بأي تعديل يطرأ عليه."
+            },
+            3: {
+                title: "المحطة الثالثة: عوارض التحقيق والتصدي (أثناء السير في الدعوى)",
+                goldenRules: [
+                    "ضم الملف الفرعي للقضية وإرفاق صور المكاتبات والمستندات بانتظام وفق ورودها.",
+                    "طلب بيان حالة وظيفية رسمي ومعتمد من واقع ملف خدمة المتهم موضحاً به التدرج والجزاءات.",
+                    "متابعة ميعاد ورود تقارير اللجان الفنية المندوبة والتنبيه بسرعة إيداعها (م 142)."
+                ],
+                toolTitle: "حاسم سابقة التصدي وعوارض الدعوى:",
+                toolOptions: [
+                    { id: "tasadi", label: "الوقوف بالإجراءات لسابقة التصدي (كتاب دوري 14 لسنة 2024)", desc: "إذا كشف التحقيق أن الواقعة أو جزءاً منها سبق التحقيق فيه أو التصرف فيه في قضية أخرى، يثبت المحقق اطلاعه على القضية الأخرى بالملف الفرعي ويُعرض على مدير النيابة للتأشير بالضم أو الوقوف." },
+                    { id: "ergaa", label: "إرجاء البت تأديبياً (المادة 186)", desc: "يجوز إرجاء البت في المسئولية التأديبية إذا كانت الواقعة محل تحقيق جنائي يرتبط مصيرها به، لحين الفصل الجنائي دون إخلال بقطع التقادم." }
+                ],
+                copySnippetTitle: "صيغة محضر الاطلاع والوقوف لسابقة التصدي (كتاب 14/2024)",
+                copySnippet: "وحيث إنه باطلاعنا على أوراق القضية رقم (...) لسنة (...) نيابة (...)، وما انتهت إليه من تصرف معتمد؛ ولما كانت الوقائع محل التحقيق الماثل هي بذاتها ما تم استجلاؤه وفحصه بالقضية سالفة البيان دون وقائع جديدة؛ لذلك تعين الوقوف بالإجراءات في هذا الشق لسابقة التصدي له، مع إفراد ملف فرعي بصورة المذكرة والتصرف السابق."
+            },
+            4: {
+                title: "المحطة الرابعة: التكييف القانوني ومُركّب القيد والوصف",
+                goldenRules: [
+                    "إلزام الرقم القومي (قرار 172/2025 وم 212): تدوين الرقم القومي (14 رقماً) وجوبياً لكافة المتهمين في القيد والوصف بمذكرات التصرف في حالات: الجزاء، أو الحفظ لعدم الأهمية، أو الإحالة للمحكمة التأديبية.",
+                    "مواجهة المتهم تفصيلياً بكافة الأدلة المادية وتقارير الفحص وإتاحة حق الدفاع كاملاً قبل قفل المحضر.",
+                    "استقلال مواد الإسناد اللائحية بحسب القانون الحاكم للمتهم (خدمة مدنية 81، قطاع عام 48، أو لوائح خاصة)."
+                ],
+                toolTitle: "المُركِّب الذكي للقيود والأوصاف (نظام المستشار أحمد العدوي):",
+                toolOptions: [
+                    { id: "goto_qayds", label: "الانتقال التلقائي لمُركِّب القيود (التبويب السادس)", desc: "يتيح لك اختيار بنود المادتين 149 و150 مع تحديد نوع التصرف لإخراج فقرة التكييف في ختام الأسباب + منطوق القيد والوصف الكامل." }
+                ],
+                copySnippetTitle: "ديباجة القيد والوصف المعتمدة بالرقم القومي (قرار 172 لسنة 2025)",
+                copySnippet: "لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة مالية وإدارية بالمواد 57/1 و58/1 و60 من قانون الخدمة المدنية رقم 81 لسنة 2016 والمادتين 149/1 و150/15 من لائحته التنفيذية، ضــــد:\n- [اسم المخالف ووظيفته ودرجته] — (الرقم القومي: ............................)\nلأنه في غضون عام (...) وبمقر عمله بدائرة (...): خرج على مقتضى الواجب الوظيفي وقصر في أداء واجبه بأن: (...).\nثانياً: مجازاة المخالف المذكور تأديبياً."
+            },
+            5: {
+                title: "المحطة الخامسة: صياغة المذكرة وسلطة التصرف والاعتماد",
+                goldenRules: [
+                    "ترقيم أوراق القضية ترقيماً دقيقاً وإعداد فهرس رسمي مثبت به كل مستند ومحضر.",
+                    "وجوب إخطار الشاكي ذي المصلحة الشخصية بنتيجة الحفظ لعدم الصحة أو عدم المخالفة خلال 15 يوماً من صيرورة التصرف نهائياً مع إثباته بالملف الفرعي، ولا يسري ميعاد الـ 60 يوماً للتظلم إلا من تاريخ الإخطار (م 58 معدلة وكتاب 4/2026).",
+                    "إدراج قضايا الحفظ في كشف الحفظ الشهري المرسل للمكتب الفني للتفتيش والمتابعة (م 228)."
+                ],
+                toolTitle: "حاسم سلطة التصرف ومصفوفة الإحالة الوجوبية للمحكمة التأديبية:",
+                toolOptions: [
+                    { id: "director", label: "مدير النيابة المختص (المادة 227)", desc: "يختص بالتصرف النهائي وتوقيع الجزاء أو الحفظ لشاغلي الدرجات ما دون مدير عام الخاضعين للخدمة المدنية." },
+                    { id: "technical_office", label: "المكتب الفني المختص (المادة 229)", desc: "يختص بالتصرف لشاغلي درجة مدير عام من غير الخاضعين للخدمة المدنية كشركات قطاع الأعمال أو لتجاوز النصاب." },
+                    { id: "president_office", label: "مكتب فني رئيس الهيئة للفحوص (م 231 و243)", desc: "العرض بمذكرة على معالي رئيس الهيئة لشاغلي الوظائف القيادية أو العليا (العالية والممتازة)." },
+                    { id: "mandatory_ihala", label: "الإحالة الوجوبية للمحكمة التأديبية (12 حالة م 210 المعدلة)", desc: "يحظر توقيع جزاء إداري أو الحفظ لعدم الأهمية في: الرشوة، الاختلاس، التزوير، البناء م 99، هتك العرض، تكدير السلم والشائعات، والإخلال بالسلع التموينية، وتُرسل فوراً لفرع الدعوى التأديبية." }
+                ],
+                copySnippetTitle: "صيغة إخطار الشاكي بنتيجة الحفظ (المادة 58 معدلة بالقرار 461/2025)",
+                copySnippet: "السيد / ......................................... (الشاكي بالقضية رقم ... لسنة ...)\nتحية طيبة وبعد،،،\nنحيط سيادتكم علماً بأنه قد تقرر بجلسة تصرف النيابة حفظ الأوراق إدارياً (قطعياً لعدم الصحة / لعدم المخالفة). ونفيدكم بأن لكم الحق في التظلم وطلب إعادة النظر أمام إدارة التفتيش القضائي خلال ستين يوماً تبدأ من تاريخ استلامكم هذا الإخطار الرسمي عملاً بأحكام المادة (58) من التعليمات القضائية والكتاب الدوري رقم 4 لسنة 2026."
+            }
+        };
+
+        window.switchStageStep = function(stepNum) {
+            currentWorkflowStage = stepNum;
+            document.querySelectorAll('.stage-step').forEach(b => {
+                b.className = "stage-step py-2 px-2 rounded-lg border border-slate-200 transition cursor-pointer flex flex-col items-center gap-1 bg-slate-50";
+                b.querySelector('span:first-child').className = "text-xs font-mono font-extrabold text-slate-500";
+                b.querySelector('span:last-child').className = "font-bold text-slate-700";
+            });
+            const activeBtn = document.getElementById('stageBtn-' + stepNum);
+            if (activeBtn) {
+                activeBtn.className = "stage-step stage-step-active py-2 px-2 rounded-lg border border-slate-200 transition cursor-pointer flex flex-col items-center gap-1";
+                activeBtn.querySelector('span:first-child').className = "text-xs font-mono font-extrabold text-judicial-gold";
+                activeBtn.querySelector('span:last-child').className = "font-bold text-slate-100";
+            }
+            renderCurrentStage();
+        };
+
+        function renderCurrentStage() {
+            const panel = document.getElementById('stageContentPanel');
+            if (!panel) return;
+            const s = WORKFLOW_STAGES[currentWorkflowStage];
+
+            panel.innerHTML = `
+                <div class="space-y-4">
+                    <div class="border-b pb-2 flex flex-wrap justify-between items-center gap-2">
+                        <h3 class="font-bold text-judicial-900 text-sm flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-judicial-900 text-judicial-gold flex items-center justify-center text-xs font-bold">${currentWorkflowStage}</span>
+                            ${s.title}
+                        </h3>
+                        <span class="text-[11px] text-slate-400 font-bold">تعليمات 2026 الرسمية</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+                        <!-- الجانب الأيمن: الضوابط والواجبات الإلزامية البديهية -->
+                        <div class="lg:col-span-5 bg-amber-50/60 border border-judicial-gold/40 rounded-xl p-3.5 space-y-2.5">
+                            <h4 class="font-bold text-judicial-900 text-xs flex items-center gap-1.5 border-b border-judicial-gold/30 pb-1">
+                                <i class="fa-solid fa-scale-balanced text-amber-700"></i> الضوابط والواجبات الإلزامية للمحقق:
+                            </h4>
+                            <div class="space-y-2 text-xs leading-relaxed text-slate-800">
+                                ${s.goldenRules.map(r => `
+                                    <div class="flex items-start gap-2 bg-white/80 p-2 rounded-lg border border-slate-200">
+                                        <i class="fa-solid fa-circle-check text-emerald-600 text-xs mt-0.5"></i>
+                                        <span>${r}</span>
+                                    </div>`).join('')}
+                            </div>
+                        </div>
+
+                        <!-- الجانب الأيسر: الحاسم الفني ومخرجات النسخ السريع -->
+                        <div class="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-xl p-3.5 flex flex-col justify-between space-y-3">
+                            <div class="space-y-2">
+                                <h4 class="font-bold text-judicial-900 text-xs flex items-center gap-1.5 border-b pb-1">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-blue-700"></i> ${s.toolTitle}
+                                </h4>
+                                <div class="space-y-1.5">
+                                    ${s.toolOptions.map(opt => `
+                                        <div class="p-2.5 bg-white rounded-lg border text-xs">
+                                            <strong class="text-judicial-900 block mb-0.5">${opt.label}</strong>
+                                            <p class="text-slate-600 text-[11px] leading-relaxed">${opt.desc}</p>
+                                        </div>`).join('')}
+                                </div>
+                            </div>
+
+                            <!-- صندوق صيغة الإجراء الجاهزة للنسخ -->
+                            <div class="bg-judicial-900 text-white p-3 rounded-xl border border-judicial-gold/60 space-y-1.5">
+                                <div class="flex justify-between items-center border-b border-slate-700 pb-1">
+                                    <span class="text-[11px] font-bold text-judicial-gold flex items-center gap-1">
+                                        <i class="fa-solid fa-feather"></i> ${s.copySnippetTitle}
+                                    </span>
+                                    <button type="button" onclick="copySnippetText('snip-${currentWorkflowStage}')" class="bg-judicial-gold hover:bg-yellow-500 text-judicial-950 font-extrabold px-2.5 py-0.5 rounded text-[10px] cursor-pointer shadow">
+                                        نسخ الصيغة
+                                    </button>
+                                </div>
+                                <p id="snip-${currentWorkflowStage}" class="font-serif text-xs leading-relaxed text-slate-200 whitespace-pre-line">${s.copySnippet}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        window.copySnippetText = function(id) {
+            const t = document.getElementById(id)?.innerText || "";
+            if (t) { navigator.clipboard.writeText(t); alert("تم نسخ الصيغة الرسمية إلى الحافظة بنجاح!"); }
+        };
 
         window.selectHubSection = function(tabId) {
             document.querySelectorAll('.hub-card').forEach(el => el.classList.remove('hub-card-active'));
@@ -1045,7 +1129,6 @@
             if (f) currentUser = f;
         }
 
-        // ======================== محرك البحث الشامل المشروط بالضغط ========================
         window.executeGlobalSearch = function() {
             const q = document.getElementById('globalSearch').value.trim().toLowerCase();
             const sec = document.getElementById('globalSearchResultsSection');
@@ -1082,82 +1165,13 @@
                         <button type="button" onclick="copyText('srch-${i}')" class="bg-judicial-900 text-white px-2.5 py-1 rounded text-[10px] font-bold cursor-pointer">نسخ</button>
                         <button type="button" onclick="addToBasket('${m.t}', document.getElementById('srch-${i}').innerText)" class="bg-judicial-gold text-judicial-950 px-2.5 py-1 rounded text-[10px] font-extrabold cursor-pointer">+ للمسودة</button>
                     </div>
-                </div>`).join('') : `<div class="col-span-2 text-center py-6 text-xs text-slate-400">لا توجد نتائج مطابقة لما كتبته في البحث.</div>`;
+                </div>`).join('') : `<div class="col-span-2 text-center py-6 text-xs text-slate-400">لا توجد نتائج مطابقة لبحثك.</div>`;
         };
 
         window.clearGlobalSearch = function() {
             document.getElementById('globalSearch').value = "";
             document.getElementById('clearSearchBtn').classList.add('hidden');
             document.getElementById('globalSearchResultsSection').classList.add('hidden');
-        };
-
-        // ======================== 2. أدوات البوصلة الإجرائية ========================
-        window.runCompassRouter = function() {
-            const rank = document.getElementById('compass_emp_rank').value;
-            const action = document.getElementById('compass_action_type').value;
-            const out = document.getElementById('compassRouterOutput');
-            out.classList.remove('hidden');
-
-            let authority = "مدير النيابة المختص (المادة 227 من التعليمات القضائية طبعة 2026)[cite: 74].";
-            let procedure = "• يتم التصرف في حدود النصاب المقرر قانوناً مع إرسال كشوف الحفظ شهرياً للمكتب الفني (م 228)[cite: 74].";
-
-            if (rank === 'normal_non_civil') {
-                authority = "مدير النيابة للتصرف، وتُرسل القضية لجهة العمل لإصدار قرارها التنفيذي مع التتبع (المادة 232)[cite: 76, 77].";
-            } else if (rank === 'dg_non_civil') {
-                authority = "مدير المكتب الفني المختص (المادة 229 بند 1 من التعليمات القضائية)[cite: 75].";
-            } else if (rank === 'higher') {
-                authority = "رئيس هيئة النيابة الإدارية عن طريق العرض بمذكرة على مكتب فني رئيس الهيئة للفحوص (المادتان 231 و243)[cite: 76, 81].";
-            } else if (rank === 'retired') {
-                authority = "المحكمة التأديبية المختصة إذا بدأ التحقيق قبل انتهاء الخدمة، أو خلال 5 سنوات للحقوق المالية الضائعة نهائياً (المادة 202)[cite: 63].";
-            }
-
-            if (action === 'majaza' || action === 'hifz_ahamia') {
-                procedure += "<br><span class='text-red-700 font-bold'>⚠️ وجوب إجرائي (قرار 172 لسنة 2025 وم 212):</span> يلزم إدراج الرقم القومي للمتهمين وجوباً في القيد والوصف بمذكرة التصرف[cite: 70].";
-            } else if (action === 'hifz_adary') {
-                procedure += "<br><span class='text-amber-800 font-bold'>📌 ميعاد إجرائي (م 58 معدلة 461/2025):</span> وجوب إخطار الشاكي ذي المصلحة الشخصية بنتيجة الحفظ خلال 15 يوماً من صيرورة التصرف نهائياً وإثباته بالملف الفرعي (كتاب 4/2026)[cite: 25].";
-            } else if (action === 'ihala_court') {
-                procedure += "<br><span class='text-blue-800 font-bold'>⚖️ مسار الإحالة:</span> ترسل القضية مباشرة لفرع الدعوى التأديبية المختص مع إرفاق صحف الأحوال وصور بطاقات الرقم القومي (م 264 و268)[cite: 89, 92].";
-            }
-
-            out.innerHTML = `<strong>📌 سلطة التصرف:</strong> ${authority}<div class="mt-1.5 border-t pt-1"><strong>📋 الإجراء الملزم:</strong> ${procedure}</div>`;
-        };
-
-        window.runSpecialEntityCheck = function() {
-            const ent = document.getElementById('compass_special_entity').value;
-            const out = document.getElementById('compassEntityOutput');
-            out.classList.remove('hidden');
-
-            const data = {
-                azhar: { t: "أعضاء هيئة التدريس بجامعة الأزهر", rule: "لا يجوز التحقيق معهم إلا بناءً على طلب من رئيس الجامعة (المادة 62 بند 1 من التعليمات والمادة 67 من القانون 103 لسنة 1961)[cite: 26]." },
-                universities: { t: "العاملون بالجامعات من غير هيئة التدريس", rule: "لا يجوز التحقيق معهم إلا بناءً على طلب من رئيس الجامعة أو وزير التعليم العالي بحسب الأحوال (المادة 62 بند 2 وقانون 49 لسنة 1972)[cite: 27]." },
-                holding: { t: "العاملون بالشركات القابضة والتابعة", rule: "التحقيق يتم بطلب من الوزير المختص أو مجلس إدارة الشركة (م 62/5)، ويشمل أعضاء الإدارات القانونية بها باعتبارهم من العاملين بالشركة ولا ترسل لقطاع الأعمال (منشور 3 لسنة 2025)[cite: 27]." },
-                taxes: { t: "موظفو مصلحة الضرائب ذوو الضبطية ولجان الطعن", rule: "ترسل صورة الشكوى لوزارة المالية أو مصلحة الضرائب لإعداد تقرير فني يكون له اعتبار في التصرف (المادة 57 وقانون 206 لسنة 2020)[cite: 24]." },
-                coba: { t: "أعضاء الجهاز المركزي للمحاسبات", rule: "لا يجوز الاستعانة برأيهم أو سؤالهم كمتهمين إلا بموافقة رئيس الجهاز بناءً على طلب رئيس الهيئة عبر مكتب الفحوص (المادة 146)[cite: 49]." },
-                exams: { t: "أعمال الامتحانات والكنترول", rule: "تختص النيابة التي يقع بدائرتها مقر لجنة الإدارة أو لجنة التصحيح (الكنترول) أياً كانت جهة عمل المعلم الأصلية (منشور 4 لسنة 2025)[cite: 20]." },
-                spatial: { t: "قضايا المتغيرات المكانية", rule: "تختص إدارة منظومة الشكاوى ومكافحة الفساد دون غيرها بتحديد النيابة المختصة إذا تبين وقوع العقار بنطاق نيابة أخرى (قرار رئيسة الهيئة 414 لسنة 2026)[cite: 21]." },
-                coop: { t: "مجالس إدارات وحدات التعاون", rule: "بناءً على طلب من الجهة الإدارية المختصة أو الاتحاد التعاوني المختص، وإذا لم يرد الطلب خلال أسبوعين تحفظ الأوراق إدارياً مؤقتاً لعدم ورود طلب (م 62/6 وم 64)[cite: 27, 28]." }
-            };
-
-            const c = data[ent];
-            out.innerHTML = `<strong>🏢 الفئة:</strong> ${c.t}<div class="mt-1 border-t pt-1"><strong>⚖️ السند والحكم:</strong> ${c.rule}</div>`;
-        };
-
-        window.runIncidentCheck = function() {
-            const inc = document.getElementById('compass_incident_type').value;
-            const out = document.getElementById('compassIncidentOutput');
-            out.classList.remove('hidden');
-
-            const dict = {
-                mandatory_rumors: "🚨 <strong>إحالة وجوبية للمحكمة التأديبية (بند 9 م 210 مستحدث 461/2025):</strong> نشر أخبار أو بيانات أو شائعات كاذبة بسوء قصد لتكدير السلم العام أو إثارة الفزع أو الإضرار بالمصلحة العامة عبر وسائل التواصل الاجتماعي[cite: 68].",
-                mandatory_assault: "🚨 <strong>إحالة وجوبية للمحكمة التأديبية (بندان 10 و11 م 210 مستحدث 461/2025):</strong> جرائم هتك العرض والشروع فيها، أو الاعتداء بأي وسيلة على الأطفال ذوي الإعاقة بدور الإيداع والحضانات والتعليم أو استغلالهم[cite: 68].",
-                mandatory_supply: "🚨 <strong>إحالة وجوبية للمحكمة التأديبية (بند 12 م 210 مستحدث 461/2025):</strong> الإخلال العمدي بنظام توزيع السلع التموينية والمدعمة ممن كان مسؤولاً عنها أو عهد إليه بتوزيعها[cite: 68].",
-                mandatory_classic: "🚨 <strong>إحالة وجوبية (م 210 كلاسيكية):</strong> الرشوة، الاختلاس، الاستيلاء على المال العام وتسهيله، التزوير في المحررات الرسمية، تعاطي وتجارة المخدرات، ومخالفات البناء بالمادة 99 من قانون 119/2008[cite: 67, 68].",
-                incident_tasadi: "📌 <strong>الوقوف بالإجراءات لسابقة التصدي (كتاب دوري 14 لسنة 2024):</strong> إذا كشف التحقيق أن الواقعة كانت محلاً للتحقيق في قضية أخرى، يثبت العضو اطلاعه على القضية بالمحضر ويعرض على مدير النيابة للتأشير بالضم أو الوقوف في الشق المتصدي له[cite: 67].",
-                incident_whatsapp: "📱 <strong>إثبات الواتساب وحجية الإعلان (منشور 6 لسنة 2026):</strong> تدوين رقم الواتساب للشاهد والمتهم بمحضر التحقيق وإثبات إقراره بإنتاجية الإعلان عليه والتزامه بإخطار النيابة رسمياً بأي تغيير[cite: 31].",
-                incident_recs: "⚖️ <strong>ضوابط التوصيات (م 218 و219):</strong> يحظر تحديد مبالغ مالية أو الأمر بسحب أو إلغاء قرار إداري بل التوصية بإعادة النظر فيه، والاكتفاء بعبارة 'إعمال أوجه التعليمات المقررة'، وتفرد المذكرات العامة لمركز الدراسات والتدريب (قرار 413/2026)[cite: 71, 72]."
-            };
-
-            out.innerHTML = dict[inc];
         };
 
         window.filterCompassEncyclopedia = function(cat) {
@@ -1203,12 +1217,12 @@
                 </div>`).join('') : `<div class="col-span-2 text-center py-6 text-xs text-slate-400">لا توجد بطاقات في هذا التصنيف.</div>`;
         }
 
-        // ======================== 6. المُركِّب الذكي للقيود والأوصاف ========================
+        // ======================== القيود والأوصاف ========================
         const LEGAL_PRESETS = {
             civil_81: {
                 title: "قانون الخدمة المدنية رقم 81 لسنة 2016 ولائحته 1216 لسنة 2017[cite: 5]",
-                baseArticles: "57/الفقرة الأولى، و58/الفقرة الأولى[cite: 118]",
-                generalIntro: "خالف أحكام قانون الخدمة المدنية ولائحته التنفيذية، وخرج على مقتضى الواجب الوظيفي ولم يؤدِّ العمل المنوط به بدقة وأمانة[cite: 115, 116]"
+                baseArticles: "57/الفقرة الأولى، و58/الفقرة الأولى",
+                generalIntro: "خالف أحكام قانون الخدمة المدنية ولائحته التنفيذية، وخرج على مقتضى الواجب الوظيفي ولم يؤدِّ العمل المنوط به بدقة وأمانة"
             },
             public_48: {
                 title: "قانون نظام العاملين بالقطاع العام رقم 48 لسنة 1978[cite: 17]",
@@ -1216,44 +1230,43 @@
                 generalIntro: "خالف أحكام قانون نظام العاملين بالقطاع العام ولوائح جهة عمله، ولم يؤدِّ العمل المنوط به بدقة"
             },
             business_203: {
-                title: "قانون شركات قطاع الأعمال العام رقم 203 لسنة 1991 المعدل بالقانون 185 لسنة 2020[cite: 27]",
-                baseArticles: "المادة 48 المعدلة بالقانون 185 لسنة 2020 ولوائح الشركة[cite: 27]",
+                title: "قانون شركات قطاع الأعمال العام رقم 203 لسنة 1991 المعدل بالقانون 185 لسنة 2020",
+                baseArticles: "المادة 48 المعدلة بالقانون 185 لسنة 2020 ولوائح الشركة",
                 generalIntro: "خالف الواجبات الوظيفية المقررة باللوائح المنظمة لشركات قطاع الأعمال العام"
             },
             finance_182: {
                 title: "قانون تنظيم التعاقدات 182 لسنة 2018 واللائحة المالية للموازنة والحسابات ولائحة المخازن",
-                baseArticles: "أحكام القانون 182 لسنة 2018 ولائحته التنفيذية ومواد اللائحة المالية للموازنة والحسابات",
+                baseArticles: "أحكام القانون 182 لسنة 2018 ولائحته ومواد اللائحة المالية",
                 generalIntro: "خالف القواعد المالية المقررة بلائحة المخازن وأحكام قانون التعاقدات الحكومية وقصر في أداء واجبه المالي"
             },
             taxes_206: {
-                title: "قانون الإجراءات الضريبية الموحد رقم 206 لسنة 2020 والتعليمات التنفيذية للضرائب[cite: 24]",
+                title: "قانون الإجراءات الضريبية الموحد رقم 206 لسنة 2020 والتعليمات التنفيذية للضرائب",
                 baseArticles: "المواد المنظمة بالفصل الثالث من القانون 206 لسنة 2020 والتعليمات الضريبية",
                 generalIntro: "خالف التعليمات الفنية والضوابط المنصوص عليها بقانون الإجراءات الضريبية الموحد"
             },
             building_119: {
-                title: "قانون البناء الموحد رقم 119 لسنة 2008 والقرارات المنفذة[cite: 68]",
-                baseArticles: "المادتين 99 و102 من قانون البناء 119 لسنة 2008 وقوانين حماية الأراضي الزراعية[cite: 68]",
+                title: "قانون البناء الموحد رقم 119 لسنة 2008 والقرارات المنفذة",
+                baseArticles: "المادتين 99 و102 من قانون البناء 119 لسنة 2008 وقوانين حماية الأراضي الزراعية",
                 generalIntro: "تقاعس عن اتخاذ الإجراءات القانونية المقررة حيال مخالفات البناء وخرج على مقتضى الواجب الوظيفي"
             }
         };
 
         const BND_DETAILS = {
-            "149_1": { art: "149/1", desc: "لم يؤدِّ العمل المنوط به بنفسه بدقة وأمانة[cite: 116]", taakeef: "لعدم أدائه العمل المنوط به بدقة وأمانة[cite: 118]" },
-            "149_2": { art: "149/2", desc: "لم يلتزم بمواعيد العمل الرسمية ولم يخصص وقت العمل لأداء واجبات وظيفته[cite: 116]", taakeef: "لعدم التزامه بمواعيد العمل وتخصيص الوقت لوظيفته" },
-            "149_6": { art: "149/6", desc: "لم يحافظ على ممتلكات وأموال الوحدة التي يعمل بها وقصر في صيانتها[cite: 116]", taakeef: "لقصوره في صيانة ممتلكات وأموال الوحدة" },
-            "150_3": { art: "150/3", desc: "تأخر في الرد على مناقضات الجهاز المركزي للمحاسبات ومكاتباته بغير عذر[cite: 117]", taakeef: "لتأخره ومماطلته في الرد على مناقضات الجهاز المركزي للمحاسبات" },
-            "150_7": { art: "150/7", desc: "احتفظ لنفسه بأوراق رسمية ونزعها من الملفات المخصصة لحفظها[cite: 117]", taakeef: "لاحتفاظه بأوراق رسمية ونزعها من ملفاتها" },
-            "150_14": { art: "150/14", desc: "أساء معاملة الجمهور وتراخى متعمداً في أداء الخدمة المكلف بها[cite: 118]", taakeef: "لإساءته معاملة الجمهور والتباطؤ المتعمد في أداء الخدمة" },
-            "150_15": { art: "150/15", desc: "قصر في أداء واجبه الوظيفي مما ترتب عليه ضياع حق مالي للدولة[cite: 118]", taakeef: "لتقصيره الذي ترتب عليه ضياع حق من الحقوق المالية للدولة[cite: 118]" },
-            "46_3": { art: "ق 46/3", desc: "انقطع عن عمله بدون إذن وفي غير حدود الإجازات المقررة قانوناً[cite: 115]", taakeef: "لانقطاعه عن العمل دون إذن[cite: 115]" },
-            "51_142": { art: "ق 51 وم 142 لائحة", desc: "تمارض وادعى المرض على خلاف الحقيقة للتهرب من أداء واجبات وظيفته[cite: 115]", taakeef: "لتمارضه وانقطاعه عن العمل بادعاء المرض على خلاف الحقيقة[cite: 115]" }
+            "149_1": { art: "149/1", desc: "لم يؤدِّ العمل المنوط به بنفسه بدقة وأمانة", taakeef: "لعدم أدائه العمل المنوط به بدقة وأمانة" },
+            "149_2": { art: "149/2", desc: "لم يلتزم بمواعيد العمل الرسمية ولم يخصص وقت العمل لأداء واجبات وظيفته", taakeef: "لعدم التزامه بمواعيد العمل وتخصيص الوقت لوظيفته" },
+            "149_6": { art: "149/6", desc: "لم يحافظ على ممتلكات وأموال الوحدة التي يعمل بها وقصر في صيانتها", taakeef: "لقصوره في صيانة ممتلكات وأموال الوحدة" },
+            "150_3": { art: "150/3", desc: "تأخر في الرد على مناقضات الجهاز المركزي للمحاسبات ومكاتباته بغير عذر", taakeef: "لتأخره ومماطلته في الرد على مناقضات الجهاز المركزي للمحاسبات" },
+            "150_7": { art: "150/7", desc: "احتفظ لنفسه بأوراق رسمية ونزعها من الملفات المخصصة لحفظها", taakeef: "لاحتفاظه بأوراق رسمية ونزعها من ملفاتها" },
+            "150_14": { art: "150/14", desc: "أساء معاملة الجمهور وتراخى متعمداً في أداء الخدمة المكلف بها", taakeef: "لإساءته معاملة الجمهور والتباطؤ المتعمد في أداء الخدمة" },
+            "150_15": { art: "150/15", desc: "قصر في أداء واجبه الوظيفي مما ترتب عليه ضياع حق مالي للدولة", taakeef: "لتقصيره الذي ترتب عليه ضياع حق من الحقوق المالية للدولة" },
+            "46_3": { art: "ق 46/3", desc: "انقطع عن عمله بدون إذن وفي غير حدود الإجازات المقررة قانوناً", taakeef: "لانقطاعه عن العمل دون إذن" },
+            "51_142": { art: "ق 51 وم 142 لائحة", desc: "تمارض وادعى المرض على خلاف الحقيقة للتهرب من أداء واجبات وظيفته", taakeef: "لتمارضه وانقطاعه عن العمل بادعاء المرض على خلاف الحقيقة" }
         };
 
         window.handleLegalCategoryChange = function() {
             const cat = document.getElementById('qayd_legal_category').value;
             const bndBox = document.getElementById('executiveRulesBox');
-            if (cat === 'civil_81') bndBox.classList.remove('hidden');
-            else bndBox.classList.add('hidden');
+            if (cat === 'civil_81') bndBox.classList.remove('hidden'); else bndBox.classList.add('hidden');
             composeSmartQayd();
         };
 
@@ -1270,7 +1283,6 @@
             courtBox.classList.toggle('hidden', mode !== 'ihala');
 
             const preset = LEGAL_PRESETS[catKey] || LEGAL_PRESETS['civil_81'];
-
             const checkedBnds = Array.from(document.querySelectorAll('.chk-bnd:checked')).map(el => el.value);
             let bndArticles = [], bndDescs = [], bndTaakeef = [];
             
@@ -1284,8 +1296,8 @@
 
             let taakeefText = "";
             if (mode === 'majaza' || mode === 'ihala' || mode === 'hifz_ahamia') {
-                const taakeefJoint = bndTaakeef.length ? bndTaakeef.join('، و') : "لعدم أدائه العمل المنوط به بدقة وأمانة[cite: 118]";
-                taakeefText = `ومن ثم يكون المذكور قد ارتكب ذنباً تأديبياً قوامه مخالفته أحكام ${preset.title}، ${taakeefJoint} بالمخالفة لأحكام المادة ${preset.baseArticles}${bndArticles.length ? ' والمواد (' + bndArticles.join('، ') + ')' : ''}، وهو ما يُعد منه خروجاً على مقتضى الواجب الوظيفي يستوجب مساءلته تأديبياً طبقاً لحكم القانون[cite: 118].`;
+                const taakeefJoint = bndTaakeef.length ? bndTaakeef.join('، و') : "لعدم أدائه العمل المنوط به بدقة وأمانة";
+                taakeefText = `ومن ثم يكون المذكور قد ارتكب ذنباً تأديبياً قوامه مخالفته أحكام ${preset.title}، ${taakeefJoint} بالمخالفة لأحكام المادة ${preset.baseArticles}${bndArticles.length ? ' والمواد (' + bndArticles.join('، ') + ')' : ''}، وهو ما يُعد منه خروجاً على مقتضى الواجب الوظيفي يستوجب مساءلته تأديبياً طبقاً لحكم القانون.`;
             } else if (mode === 'hifz_saha') {
                 taakeefText = `وحيث إنه عما نُسب إلى المشكو في حقه سالف البيان، ولما كانت الأوراق قد خلت من أي دليل يساند الاتهام، وثبت عدم صحة ما أثير قبله، الأمر الذي نرى معه التقرير بحفظ الأوراق إدارياً (قطعياً لعدم الصحة).`;
             } else if (mode === 'hifz_mukhalafa') {
@@ -1296,27 +1308,25 @@
 
             let fullQayd = "";
             if (mode === 'majaza') {
-                const arts = `بالمواد: 57/الفقرة الأولى، و58/الفقرة الأولى، و60، و61، و62/3 من قانون الخدمة المدنية رقم 81 لسنة 2016${bndArticles.length ? '، والمادتين (' + bndArticles.join('، ') + ') من لائحته التنفيذية' : ''}[cite: 118]`;
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة إدارية ومالية ${arts}، ضــــد:\n- ${name} — (الرقم القومي: ${nid})\n\nلأنه في غضون ${date}، وبوصفه السابق، وبمقر عمله ${workplace}:\n${bndDescs.length ? bndDescs.join('، و') : preset.generalIntro} بأن:\n${fact} — وذلك على النحو الموضح تفصيلاً بالأوراق[cite: 119].\n\nثانياً: مجازاة المخالف المذكور تأديبياً[cite: 119].`;
+                const arts = `بالمواد: 57/الفقرة الأولى، و58/الفقرة الأولى، و60، و61، و62/3 من قانون الخدمة المدنية رقم 81 لسنة 2016${bndArticles.length ? '، والمادتين (' + bndArticles.join('، ') + ') من لائحته التنفيذية' : ''}`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة إدارية ومالية ${arts}، ضــــد:\n- ${name} — (الرقم القومي: ${nid})\n\nلأنه في غضون ${date}، وبوصفه السابق، وبمقر عمله ${workplace}:\n${bndDescs.length ? bndDescs.join('، و') : preset.generalIntro} بأن:\n${fact} — وذلك على النحو الموضح تفصيلاً بالأوراق.\n\nثانياً: مجازاة المخالف المذكور تأديبياً.`;
             } else if (mode === 'ihala') {
                 const selRadio = document.querySelector('input[name="nihala_art"]:checked')?.value || 'art14';
-                let nihalaArtText = "المادة 14 من القانون رقم 117 لسنة 1958 وتعديلاته بشأن النيابة الإدارية[cite: 119]";
-                if (selRadio === 'art12_2') nihalaArtText = "المادة 12/الفقرة الثانية من القانون رقم 117 لسنة 1958[cite: 119]";
-                if (selRadio === 'art12_5') nihalaArtText = "المادة 12/الفقرة الخامسة من القانون رقم 117 لسنة 1958[cite: 119]";
-
+                let nihalaArtText = "المادة 14 من القانون رقم 117 لسنة 1958 وتعديلاته بشأن النيابة الإدارية";
+                if (selRadio === 'art12_2') nihalaArtText = "المادة 12/الفقرة الثانية من القانون رقم 117 لسنة 1958";
+                if (selRadio === 'art12_5') nihalaArtText = "المادة 12/الفقرة الخامسة من القانون رقم 117 لسنة 1958";
                 const isRet = document.getElementById('chk_retired')?.checked;
-                let retiredArts = isRet ? "، والمادتين 20 و21 من قانون مجلس الدولة رقم 47 لسنة 1972[cite: 120]" : "";
-
-                const arts = `بالمواد: 57/الفقرة الأولى، و58/الفقرة الأولى، و61، و62/4 من قانون الخدمة المدنية رقم 81 لسنة 2016${bndArticles.length ? '، والمادتين (' + bndArticles.join('، ') + ') من لائحته التنفيذية' : ''}[cite: 118]، و${nihalaArtText}، والمادتين 15/أولاً، و19/1${retiredArts} من قانون مجلس الدولة رقم 47 لسنة 1972 وتعديلاته[cite: 119, 120]`;
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة إدارية ومالية ${arts}، ضــــد:\n- ${name}${isRet ? ' (بالدرجة ... سابقاً وحالياً بالمعاش)' : ''} — (الرقم القومي: ${nid})\n\nلأنه في غضون ${date}، وبوصفه السابق، وبمقر عمله ${workplace}:\n${bndDescs.length ? bndDescs.join('، و') : preset.generalIntro} بأن:\n${fact} — وذلك على النحو الموضح بالأوراق[cite: 119].\n\nثانياً: إحالة المخالف المذكور إلى المحكمة التأديبية المختصة[cite: 119].`;
+                let retiredArts = isRet ? "، والمادتين 20 و21 من قانون مجلس الدولة رقم 47 لسنة 1972" : "";
+                const arts = `بالمواد: 57/الفقرة الأولى، و58/الفقرة الأولى، و61، و62/4 من قانون الخدمة المدنية رقم 81 لسنة 2016${bndArticles.length ? '، والمادتين (' + bndArticles.join('، ') + ') من لائحته التنفيذية' : ''}، و${nihalaArtText}، والمادتين 15/أولاً، و19/1${retiredArts} من قانون مجلس الدولة رقم 47 لسنة 1972 وتعديلاته`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة إدارية ومالية ${arts}، ضــــد:\n- ${name}${isRet ? ' (بالدرجة ... سابقاً وحالياً بالمعاش)' : ''} — (الرقم القومي: ${nid})\n\nلأنه في غضون ${date}، وبوصفه السابق، وبمقر عمله ${workplace}:\n${bndDescs.length ? bndDescs.join('، و') : preset.generalIntro} بأن:\n${fact} — وذلك على النحو الموضح بالأوراق.\n\nثانياً: إحالة المخالف المذكور إلى المحكمة التأديبية المختصة.`;
             } else if (mode === 'hifz_ahamia') {
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة إدارية بنصوص المادتين 57/الفقرة الأولى، و58/الفقرة الأولى من قانون الخدمة المدنية رقم 81 لسنة 2016[cite: 115]، ضــــد:\n- ${name} — (الرقم القومي: ${nid})\n\nلأنه في غضون ${date}، وبوصفه سالف البيان:\n${preset.generalIntro} بأن:\n${fact}\n\nثانياً: حفظ ما نُسب إلى المخالف المذكور قطعياً لعدم الأهمية.`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة إدارية بنصوص المادتين 57/الفقرة الأولى، و58/الفقرة الأولى من قانون الخدمة المدنية رقم 81 لسنة 2016، ضــــد:\n- ${name} — (الرقم القومي: ${nid})\n\nلأنه في غضون ${date}، وبوصفه سالف البيان:\n${preset.generalIntro} بأن:\n${fact}\n\nثانياً: حفظ ما نُسب إلى المخالف المذكور قطعياً لعدم الأهمية.`;
             } else if (mode === 'hifz_saha') {
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (قطعياً لعدم الصحة)، دون قيد أو وصف عملاً بأحكام المادة 214 من التعليمات القضائية طبعة 2026[cite: 71].`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (قطعياً لعدم الصحة)، دون قيد أو وصف عملاً بأحكام المادة 214 من التعليمات القضائية طبعة 2026.`;
             } else if (mode === 'hifz_mukhalafa') {
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (قطعياً لعدم المخالفة)، دون قيد أو وصف عملاً بأحكام المادة 214 من التعليمات القضائية طبعة 2026[cite: 71].`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (قطعياً لعدم المخالفة)، دون قيد أو وصف عملاً بأحكام المادة 214 من التعليمات القضائية طبعة 2026.`;
             } else {
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (مؤقتاً لعدم كفاية الأدلة أو لعدم معرفة الفاعل)، دون قيد أو وصف عملاً بأحكام المادة 208 و214 من التعليمات القضائية[cite: 65, 71].`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (مؤقتاً لعدم كفاية الأدلة أو لعدم معرفة الفاعل)، دون قيد أو وصف عملاً بأحكام المادة 208 و214 من التعليمات القضائية.`;
             }
 
             document.getElementById('qaydTaakeefBox').innerText = taakeefText;
@@ -1350,14 +1360,14 @@
         window.deleteCurrentQayd = async function() {
             if (!hasPerm('delete')) return alert("لا تملك صلاحية الحذف!");
             if (!db.qayds || !db.qayds.length) return alert("لا توجد قوالب مخصصة للحذف.");
-            const selTitle = prompt("اكتب اسم القالب الذي ترغب في حذفه من القوالب المحفوظة:");
+            const selTitle = prompt("اكتب اسم القالب الذي ترغب في حذفه:");
             if (!selTitle) return;
             db.qayds = db.qayds.filter(q => q.title !== selTitle.trim());
             await persistState("حذف قالب", "القوالب", selTitle);
             alert("تم الحذف بنجاح!");
         };
 
-        // ======================== باقي أقسام المنصة والمحررات ========================
+        // ======================== باقي الأقسام ========================
         window.renderLibrarySection = function() {
             const cat = document.getElementById('libCategoryFilter')?.value || "الكل";
             let list = db.library || []; if (cat !== "الكل") list = list.filter(b => b.category === cat);
@@ -1451,7 +1461,6 @@
             cont.innerHTML = html || `<div class="bg-white p-6 rounded-xl text-center text-slate-400 text-xs">أضف الحيثيات والدفوع من زر (+ إضافة حيثية).</div>`;
         };
 
-        // ======================== 4. قوائم التحقيق والقطاعات ========================
         const FALLBACK_CHECKLISTS = [
             { id: "fallback_1", sector: "صحة وإسعاف", title: "تلفيات سيارات الإسعاف والمهمات", docs: ["محضر إثبات حالة السيارة", "تقرير الفحص الفني", "سجل الصيانة الدورية"], witness_q: ["ما سبب وظروف اكتشاف التلف؟", "من السائق المسؤول وقت الواقعة؟"], accused_q: ["ما قولك فيما نسب إليك من إهمال صيانة السيارة؟"], tips: ["تحقق من مواعيد الصيانة الدورية المقررة بلائحة التشغيل."] }
         ];
@@ -1511,7 +1520,6 @@
                 </div>`).join('') : `<div class="col-span-2 bg-white p-6 rounded-xl text-center text-slate-400 text-xs">أضف النماذج والديباجات من زر (+ إضافة نموذج).</div>`;
         };
 
-        // ======================== محرر العناصر وإدارة النوافذ ========================
         window.openItemEditor = function(type, editId = null) {
             if (editId && !hasPerm('edit')) return alert("لا تملك صلاحية التعديل!");
             if (!editId && !hasPerm('add')) return alert("لا تملك صلاحية الإضافة!");
@@ -1603,21 +1611,17 @@
             document.getElementById('footerBrandBadge').innerText = b.brandTitle;
             document.getElementById('footerBrandText').innerText = b.footerText || "تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت © 2026";
             
-            // تحديث شارة الاتصال السحابي من البيانات السحابية
             const cloudBadge = document.getElementById('cloudStatusBadge');
             if (cloudBadge) {
                 cloudBadge.innerText = b.cloudStatusText || "سحابي متصل";
             }
 
-            // تحديث نص الفوتر المعتمد للتعليمات
             const footInst = document.getElementById('footerInstructionsDisplay');
             if (footInst) footInst.innerText = b.footerInstructions || "طبعة التعليمات القضائية أكتوبر 2026";
 
-            // تحديث نص كلمة الوفاء لنيابة ملوي
             const mallawiDisplay = document.getElementById('aboutMallawiTextDisplay');
             if (mallawiDisplay) mallawiDisplay.innerText = b.aboutMallawiText || DEFAULT_MALLAWI_WORD;
 
-            // تحديث الشعار إذا كان هناك رابط مخصص، أو إبقاء الـ SVG الأيقوني
             const logoCont = document.getElementById('mainLogoContainer');
             if (b.brandLogoUrl && b.brandLogoUrl.trim()) {
                 logoCont.innerHTML = `<img src="${b.brandLogoUrl}" alt="شعار المعاون" class="w-full h-full object-contain">`;
@@ -1645,16 +1649,13 @@
             statusBar.classList.remove('hidden');
             memberTopText.innerText = `${currentUser.name}`;
             
-            // تفعيل البروتوكول القضائي الشرفي في الترحيب
             const rankMeta = JUDICIAL_RANK_BADGES[currentUser.title] || { badge: "bg-slate-100 text-slate-800 border font-bold", titleGreeting: "معالي المستشار", icon: "⚖️" };
             greetingEl.innerText = `${rankMeta.titleGreeting} / ${currentUser.name}`;
             
-            // وسم الدرجة القضائية
             const roleBadge = document.getElementById('activeRoleBadge');
             roleBadge.className = `px-2 py-0.5 rounded text-[10px] font-bold ${rankMeta.badge}`;
             roleBadge.innerHTML = `${rankMeta.icon} ${currentUser.title || 'عضو نيابة'}`;
 
-            // إبراز وسام نيابة ملوي
             if (currentUser.workplace && currentUser.workplace.includes("ملوي")) {
                 mallawiBadge.classList.remove('hidden');
             } else {
@@ -1668,7 +1669,6 @@
             document.querySelectorAll('.admin-action-btn').forEach(el => el.classList.toggle('hidden', !hasPerm('add')));
         }
 
-        // عرض الأعضاء داخل لوحة الإدارة مع وسم الدرجة القضائية
         window.renderMembersTable = function() {
             document.getElementById('pendingMembersCount').innerText = db.members.filter(m => m.status === 'pending').length;
             const cm = hasPerm('manageUsers');
@@ -1779,7 +1779,6 @@
 
         window.logoutUser = function() { currentUser = null; sessionStorage.removeItem("moawen_v12_uid"); refreshAllUI(); };
 
-        // ======================== منظومة المساهمات الفعّالة ========================
         window.openContributeModal = function() {
             const authorInput = document.getElementById('contrib_author');
             if (currentUser) {
@@ -1955,6 +1954,7 @@
             updateHybridAndAuthUI(); renderLibrarySection(); renderCompassEncyclopedia();
             renderDefensesSection(); renderChecklistsSection(); renderFormsSection();
             renderMembersTable(); renderPendingContributions();
+            renderCurrentStage();
             composeSmartQayd();
         }
 
