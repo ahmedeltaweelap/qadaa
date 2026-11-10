@@ -20,17 +20,16 @@
         }
     </script>
     <style>
-        body { background-color: #F8FAFC; color: #1E293B; user-select: none; -webkit-user-select: none; }
-        input, textarea, [contenteditable="true"] { user-select: text; -webkit-user-select: text; }
+        body { background-color: #F8FAFC; color: #1E293B; }
         .hub-card-active { border-color: #C5A059 !important; background-color: #FFFFFF !important; box-shadow: 0 4px 20px -2px rgba(197, 160, 89, 0.35) !important; transform: translateY(-2px); }
         .stage-step-active { background-color: #0B132B !important; color: #C5A059 !important; border-color: #C5A059 !important; font-weight: 800; box-shadow: 0 2px 10px rgba(11, 19, 43, 0.2); }
         .def-subtab-active, .compass-tab-active, .sector-active { background-color: #0B132B !important; color: #C5A059 !important; font-weight: 700; border-color: #C5A059 !important; }
-        .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
         .teaser-blur { filter: blur(5px); user-select: none; pointer-events: none; }
     </style>
 </head>
-<body class="font-sans antialiased pb-20" oncontextmenu="return false;">
+<body class="font-sans antialiased pb-20">
 
     <!-- الترويسة الرئيسية مع الشعار القانوني الأيقوني المستقل والوصف المستقر -->
     <header class="bg-judicial-900 text-white shadow-md sticky top-0 z-40 border-b-2 border-judicial-gold">
@@ -198,18 +197,13 @@
             <div class="bg-judicial-900 p-3.5 rounded-xl text-white flex flex-wrap justify-between items-center gap-3 border border-judicial-gold">
                 <div>
                     <h2 class="text-sm md:text-base font-bold text-judicial-gold flex items-center gap-2">
-                        <i class="fa-solid fa-compass text-amber-400"></i> خريطة مسار القضية والدليل الإجرائي المترابط (معدلة بالقرارين 517 و 518 لسنة 2026)
+                        <i class="fa-solid fa-compass text-amber-400"></i> خريطة مسار القضية والدليل الإجرائي المترابط (طبعة 2026)
                     </h2>
                     <p class="text-[11px] text-slate-300">دليل عملي يأخذ بيد المحقق خطوة بخطوة من استلام البلاغ وفحص الاختصاص حتى صياغة المذكرة والاعتماد.</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button type="button" onclick="openItemEditor('jurisdiction')" class="admin-add-btn hidden bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer shadow">
-                        + إضافة قاعدة / مبدأ
-                    </button>
-                    <button type="button" onclick="syncProceduralCompassData()" class="admin-action-btn hidden bg-amber-500 hover:bg-yellow-400 text-judicial-950 font-extrabold px-3 py-1.5 rounded-lg text-xs cursor-pointer shadow transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-rotate"></i> <span>🔄 استعادة التحديثات القضائية 2026</span>
-                    </button>
-                </div>
+                <button type="button" onclick="syncProceduralCompassData()" class="admin-action-btn hidden bg-amber-500 hover:bg-yellow-400 text-judicial-950 font-extrabold px-3 py-1.5 rounded-lg text-xs cursor-pointer shadow transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate"></i> <span>🔄 تحديث التعليمات القضائية والتصرفات لطبعة أكتوبر 2026</span>
+                </button>
             </div>
 
             <!-- شريط المحطات الإجرائية الخمس -->
@@ -246,7 +240,7 @@
                 <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-2">
                     <div>
                         <h3 class="font-bold text-judicial-900 text-xs md:text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-layer-group text-judicial-gold"></i> المصنّف الإجرائي المشروح ومبادئ الإدارية العليا (معدلة بالقرارين 517 و 518 لسنة 2026)
+                            <i class="fa-solid fa-layer-group text-judicial-gold"></i> المصنّف الإجرائي المشروح ومبادئ الإدارية العليا (طبعة 2026)
                         </h3>
                         <p class="text-[11px] text-slate-500 mt-0.5">سند المادة القانونية مدعوماً بالكتاب الدوري المعاصر والتطبيق العملي ومبدأ المحكمة العليا.</p>
                     </div>
@@ -402,14 +396,24 @@
                                 <strong class="text-slate-800 font-bold">بنود الواجبات والمحظورات اللائحية:</strong>
                                 <button type="button" onclick="uncheckAllBnds()" class="text-[10px] text-blue-700 font-bold hover:underline cursor-pointer">إلغاء تحديد الكل</button>
                             </div>
-                            <div id="bndItemsContainer" class="space-y-1"></div>
+                            <div class="space-y-1">
+                                <label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="149_1" onchange="composeSmartQayd()"> <span>م 149/1: أداء العمل المنوط به بدقة وأمانة</span></label>
+                                <label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="149_2" onchange="composeSmartQayd()"> <span>م 149/2: الالتزام بمواعيد العمل وتخصيص الوقت للوظيفة</span></label>
+                                <label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="149_6" onchange="composeSmartQayd()"> <span>م 149/6: المحافظة على ممتلكات وأموال الوحدة وصيانتها</span></label>
+                                <label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="150_3" onchange="composeSmartQayd()"> <span>م 150/3: تأخير الرد على مناقضات الجهاز المركزي للمحاسبات</span></label>
+                                <label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="150_7" onchange="composeSmartQayd()"> <span>م 150/7: الاحتفاظ بأصل ورقة رسمية أو نزعها</span></label>
+                                <label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="150_14" onchange="composeSmartQayd()"> <span>م 150/14: إساءة معاملة الجمهور والتباطؤ المتعمد</span></label>
+                                <label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="150_15" onchange="composeSmartQayd()"> <span>م 150/15: التقصير المترتب عليه ضياع حق مالي للدولة</span></label>
+                                <label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="46_3" onchange="composeSmartQayd()"> <span>م 46/3: الانقطاع عن العمل بدون إذن</span></label>
+                                <label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="51_142" onchange="composeSmartQayd()"> <span>م 51 وم 142 لائحة: التمارض وادعاء المرض كذباً</span></label>
+                            </div>
                         </div>
 
                         <div class="space-y-2 text-xs">
                             <div><label class="block text-[11px] font-bold mb-0.5">اسم المخالف وصفته ودرجته:</label><input type="text" id="q_name" oninput="composeSmartQayd()" placeholder="فلان الفلاني - بوظيفته وبالدرجة..." class="w-full border rounded p-1.5 text-xs"></div>
                             <div><label class="block text-[11px] font-bold mb-0.5 text-emerald-800">الرقم القومي (14 رقماً - وجوبي قرار 172/2025):</label><input type="text" id="q_nid" oninput="composeSmartQayd()" placeholder="2980915..." class="w-full border rounded p-1.5 text-xs font-mono"></div>
                             <div class="grid grid-cols-2 gap-1.5">
-                                <div><label class="block text-[11px] font-bold mb-0.5">الفترة الزمنية:</label><input type="text" id="q_date" oninput="composeSmartQayd()" placeholder="خلال عام 2026" class="w-full border rounded p-1.5 text-xs"></div>
+                                <div><label class="block text-[11px] font-bold mb-0.5">الفترة الزمنية:</label><input type="text" id="q_date" oninput="composeSmartQayd()" placeholder="خلال عام 2025" class="w-full border rounded p-1.5 text-xs"></div>
                                 <div><label class="block text-[11px] font-bold mb-0.5">جهة ومقر العمل:</label><input type="text" id="q_workplace" oninput="composeSmartQayd()" placeholder="بدائرة..." class="w-full border rounded p-1.5 text-xs"></div>
                             </div>
                             <div><label class="block text-[11px] font-bold mb-0.5">السطر الخاص بالواقعة (المرن):</label><input type="text" id="q_fact" oninput="composeSmartQayd()" placeholder="بيان الأفعال المادية المنسوبة للمتهم..." class="w-full border rounded p-1.5 text-xs"></div>
@@ -444,7 +448,7 @@
 
                         <div class="flex flex-wrap gap-2 justify-end border-t pt-2.5">
                             <button type="button" onclick="copyCombinedQayd()" class="bg-judicial-900 hover:bg-judicial-800 text-judicial-gold px-4 py-1.5 rounded-lg text-xs font-bold cursor-pointer shadow">نسخ التكييف والقيد معاً</button>
-                            <button type="button" onclick="exportElementToWord('qaydFullOutputBox', 'القيد_والوصف')" class="bg-blue-800 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold cursor-pointer shadow"><i class="fa-solid fa-file-word ml-1"></i> تحميل Word</button>
+                            <button type="button" onclick="exportElementToWord('qaydFullOutputBox', 'القيد_والوصف')" class="bg-blue-800 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold cursor-pointer shadow"><i class="fa-solid fa-file-word ml-1"></i> تصدير Word</button>
                             <button type="button" onclick="addToBasket('القيد والوصف', document.getElementById('qaydFullOutputBox').innerText)" class="bg-judicial-gold hover:bg-yellow-500 text-judicial-950 font-extrabold px-3.5 py-1.5 rounded-lg text-xs cursor-pointer shadow">+ للمسودة</button>
                         </div>
                     </div>
@@ -469,7 +473,7 @@
         </div>
     </div>
 
-    <!-- نافذة دخول وتسجيل الأعضاء -->
+    <!-- نافذة دخول وتسجيل الأعضاء مع التحقق الذكي من كود الدعوة -->
     <div id="memberAuthModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border-2 border-judicial-gold my-8">
             <div class="bg-judicial-900 text-white p-3.5 flex justify-between items-center">
@@ -482,7 +486,7 @@
             </div>
             <div id="authAlertBox" class="hidden m-3.5 p-2.5 rounded-xl text-xs font-bold"></div>
             <div id="formMemberLogin" class="p-4 space-y-3">
-                <div><label class="block text-xs font-bold mb-1">اسم المستخدم:</label><input type="text" id="login_username" autocomplete="off" class="w-full border rounded-lg p-2 text-sm"></div>
+                <div><label class="block text-xs font-bold mb-1">اسم المستخدم:</label><input type="text" id="login_username" class="w-full border rounded-lg p-2 text-sm"></div>
                 <div><label class="block text-xs font-bold mb-1">كلمة المرور:</label><input type="password" id="login_pin" onkeyup="if(event.key==='Enter') submitMemberLogin()" class="w-full border rounded-lg p-2 text-sm"></div>
                 <button type="button" onclick="submitMemberLogin()" class="w-full bg-judicial-900 text-judicial-gold font-extrabold py-2.5 rounded-lg text-sm cursor-pointer shadow">دخول</button>
             </div>
@@ -554,7 +558,7 @@
         </div>
     </div>
 
-    <!-- نافذة لوحة الإدارة الشاملة -->
+    <!-- نافذة لوحة الإدارة الشاملة مع رادار الحضور المباشر وسجل الزيارات -->
     <div id="adminModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[92vh] flex flex-col shadow-2xl border-2 border-judicial-gold overflow-hidden">
             <div class="bg-judicial-900 text-white p-3 flex justify-between items-center border-b border-judicial-gold">
@@ -608,7 +612,7 @@
                             <label class="font-bold block mb-1 text-emerald-800">نص شارة الاتصال السحابي بالهيدر:</label>
                             <input type="text" id="brand_cloud_status_input" placeholder="سحابي متصل" class="w-full border rounded p-2 font-bold text-emerald-900 bg-emerald-50">
                         </div>
-                        <div><label class="font-bold block mb-1 text-judicial-900">النص الإسنادي للتعليمات بالفوتر:</label><input type="text" id="footer_instructions_input" placeholder="طبعة التعليمات القضائية 2026" class="w-full border rounded p-2 font-bold text-judicial-900 bg-amber-50"></div>
+                        <div><label class="font-bold block mb-1 text-judicial-900">النص الإسنادي للتعليمات بالفوتر:</label><input type="text" id="footer_instructions_input" placeholder="طبعة التعليمات القضائية أكتوبر 2026" class="w-full border rounded p-2 font-bold text-judicial-900 bg-amber-50"></div>
                         <div><label class="font-bold block mb-1">كود الدعوة الافتراضي العام:</label><input type="text" id="brand_invite_code_input" placeholder="VIP2026" class="w-full border rounded p-2 font-mono font-bold"></div>
                         <div><label class="font-bold block mb-1">رابط الشعار المخصص (اختياري):</label><input type="url" id="brand_logo_url_input" placeholder="https://..." class="w-full border rounded p-2 font-mono"></div>
                         <div><label class="font-bold block mb-1">تبويب 1:</label><input type="text" id="tab1_input" class="w-full border rounded p-2"></div>
@@ -627,7 +631,6 @@
                 </div>
                 <div id="adm-QuickAdd" class="adm-view hidden grid grid-cols-2 md:grid-cols-3 gap-3 text-xs">
                     <button type="button" onclick="openItemEditor('library')" class="p-4 bg-slate-50 border rounded-xl font-bold hover:bg-judicial-900 hover:text-judicial-gold cursor-pointer">+ إضافة كتاب / Drive</button>
-                    <button type="button" onclick="openItemEditor('jurisdiction')" class="p-4 bg-slate-50 border rounded-xl font-bold hover:bg-judicial-900 hover:text-judicial-gold cursor-pointer">+ قاعدة بالبوصلة والموسوعة</button>
                     <button type="button" onclick="openItemEditor('defense')" class="p-4 bg-slate-50 border rounded-xl font-bold hover:bg-judicial-900 hover:text-judicial-gold cursor-pointer">+ إضافة حيثية أو دفع</button>
                     <button type="button" onclick="openItemEditor('checklist')" class="p-4 bg-slate-50 border rounded-xl font-bold hover:bg-judicial-900 hover:text-judicial-gold cursor-pointer">+ إضافة قائمة تحقيق</button>
                     <button type="button" onclick="openItemEditor('form')" class="p-4 bg-slate-50 border rounded-xl font-bold hover:bg-judicial-900 hover:text-judicial-gold cursor-pointer">+ إضافة نموذج إجرائي</button>
@@ -640,11 +643,11 @@
                     <div class="p-4 bg-gradient-to-r from-amber-500/20 via-slate-900 to-indigo-950 text-white border-2 border-judicial-gold rounded-xl space-y-3">
                         <div class="flex flex-wrap justify-between items-center gap-2">
                             <div>
-                                <h4 class="font-extrabold text-judicial-gold text-sm"><i class="fa-solid fa-cloud-arrow-up ml-1"></i> حزمة التعليمات القضائية والتصرفات (معدلة بالقرارين 517 و 518 لسنة 2026):</h4>
-                                <p class="text-[11px] text-slate-300 mt-0.5">تحديث البوصلة الإجرائية، والموسوعة المشروحة على قاعدة البيانات السحابية فوراً.</p>
+                                <h4 class="font-extrabold text-judicial-gold text-sm"><i class="fa-solid fa-cloud-arrow-up ml-1"></i> حزمة التعليمات القضائية والتصرفات (طبعة أكتوبر 2026):</h4>
+                                <p class="text-[11px] text-slate-300 mt-0.5">تحديث أسماء التبويبات، البوصلة الإجرائية، والموسوعة المشروحة على قاعدة البيانات السحابية فوراً.</p>
                             </div>
                             <button type="button" onclick="syncProceduralCompassData()" class="bg-amber-500 hover:bg-yellow-400 text-judicial-950 font-extrabold px-4 py-2 rounded-lg text-xs cursor-pointer shadow">
-                                🔄 تحديث التعليمات القضائية لطبعة نوفمبر 2026
+                                🔄 تحديث التعليمات القضائية والتصرفات لطبعة أكتوبر 2026
                             </button>
                         </div>
                     </div>
@@ -659,7 +662,7 @@
                             </label>
                         </div>
                     </div>
-                    <table class="w-full text-right text-[11px] border font-mono mt-3"><thead class="bg-slate-800 text-white"><tr><th class="p-2">التاريخ</th><th class="p-2.5">المسؤول</th><th class="p-2">الإجراء</th><th class="p-2">القسم</th><th class="p-2">التفاصيل</th></tr></thead><tbody id="auditLogsTableBody" class="divide-y"></tbody></table>
+                    <table class="w-full text-right text-[11px] border font-mono mt-3"><thead class="bg-slate-800 text-white"><tr><th class="p-2">التاريخ</th><th class="p-2">المسؤول</th><th class="p-2">الإجراء</th><th class="p-2">القسم</th><th class="p-2">التفاصيل</th></tr></thead><tbody id="auditLogsTableBody" class="divide-y"></tbody></table>
                 </div>
                 <div id="adm-bulk" class="adm-view hidden space-y-3 text-xs">
                     <p class="bg-amber-50 border border-judicial-gold/40 rounded-xl p-3 text-[11px] leading-relaxed">رفع مجمع للبيانات من قوالب النصوص المجهزة مسبقاً.</p>
@@ -691,7 +694,6 @@
                         <select id="contrib_section_target" class="w-full border rounded p-2 font-bold bg-slate-50">
                             <option value="defenses">3. الحيثيات والدفوع</option>
                             <option value="library">1. المكتبة والمؤلفات</option>
-                            <option value="jurisdictions">2. البوصلة والمبادئ</option>
                             <option value="checklists">4. قوائم التحقيق والأسئلة</option>
                             <option value="forms">5. النماذج والمآخذ</option>
                         </select>
@@ -699,7 +701,7 @@
                     <div><label class="font-bold block mb-1">القطاع:</label><select id="contrib_sector" class="w-full border rounded p-2 font-bold bg-slate-50"></select></div>
                 </div>
                 <div><label class="font-bold block mb-1">عنوان المساهمة أو الدفع:</label><input type="text" id="contrib_title" class="w-full border rounded p-2"></div>
-                <div><label class="font-bold block mb-1">المحتوى / نص الحيثية أو القاعدة:</label><textarea id="contrib_content" rows="4" class="w-full border rounded p-2"></textarea></div>
+                <div><label class="font-bold block mb-1">المحتوى / نص الحيثية أو الأسئلة:</label><textarea id="contrib_content" rows="4" class="w-full border rounded p-2"></textarea></div>
                 <div><label class="font-bold block mb-1">السند القانوني أو رابط Drive (إن وجد):</label><input type="text" id="contrib_ref" class="w-full border rounded p-2"></div>
             </div>
             <div class="flex justify-end gap-2 pt-2 border-t">
@@ -742,18 +744,26 @@
         </div>
     </div>
 
+    <!-- الفوتر الثابت -->
+    <footer class="fixed bottom-0 left-0 right-0 bg-judicial-900 text-white py-1.5 px-4 border-t border-judicial-gold z-30 shadow-lg">
+        <div class="max-w-7xl mx-auto flex justify-between items-center text-[11px]">
+            <div class="flex items-center gap-2">
+                <span id="footerBrandBadge" class="bg-judicial-gold text-judicial-950 font-extrabold px-2 py-0.5 rounded">المُـعَـاوِن</span>
+                <span id="footerBrandText">تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت © 2026</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="toggleModal('aboutModal')" class="text-judicial-gold hover:text-yellow-400 font-bold underline cursor-pointer text-[10px]">
+                    <i class="fa-solid fa-heart ml-0.5"></i> كلمة وفاء لنيابة ملوي
+                </button>
+                <span id="footerInstructionsDisplay" class="text-slate-300 font-bold hidden sm:inline border-r border-slate-700 pr-3">طبعة التعليمات القضائية أكتوبر 2026</span>
+            </div>
+        </div>
+    </footer>
+
     <!-- المنطق البرمجي والربط السحابي -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-
-        // حظر مفاتيح فحص العنصر وحفظ الصفحة لحماية الكود
-        document.addEventListener('keydown', e => {
-            if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && ['U','S','P'].includes(e.key))) { 
-                e.preventDefault(); 
-                return false; 
-            }
-        });
 
         const firebaseConfig = {
             apiKey: ["AIzaSyD9aZIqy9gO5lBV399", "-vlr1VojTlgOoiuU"].join(""),
@@ -793,18 +803,154 @@
             return String(str ?? "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
         }
 
+        // دالة تطهير النصوص وإزالة أي رموز مراجع
         function cleanLegalString(str) {
             if (!str) return "";
-            return String(str).replace(/\[cite:\s*[\d,\s]+\]/gi, "").trim();
+            return String(str).replace(/\[cite:\s*[\d,\s]+\]/gi, "").replace(/\[\s*cite:\s*[^\]]+\]/gi, "").trim();
         }
 
-        // تفريغ أزرار البنود بالقيود
-        window.uncheckAllBnds = function() {
-            document.querySelectorAll('.chk-bnd').forEach(el => el.checked = false);
-            composeSmartQayd();
+        const JUDICIAL_RANK_BADGES = {
+            "نائب رئيس هيئة النيابة الإدارية": { badge: "bg-amber-100 text-amber-900 border border-amber-400 font-extrabold", titleGreeting: "معالي المستشار الجليل", icon: "👑" },
+            "وكيل عام أول": { badge: "bg-judicial-900 text-judicial-gold border border-judicial-gold font-bold", titleGreeting: "معالي المستشار", icon: "⚜️" },
+            "وكيل عام": { badge: "bg-judicial-800 text-judicial-gold border border-judicial-gold/60 font-bold", titleGreeting: "معالي المستشار", icon: "⚜️" },
+            "رئيس نيابة إدارية من الفئة (أ)": { badge: "bg-emerald-100 text-emerald-900 border border-emerald-400 font-bold", titleGreeting: "سيادة المستشار", icon: "⚖️" },
+            "رئيس نيابة إدارية من الفئة (ب)": { badge: "bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold", titleGreeting: "سيادة المستشار", icon: "⚖️" },
+            "وكيل نيابة إدارية من الفئة الممتازة": { badge: "bg-blue-100 text-blue-900 border border-blue-400 font-bold", titleGreeting: "معالي الزميل المستشار", icon: "✒️" },
+            "وكيل نيابة إدارية": { badge: "bg-blue-50 text-blue-800 border border-blue-300 font-semibold", titleGreeting: "معالي الزميل المستشار", icon: "✒️" },
+            "مساعد نيابة إدارية": { badge: "bg-slate-100 text-slate-800 border border-slate-300 font-semibold", titleGreeting: "معالي الزميل المستشار", icon: "✒️" },
+            "معاون نيابة إدارية": { badge: "bg-amber-50 text-amber-800 border border-amber-200 font-semibold", titleGreeting: "معالي الزميل المستشار", icon: "✒️" }
         };
 
-        // الانتقال لخطوات المحطات
+        const DEFAULT_MALLAWI_WORD = `«كلمة وفاء وتقدير»\n\nانبثقت فكرة منصة «المُـعَـاوِن» من واقع العمل اليومي والحرص على جمع الشتات الإجرائي واختصار الوقت بما يكفل تحقيق العدالة الناجزة وسلامة التصرف القضائي.\n\nويطيب لي أن أُسجل كلمة تقدير وعرفان لأساتذتي وزملائي الأفاضل بـ نيابة ملوي، الذين كانت لحواراتهم المهنية البنّاءة، وحرصهم الدائم على سلامة الإجراء والسبك القانوني الرصين، أكبر الأثر في إنضاج هذا العمل وإخراجه ليكون عوناً لكل زميل في محراب العدالة، راجياً أن يكون جهداً خالصاً يخدم رسالة هيئتنا القضائية العريقة.`;
+
+        const OCT_2026_ENCYCLOPEDIA = [
+            { id: "enc_1", category: "أوجه التصرف", title: "وجوب إدراج الرقم القومي في القيد والوصف (قرار 172 لسنة 2025)", content: "يلتزم عضو النيابة بإدراج الرقم القومي للمتهمين وجوباً في القيد والوصف بمذكرة التصرف في حالات: (المجازاة التأديبية، أو الحفظ القطعي لعدم الأهمية، أو الإحالة للمحكمة التأديبية)، وتدرجه لجان التأديب بمشروع الجزاء أو القرار التأديبي إعمالاً لأحكام المادة 212 من التعليمات القضائية.", ref: "قرار رئيس الهيئة رقم 172 لسنة 2025 الصادر في 17/5/2025 والمادة 212" },
+            { id: "enc_2", category: "الكتب والقرارات 2026", title: "إثبات رقم الواتساب وحجية الإعلان بالمحاضر (منشور 6 لسنة 2026)", content: "عند إثبات بيانات الشاهد أو المتهم بمحضر التحقيق يُدون رقم هاتفه المُفعل عليه تطبيق 'واتس آب' مع إثبات إقراره بأن إخطاره أو إعلانه بواسطته يعد منتجاً لأثره القانوني والتزامه بإخطار النيابة رسمياً بأي تغيير يطرأ عليه.", ref: "منشور رئيس الهيئة رقم 6 لسنة 2026 تفعيلاً للمادة 74" },
+            { id: "enc_3", category: "الاختصاص والطلب", title: "اختصاص تحقيقات أعمال الامتحانات والكنترول (منشور 4 لسنة 2025)", content: "تختص بمخالفات المعلمين والإداريين بقطاع التعليم أثناء ندبهم لأعمال الامتحانات النيابة التي يخضع لها العاملون بقطاع التعليم الذي يوجد به مقر لجنة الإدارة أو لجنة النظام والمراقبة أو لجنة التصحيح (الكنترول) بحسب الأحوال، أياً كانت جهة عملهم الأصلية.", ref: "منشور رئيس الهيئة رقم 4 لسنة 2025 والمادة 48" },
+            { id: "enc_4", category: "أوجه التصرف", title: "مهلة إخطار الشاكي وأثرها في طلب إعادة النظر (م 58 وكتاب 4/2026)", content: "إذا تعلقت الشكوى بمصلحة شخصية للشاكي وحفظت لعدم الصحة أو عدم المخالفة، وجب إخطاره بالنتيجة خلال 15 يوماً من صيرورة التصرف نهائياً وإثباته بالملف الفرعي، وميعاد الـ 60 يوماً لطلب إعادة النظر لا يعمل في حقه إلا من تاريخ إخطاره الرسمي.", ref: "المادة 58 معدلة بالقرار 461 لسنة 2025 والكتاب الدوري رقم 4 لسنة 2026" },
+            { id: "enc_5", category: "ضوابط التحقيق", title: "الوقوف بالإجراءات لسابقة التصدي (كتاب دوري 14 لسنة 2024)", content: "يجوز الوقوف بالإجراءات لسابقة التصدي إذا كشف التحقيق أن واقعة أو أكثر كانت محلاً للتحقيق أو التصرف في قضية أخرى، ويطلع العضو على ملف القضية أو مذكرتها بالملف الفرعي ويعرض على مدير النيابة للتأشير بالضم أو الوقوف في الشق السابق تحقيقه.", ref: "الكتاب الدوري رقم 14 لسنة 2024 والمادة 209" },
+            { id: "enc_6", category: "أوجه التصرف", title: "الإحالة الوجوبية للمحكمة التأديبية - 12 حالة (مادة 210 المعدلة)", content: "أصبحت حالات الإحالة الوجوبية للمحكمة التأديبية 12 حالة بعد إضافة البنود (9 إلى 12) بالقرار 461 لسنة 2025 وتشمل: نشر شائعات كاذبة بسوء قصد لتكدير السلم العام، جرائم هتك العرض، الاعتداء على أطفال ذوي إعاقة أو استغلالهم، والإخلال العمدي بنظام توزيع السلع التموينية.", ref: "المادة 210 معدلة بالقرار 461 لسنة 2025" },
+            { id: "enc_7", category: "مبادئ الإدارية العليا", title: "حجية الحكم الجنائي بالبراءة أمام التأديب (الطعن 3845 لسنة 40 ق.ع)", content: "حجية الحكم الجنائي مقصورة على ما فصل فيه فصلاً لازماً في وقوع الفعل ونسبته إلى فاعله، وتثبت للمنطوق وللأسباب المرتبطة به وثيقاً، والبراءة لعدم كفاية الأدلة أو للشك لا تحول دون المساءلة التأديبية متى كان الفعل يشكل ذنباً إدارياً.", ref: "المحكمة الإدارية العليا - الطعن رقم 3845 لسنة 40 ق.ع" },
+            { id: "enc_8", category: "مبادئ الإدارية العليا", title: "مسؤولية الرئيس الإشرافية لا تقوم إلا بخطأ شخصي (الطعن 235 لسنة 40 ق.ع)", content: "مسؤولية الرئيس الإشرافية لا تقوم إلا حيث يثبت خطأ شخصي في جانبه في الإشراف على مرؤوسيه، ولا يسأل الرئيس عن كل خطأ يقع من مرؤوسيه في أداء أعمالهم إذ إن ذلك يقتضي قيامه بأعمالهم جميعاً وهو ما يتعارض مع مبدأ توزيع الاختصاصات.", ref: "المحكمة الإدارية العليا - الطعن رقم 235 لسنة 40 ق.ع" }
+        ];
+
+        const initialPlatformState = {
+            branding: {
+                brandTitle: "المُـعَـاوِن",
+                brandSub: "مَرجعُك الرقمي المُنظَّم",
+                cloudStatusText: "سحابي متصل",
+                brandLogoUrl: "",
+                footerInstructions: "طبعة التعليمات القضائية أكتوبر 2026",
+                aboutMallawiText: DEFAULT_MALLAWI_WORD,
+                tab1: "1. المكتبة والمؤلفات",
+                tab2: "2. البوصلة الإجرائية",
+                tab3: "3. الحيثيات والدفوع",
+                tab4: "4. قوائم التحقيق الاسترشادية 🔒",
+                tab5: "5. النماذج والمآخذ 🔒",
+                tab6: "6. القيود والأوصاف والـ AI 🔒",
+                footerText: "تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت © 2026"
+            },
+            settings: { inviteCode: "VIP2026" },
+            vipTokens: [],
+            sectors: ["الكل", "محليات وإدارة هندسية", "تعاقدات ومشتريات ومخازن", "شؤون وظيفية وخدمة مدنية", "صحة وإسعاف", "تضامن وتكافل وكرامة", "تربية وتعليم", "زراعة وأملاك دولة"],
+            members: [
+                { id: "super_admin", name: "المستشار أحمد الطويل", title: "معاون نيابة إدارية", workplace: "نيابة ملوي", phone: "-", username: "admin", pin: "2441998", pinHash: SUPER_ADMIN_PIN_HASH, role: "super_admin", status: "approved", perms: { add: true, edit: true, delete: true, approve: true, manageUsers: true }, lastSeen: Date.now() }
+            ],
+            library: [],
+            jurisdictions: OCT_2026_ENCYCLOPEDIA,
+            defenses: [],
+            checklists: [],
+            forms: [],
+            qayds: [],
+            pendingContributions: [],
+            auditLogs: []
+        };
+
+        let db = JSON.parse(JSON.stringify(initialPlatformState));
+        let currentUser = null, currentSector = "الكل", currentDefCategory = "الكل", currentCompassCat = "الكل", currentEditorContext = null, basket = [];
+        let currentWorkflowStage = 1;
+
+        const WORKFLOW_STAGES = {
+            1: {
+                title: "المحطة الأولى: الورود وفحص الاختصاص والطلب (قبل فتح المحضر)",
+                goldenRules: [
+                    "التأكد من قيد الأوراق رسمياً بدفتر حصر تحقيقات النيابة وإثبات تاريخ وساعة الورود ورقم القضية.",
+                    "فحص الاختصاص المكاني بحسب دائرة وقوع المخالفة أو مقر عمل الموظف وقت ارتكابها.",
+                    "التحقق من صفة الشاكي وما إذا كانت الشكوى مجهولة أو كيدية تستوجب الاستيفاء المبدئي (م 44)."
+                ],
+                toolTitle: "فاحص الفئات الخاصة والطلب والإذن (حماية التحقيق من البطلان):",
+                toolOptions: [
+                    { id: "azhar", label: "أعضاء هيئة التدريس بجامعة الأزهر (م 62/1)", desc: "لا يجوز بدء التحقيق إلا بطلب كتابي صريح من رئيس الجامعة (م 67 ق 103/1961)." },
+                    { id: "universities", label: "العاملون بالجامعات من غير هيئة التدريس (م 62/2)", desc: "يلزم طلب كتابي من رئيس الجامعة أو وزير التعليم العالي قبل البدء في التحقيق." },
+                    { id: "holding", label: "شركات قطاع الأعمال العام القابضة والتابعة (م 62/5)", desc: "يلزم طلب من الوزير المختص أو رئيس مجلس الإدارة، ولا ترسل الأوراق لإدارات قانونية مستقلة (منشور 3/2025)." },
+                    { id: "taxes", label: "مأمورو الضرائب ذوو الضبطية القضائية ولجان الطعن (م 57)", desc: "وجوب إرسال صورة الشكوى لوزارة المالية أو مصلحة الضرائب لورود تقرير فني يُعتد به عند التصرف." },
+                    { id: "exams", label: "أعمال الامتحانات والكنترول (منشور 4 لسنة 2025)", desc: "ينعقد الاختصاص حصرياً للنيابة التي يقع بدائرتها مقر لجنة الإدارة أو التصحيح أياً كانت جهة عمل المعلم الأصلية." }
+                ],
+                copySnippetTitle: "صيغة طلب التحقيق / إحالة الأوراق للسلطة المختصة",
+                copySnippet: "السيد الأستاذ الدكتور / رئيس جامعة (...)\nتحية طيبة وبعد،،،\nإيماءً إلى الأوراق الواردة للنيابة الإدارية برقم (...) لسنة (...)؛ وحيث كشفت الفحوص عن خضوع المشكو في حقه لأحكام المادة (62) من التعليمات القضائية؛ يرجى التفضل بالنظر نحو الموافاة بطلب التحقيق الرسمي للمضي قدماً في الإجراءات."
+            },
+            2: {
+                title: "المحطة الثانية: إدارة التحقيق وسؤال الأطراف (داخل غرفة التحقيق)",
+                goldenRules: [
+                    "إثبات ديباجة فتح المحضر تفصيلاً: (اليوم، التاريخ، الساعة، المقر، واسم كاتب التحقيق).",
+                    "تحليف الشهود اليمين القانونية والتنبيه عليهم بصدق الشهادة وسؤالهم فرادى دون حضور المتهم (م 76).",
+                    "فض الأحراز ومناظرتها وإثبات أوصافها وسلامة أختامها بالمحضر قبل فحصها."
+                ],
+                toolTitle: "تطبيق المنشور رقم 6 لسنة 2026 (إثبات الواتساب وحجية الإعلان):",
+                toolOptions: [
+                    { id: "whatsapp_rule", label: "ضابط إثبات تطبيق واتساب", desc: "يلتزم المحقق بتدوين رقم الهاتف المُفعل عليه تطبيق WhatsApp للشاهد والمتهم، وتثبيت إقراره الصريح بأن إعلانه عليه يعد منتجاً لآثاره القانونية الرسمية مع التزامه بإخطار النيابة بأي تغيير." }
+                ],
+                copySnippetTitle: "صيغة إثبات وسيلة الإعلان الإلكتروني (منشور 6 لسنة 2026)",
+                copySnippet: "وبسؤال الشاهد/المتهم عن وسيلة إعلانه الرسمية وتواصله بالتحقيقات، قرر أن رقم هاتفه المحمول هو (................) والمُفعل عليه تطبيق 'واتس آب'، وأقر صراحة بأن إخطاره أو إعلانه بأي مكاتبة أو طلب حضور عبر هذا التطبيق يعد إعلاناً قانونياً صحيحاً منتجاً لكافة آثاره، وتعهد بإخطار النيابة فوراً بأي تعديل يطرأ عليه."
+            },
+            3: {
+                title: "المحطة الثالثة: عوارض التحقيق والتصدي (أثناء السير في الدعوى)",
+                goldenRules: [
+                    "ضم الملف الفرعي للقضية وإرفاق صور المكاتبات والمستندات بانتظام وفق ورودها.",
+                    "طلب بيان حالة وظيفية رسمي ومعتمد من واقع ملف خدمة المتهم موضحاً به التدرج والجزاءات.",
+                    "متابعة ميعاد ورود تقارير اللجان الفنية المندوبة والتنبيه بسرعة إيداعها (م 142)."
+                ],
+                toolTitle: "حاسم سابقة التصدي وعوارض الدعوى:",
+                toolOptions: [
+                    { id: "tasadi", label: "الوقوف بالإجراءات لسابقة التصدي (كتاب دوري 14 لسنة 2024)", desc: "إذا كشف التحقيق أن الواقعة أو جزءاً منها سبق التحقيق فيه أو التصرف فيه في قضية أخرى، يثبت المحقق اطلاعه على القضية الأخرى بالملف الفرعي ويُعرض على مدير النيابة للتأشير بالضم أو الوقوف." },
+                    { id: "ergaa", label: "إرجاء البت تأديبياً (المادة 186)", desc: "يجوز إرجاء البت في المسئولية التأديبية إذا كانت الواقعة محل تحقيق جنائي يرتبط مصيرها به، لحين الفصل الجنائي دون إخلال بقطع التقادم." }
+                ],
+                copySnippetTitle: "صيغة محضر الاطلاع والوقوف لسابقة التصدي (كتاب 14/2024)",
+                copySnippet: "وحيث إنه باطلاعنا على أوراق القضية رقم (...) لسنة (...) نيابة (...)، وما انتهت إليه من تصرف معتمد؛ ولما كانت الوقائع محل التحقيق الماثل هي بذاتها ما تم استجلاؤه وفحصه بالقضية سالفة البيان دون وقائع جديدة؛ لذلك تعين الوقوف بالإجراءات في هذا الشق لسابقة التصدي له، مع إفراد ملف فرعي بصورة المذكرة والتصرف السابق."
+            },
+            4: {
+                title: "المحطة الرابعة: التكييف القانوني ومُركّب القيد والوصف",
+                goldenRules: [
+                    "إلزام الرقم القومي (قرار 172/2025 وم 212): تدوين الرقم القومي (14 رقماً) وجوبياً لكافة المتهمين في القيد والوصف بمذكرات التصرف في حالات: الجزاء، أو الحفظ لعدم الأهمية، أو الإحالة للمحكمة التأديبية.",
+                    "مواجهة المتهم تفصيلياً بكافة الأدلة المادية وتقارير الفحص وإتاحة حق الدفاع كاملاً قبل قفل المحضر.",
+                    "استقلال مواد الإسناد اللائحية بحسب القانون الحاكم للمتهم (خدمة مدنية 81، قطاع عام 48، أو لوائح خاصة)."
+                ],
+                toolTitle: "المُركِّب الذكي للقيود والأوصاف (نظام المستشار أحمد العدوي):",
+                toolOptions: [
+                    { id: "goto_qayds", label: "الانتقال التلقائي لمُركِّب القيود (التبويب السادس)", desc: "يتيح لك اختيار بنود المادتين 149 و150 مع تحديد نوع التصرف لإخراج فقرة التكييف في ختام الأسباب + منطوق القيد والوصف الكامل." }
+                ],
+                copySnippetTitle: "ديباجة القيد والوصف المعتمدة بالرقم القومي (قرار 172 لسنة 2025)",
+                copySnippet: "لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة مالية وإدارية بالمواد 57/1 و58/1 و60 من قانون الخدمة المدنية رقم 81 لسنة 2016 والمادتين 149/1 و150/15 من لائحته التنفيذية، ضــــد:\n- [اسم المخالف ووظيفته ودرجته] — (الرقم القومي: ............................)\nلأنه في غضون عام (...) وبمقر عمله بدائرة (...): خرج على مقتضى الواجب الوظيفي وقصر في أداء واجبه بأن: (...).\nثانياً: مجازاة المخالف المذكور تأديبياً."
+            },
+            5: {
+                title: "المحطة الخامسة: صياغة المذكرة وسلطة التصرف والاعتماد",
+                goldenRules: [
+                    "ترقيم أوراق القضية ترقيماً دقيقاً وإعداد فهرس رسمي مثبت به كل مستند ومحضر.",
+                    "وجوب إخطار الشاكي ذي المصلحة الشخصية بنتيجة الحفظ لعدم الصحة أو عدم المخالفة خلال 15 يوماً من صيرورة التصرف نهائياً مع إثباته بالملف الفرعي، ولا يسري ميعاد الـ 60 يوماً للتظلم إلا من تاريخ الإخطار (م 58 معدلة وكتاب 4/2026).",
+                    "إدراج قضايا الحفظ في كشف الحفظ الشهري المرسل للمكتب الفني للتفتيش والمتابعة (م 228)."
+                ],
+                toolTitle: "حاسم سلطة التصرف ومصفوفة الإحالة الوجوبية للمحكمة التأديبية:",
+                toolOptions: [
+                    { id: "director", label: "مدير النيابة المختص (المادة 227)", desc: "يختص بالتصرف النهائي وتوقيع الجزاء أو الحفظ لشاغلي الدرجات ما دون مدير عام الخاضعين للخدمة المدنية." },
+                    { id: "technical_office", label: "المكتب الفني المختص (المادة 229)", desc: "يختص بالتصرف لشاغلي درجة مدير عام من غير الخاضعين للخدمة المدنية كشركات قطاع الأعمال أو لتجاوز النصاب." },
+                    { id: "president_office", label: "مكتب فني رئيس الهيئة للفحوص (م 231 و243)", desc: "العرض بمذكرة على معالي رئيس الهيئة لشاغلي الوظائف القيادية أو العليا (العالية والممتازة)." },
+                    { id: "mandatory_ihala", label: "الإحالة الوجوبية للمحكمة التأديبية (12 حالة م 210 المعدلة)", desc: "يحظر توقيع جزاء إداري أو الحفظ لعدم الأهمية في: الرشوة، الاختلاس، التزوير، البناء م 99، هتك العرض، تكدير السلم والشائعات، والإخلال بالسلع التموينية، وتُرسل فوراً لفرع الدعوى التأديبية." }
+                ],
+                copySnippetTitle: "صيغة إخطار الشاكي بنتيجة الحفظ (المادة 58 معدلة بالقرار 461/2025)",
+                copySnippet: "السيد / ......................................... (الشاكي بالقضية رقم ... لسنة ...)\nتحية طيبة وبعد،،،\nنحيط سيادتكم علماً بأنه قد تقرر بجلسة تصرف النيابة حفظ الأوراق إدارياً (قطعياً لعدم الصحة / لعدم المخالفة). ونفيدكم بأن لكم الحق في التظلم وطلب إعادة النظر أمام إدارة التفتيش القضائي خلال ستين يوماً تبدأ من تاريخ استلامكم هذا الإخطار الرسمي عملاً بأحكام المادة (58) من التعليمات القضائية والكتاب الدوري رقم 4 لسنة 2026."
+            }
+        };
+
         window.switchStageStep = function(stepNum) {
             currentWorkflowStage = stepNum;
             document.querySelectorAll('.stage-step').forEach(b => {
@@ -833,7 +979,7 @@
                             <span class="w-6 h-6 rounded-full bg-judicial-900 text-judicial-gold flex items-center justify-center text-xs font-bold">${currentWorkflowStage}</span>
                             ${s.title}
                         </h3>
-                        <span class="text-[11px] text-slate-400 font-bold">طبعة القرارين 517 و518 لسنة 2026</span>
+                        <span class="text-[11px] text-slate-400 font-bold">طبعة التعليمات القضائية 2026</span>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
@@ -882,13 +1028,191 @@
 
         window.copySnippetText = function(id) {
             const t = document.getElementById(id)?.innerText || "";
-            if (t) { navigator.clipboard.writeText(t); alert("تم نسخ الصيغة الرسمية بنجاح!"); }
+            if (t) { navigator.clipboard.writeText(t); alert("تم نسخ الصيغة الرسمية إلى الحافظة بنجاح!"); }
+        };
+
+        window.selectHubSection = function(tabId) {
+            document.querySelectorAll('.hub-card').forEach(el => el.classList.remove('hub-card-active'));
+            const card = document.getElementById('hubCard-' + tabId);
+            if (card) card.classList.add('hub-card-active');
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const targetSection = document.getElementById(tabId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        window.scrollToTopHub = function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        function buildShardPayload(shardKey) {
+            if (shardKey === 'config') return { branding: db.branding, settings: db.settings, sectors: db.sectors, pendingContributions: db.pendingContributions, auditLogs: db.auditLogs, globalEngineMode: globalStorageEngine };
+            if (shardKey === 'members') return { members: db.members, vipTokens: db.vipTokens };
+            if (shardKey === 'library') return { items: db.library };
+            if (shardKey === 'jurisdictions') return { items: db.jurisdictions };
+            if (shardKey === 'defenses') return { items: db.defenses };
+            if (shardKey === 'checklists') return { items: db.checklists };
+            if (shardKey === 'forms') return { items: db.forms };
+            if (shardKey === 'qayds') return { items: db.qayds };
+            return {};
+        }
+
+        function applyShardData(shardKey, data) {
+            if (!data) return;
+            if (shardKey === 'config') {
+                db.branding = { ...initialPlatformState.branding, ...(data.branding || {}) };
+                db.settings = { ...initialPlatformState.settings, ...(data.settings || {}) };
+                if (Array.isArray(data.sectors) && data.sectors.length) db.sectors = data.sectors;
+                db.pendingContributions = data.pendingContributions || [];
+                db.auditLogs = data.auditLogs || [];
+            } else if (shardKey === 'members') {
+                if (Array.isArray(data.members) && data.members.length) db.members = data.members;
+                db.vipTokens = data.vipTokens || [];
+            } else if (shardKey === 'library') { db.library = data.items || []; }
+            else if (shardKey === 'jurisdictions') { db.jurisdictions = (data.items && data.items.length) ? data.items : OCT_2026_ENCYCLOPEDIA; }
+            else if (shardKey === 'defenses') { db.defenses = data.items || []; }
+            else if (shardKey === 'checklists') { db.checklists = data.items || []; }
+            else if (shardKey === 'forms') { db.forms = data.items || []; }
+            else if (shardKey === 'qayds') { db.qayds = data.items || []; }
+        }
+
+        async function persistState(action = null, section = null, details = null) {
+            if (action) {
+                if (!db.auditLogs) db.auditLogs = [];
+                db.auditLogs.unshift({ id: "log_" + Date.now(), time: new Date().toLocaleString('ar-EG'), actor: currentUser ? `${currentUser.name} (${currentUser.title})` : "عضو", action, section: section || "-", details: details || "-" });
+                if (db.auditLogs.length > 80) db.auditLogs = db.auditLogs.slice(0, 80);
+            }
+            localStorage.setItem("moawen_v12_backup", JSON.stringify(db));
+            refreshAllUI();
+            try {
+                const batch = writeBatch(firestoreDB);
+                Object.keys(SHARD_REFS).forEach(k => { batch.set(SHARD_REFS[k], buildShardPayload(k)); });
+                await batch.commit();
+            } catch (e) {
+                try { await setDoc(LEGACY_MAIN_REF, db); } catch (e2) {}
+            }
+        }
+
+        // إرسال نبضة التواجد اللحظي
+        async function sendPresenceHeartbeat() {
+            if (!currentUser) return;
+            const now = Date.now();
+            currentUser.lastSeen = now;
+            const idx = db.members.findIndex(m => m.id === currentUser.id);
+            if (idx >= 0) db.members[idx].lastSeen = now;
+            try {
+                await setDoc(SHARD_REFS.members, { members: db.members, vipTokens: db.vipTokens });
+            } catch (e) {}
+        }
+        setInterval(sendPresenceHeartbeat, 60000);
+
+        window.syncProceduralCompassData = async function() {
+            if (!hasPerm('manageUsers') && currentUser?.role !== 'super_admin') return alert("هذا الإجراء مخصص لمدير المنصة فقط.");
+            if (!confirm("هل تريد تحديث بيانات البوصلة الإجرائية، القواعد، وأسماء التبويبات إلى طبعة أكتوبر 2026 سحابياً الآن؟")) return;
+            
+            db.branding.tab2 = "2. البوصلة الإجرائية";
+            db.branding.tab6 = "6. القيود والأوصاف والـ AI 🔒";
+            db.jurisdictions = OCT_2026_ENCYCLOPEDIA;
+
+            await persistState("تحديث طبعة أكتوبر 2026", "البوصلة الإجرائية", "دمج المواد والكتب المستحدثة");
+            alert("✅ تم بنجاح تحديث البوصلة الإجرائية والموسوعة وتثبيت اسم '2. البوصلة الإجرائية' على جميع الأجهزة!");
+            location.reload();
+        };
+
+        async function initCloudSync() {
+            try {
+                const keys = Object.keys(SHARD_REFS);
+                const snaps = await Promise.all(keys.map(k => getDoc(SHARD_REFS[k])));
+                snaps.forEach((s, idx) => { if (s.exists()) applyShardData(keys[idx], s.data()); });
+
+                keys.forEach(k => {
+                    onSnapshot(SHARD_REFS[k], (docSnap) => {
+                        if (docSnap.exists()) {
+                            applyShardData(k, docSnap.data());
+                            if (k === 'members' && currentUser) {
+                                const me = db.members.find(m => m.id === currentUser.id);
+                                if (!me || me.status === 'blocked') logoutUser(); else currentUser = me;
+                            }
+                            refreshAllUI();
+                        }
+                    });
+                });
+                checkSavedSession();
+                refreshAllUI();
+                sendPresenceHeartbeat();
+            } catch (err) {
+                const s = localStorage.getItem("moawen_v12_backup");
+                if (s) db = JSON.parse(s);
+                checkSavedSession();
+                refreshAllUI();
+            }
+        }
+
+        function isApprovedMember() { return Boolean(currentUser && (currentUser.status === 'approved' || currentUser.role === 'super_admin')); }
+        function hasPerm(k) {
+            if (!isApprovedMember()) return false;
+            if (currentUser.role === 'super_admin') return true;
+            return Boolean(currentUser.role === 'moderator' && currentUser.perms && currentUser.perms[k]);
+        }
+        function checkSavedSession() {
+            const id = sessionStorage.getItem("moawen_v12_uid");
+            if (!id) return;
+            const f = db.members.find(m => m.id === id && (m.status === 'approved' || m.role === 'super_admin'));
+            if (f) currentUser = f;
+        }
+
+        window.executeGlobalSearch = function() {
+            const q = document.getElementById('globalSearch').value.trim().toLowerCase();
+            const sec = document.getElementById('globalSearchResultsSection');
+            const cont = document.getElementById('globalSearchResultsContainer');
+            
+            if (!q) { 
+                sec.classList.add('hidden'); 
+                return; 
+            }
+            
+            document.getElementById('clearSearchBtn').classList.remove('hidden');
+            const res = [];
+            
+            (db.library || []).forEach(b => { if (`${b.title} ${b.author} ${b.description}`.toLowerCase().includes(q)) res.push({ s: "المكتبة", t: b.title, b: b.description }); });
+            (db.jurisdictions || []).forEach(j => { if (`${j.title} ${j.content} ${j.category}`.toLowerCase().includes(q)) res.push({ s: "البوصلة الإجرائية", t: j.title, b: j.content }); });
+            (db.defenses || []).forEach(d => { if (`${d.title} ${d.response} ${d.category}`.toLowerCase().includes(q)) res.push({ s: d.category, t: d.title, b: isApprovedMember() ? d.response : d.response.substring(0, 90) + "..." }); });
+            
+            if (isApprovedMember()) {
+                (db.checklists || []).forEach(c => { if (`${c.title} ${(c.docs||[]).join(' ')} ${(c.witness_q||[]).join(' ')}`.toLowerCase().includes(q)) res.push({ s: "قوائم التحقيق", t: c.title, b: (c.docs||[]).join(' - ') }); });
+                (db.forms || []).forEach(f => { if (`${f.title} ${f.content}`.toLowerCase().includes(q)) res.push({ s: "النماذج", t: f.title, b: f.content }); });
+                (db.qayds || []).forEach(qd => { if (`${qd.title} ${qd.wasf} ${qd.articles}`.toLowerCase().includes(q)) res.push({ s: "القيود والأوصاف", t: qd.title, b: `${qd.articles}\n${qd.wasf}` }); });
+            }
+            
+            document.getElementById('searchCountBadge').innerText = res.length;
+            sec.classList.remove('hidden');
+            cont.innerHTML = res.length ? res.map((m, i) => `
+                <div class="p-3 bg-slate-50 rounded-xl border flex flex-col justify-between">
+                    <div>
+                        <span class="bg-judicial-900 text-judicial-gold text-[10px] font-bold px-2 py-0.5 rounded">${m.s}</span>
+                        <h4 class="font-bold text-judicial-900 text-xs mt-1.5">${cleanLegalString(m.t)}</h4>
+                        <p id="srch-${i}" class="text-xs text-slate-700 mt-1 whitespace-pre-line leading-relaxed">${cleanLegalString(m.b)}</p>
+                    </div>
+                    <div class="mt-2 pt-2 border-t flex justify-end gap-2">
+                        <button type="button" onclick="copyText('srch-${i}')" class="bg-judicial-900 text-white px-2.5 py-1 rounded text-[10px] font-bold cursor-pointer">نسخ</button>
+                        <button type="button" onclick="addToBasket('${m.t}', document.getElementById('srch-${i}').innerText)" class="bg-judicial-gold text-judicial-950 px-2.5 py-1 rounded text-[10px] font-extrabold cursor-pointer">+ للمسودة</button>
+                    </div>
+                </div>`).join('') : `<div class="col-span-2 text-center py-6 text-xs text-slate-400">لا توجد نتائج مطابقة لما كتبته في البحث.</div>`;
+        };
+
+        window.clearGlobalSearch = function() {
+            document.getElementById('globalSearch').value = "";
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            document.getElementById('globalSearchResultsSection').classList.add('hidden');
         };
 
         window.filterCompassEncyclopedia = function(cat) {
             currentCompassCat = cat;
             document.querySelectorAll('.compass-subtab').forEach(b => {
-                b.className = b.getAttribute('data-compcat') === cat ? "compass-subtab compass-tab-active px-2.5 py-1 rounded text-xs border cursor-pointer" : "compass-subtab bg-slate-50 px-2.5 py-1 rounded text-xs border cursor-pointer";
+                b.className = b.getAttribute('data-compcat') === cat ? "compass-subtab compass-tab-active px-2.5 py-1 rounded text-xs border cursor-pointer" : "compass-subtab bg-slate-100 text-slate-700 px-2.5 py-1 rounded text-xs border cursor-pointer";
             });
             renderCompassEncyclopedia();
         };
@@ -896,20 +1220,16 @@
         function renderCompassEncyclopedia() {
             const cont = document.getElementById('compassEncyclopediaContainer');
             if (!cont) return;
-            let list = db.jurisdictions || NOV_2026_ENCYCLOPEDIA;
+            let list = db.jurisdictions || OCT_2026_ENCYCLOPEDIA;
             if (currentCompassCat !== "الكل") list = list.filter(x => x.category === currentCompassCat);
             const app = isApprovedMember();
-            const ce = hasPerm('edit'), cd = hasPerm('delete');
 
             cont.innerHTML = list.length ? list.map((item, i) => `
                 <div class="p-3 bg-slate-50 border rounded-xl flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center mb-1">
                             <span class="bg-judicial-900 text-judicial-gold text-[10px] font-bold px-2 py-0.5 rounded">${item.category}</span>
-                            <div class="flex items-center gap-1">
-                                ${ce ? `<button type="button" onclick="openItemEditor('jurisdiction','${item.id}')" class="text-amber-700 px-1 text-xs cursor-pointer"><i class="fa-solid fa-pen"></i></button>` : ''}
-                                ${cd ? `<button type="button" onclick="deleteItem('jurisdiction','${item.id}')" class="text-red-600 px-1 text-xs cursor-pointer"><i class="fa-solid fa-trash"></i></button>` : ''}
-                            </div>
+                            <span class="text-[10px] text-slate-400 font-bold">طبعة 2026</span>
                         </div>
                         <h4 class="font-bold text-judicial-900 text-xs mb-1">${cleanLegalString(item.title)}</h4>
                         ${app ? `<p id="enc-text-${i}" class="text-xs text-slate-700 leading-relaxed whitespace-pre-line">${cleanLegalString(item.content)}</p>` : 
@@ -932,11 +1252,61 @@
                 </div>`).join('') : `<div class="col-span-2 text-center py-6 text-xs text-slate-400">لا توجد بطاقات في هذا التصنيف.</div>`;
         }
 
-        // تشغيل وعرض القيود
+        // ======================== القيود والأوصاف ========================
+        const LEGAL_PRESETS = {
+            civil_81: {
+                title: "قانون الخدمة المدنية رقم 81 لسنة 2016 ولائحته 1216 لسنة 2017",
+                baseArticles: "57/الفقرة الأولى، و58/الفقرة الأولى",
+                generalIntro: "خالف أحكام قانون الخدمة المدنية ولائحته التنفيذية، وخرج على مقتضى الواجب الوظيفي ولم يؤدِّ العمل المنوط به بدقة وأمانة"
+            },
+            public_48: {
+                title: "قانون نظام العاملين بالقطاع العام رقم 48 لسنة 1978",
+                baseArticles: "78، و79، و80",
+                generalIntro: "خالف أحكام قانون نظام العاملين بالقطاع العام ولوائح جهة عمله، ولم يؤدِّ العمل المنوط به بدقة"
+            },
+            business_203: {
+                title: "قانون شركات قطاع الأعمال العام رقم 203 لسنة 1991 المعدل بالقانون 185 لسنة 2020",
+                baseArticles: "المادة 48 المعدلة بالقانون 185 لسنة 2020 ولوائح الشركة",
+                generalIntro: "خالف الواجبات الوظيفية المقررة باللوائح المنظمة لشركات قطاع الأعمال العام"
+            },
+            finance_182: {
+                title: "قانون تنظيم التعاقدات 182 لسنة 2018 واللائحة المالية للموازنة والحسابات ولائحة المخازن",
+                baseArticles: "أحكام القانون 182 لسنة 2018 ولائحته ومواد اللائحة المالية",
+                generalIntro: "خالف القواعد المالية المقررة بلائحة المخازن وأحكام قانون التعاقدات الحكومية وقصر في أداء واجبه المالي"
+            },
+            taxes_206: {
+                title: "قانون الإجراءات الضريبية الموحد رقم 206 لسنة 2020 والتعليمات التنفيذية للضرائب",
+                baseArticles: "المواد المنظمة بالفصل الثالث من القانون 206 لسنة 2020 والتعليمات الضريبية",
+                generalIntro: "خالف التعليمات الفنية والضوابط المنصوص عليها بقانون الإجراءات الضريبية الموحد"
+            },
+            building_119: {
+                title: "قانون البناء الموحد رقم 119 لسنة 2008 والقرارات المنفذة",
+                baseArticles: "المادتين 99 و102 من قانون البناء 119 لسنة 2008 وقوانين حماية الأراضي الزراعية",
+                generalIntro: "تقاعس عن اتخاذ الإجراءات القانونية المقررة حيال مخالفات البناء وخرج على مقتضى الواجب الوظيفي"
+            }
+        };
+
+        const BND_DETAILS = {
+            "149_1": { art: "149/1", desc: "لم يؤدِّ العمل المنوط به بنفسه بدقة وأمانة", taakeef: "لعدم أدائه العمل المنوط به بدقة وأمانة" },
+            "149_2": { art: "149/2", desc: "لم يلتزم بمواعيد العمل الرسمية ولم يخصص وقت العمل لأداء واجبات وظيفته", taakeef: "لعدم التزامه بمواعيد العمل وتخصيص الوقت لوظيفته" },
+            "149_6": { art: "149/6", desc: "لم يحافظ على ممتلكات وأموال الوحدة التي يعمل بها وقصر في صيانتها", taakeef: "لقصوره في صيانة ممتلكات وأموال الوحدة" },
+            "150_3": { art: "150/3", desc: "تأخر في الرد على مناقضات الجهاز المركزي للمحاسبات ومكاتباته بغير عذر", taakeef: "لتأخره ومماطلته في الرد على مناقضات الجهاز المركزي للمحاسبات" },
+            "150_7": { art: "150/7", desc: "احتفظ لنفسه بأوراق رسمية ونزعها من الملفات المخصصة لحفظها", taakeef: "لاحتفاظه بأوراق رسمية ونزعها من ملفاتها" },
+            "150_14": { art: "150/14", desc: "أساء معاملة الجمهور وتراخى متعمداً في أداء الخدمة المكلف بها", taakeef: "لإساءته معاملة الجمهور والتباطؤ المتعمد في أداء الخدمة" },
+            "150_15": { art: "150/15", desc: "قصر في أداء واجبه الوظيفي مما ترتب عليه ضياع حق مالي للدولة", taakeef: "لتقصيره الذي ترتب عليه ضياع حق من الحقوق المالية للدولة" },
+            "46_3": { art: "ق 46/3", desc: "انقطع عن عمله بدون إذن وفي غير حدود الإجازات المقررة قانوناً", taakeef: "لانقطاعه عن العمل دون إذن" },
+            "51_142": { art: "ق 51 وم 142 لائحة", desc: "تمارض وادعى المرض على خلاف الحقيقة للتهرب من أداء واجبات وظيفته", taakeef: "لتمارضه وانقطاعه عن العمل بادعاء المرض على خلاف الحقيقة" }
+        };
+
         window.handleLegalCategoryChange = function() {
             const cat = document.getElementById('qayd_legal_category').value;
             const bndBox = document.getElementById('executiveRulesBox');
             if (cat === 'civil_81') bndBox.classList.remove('hidden'); else bndBox.classList.add('hidden');
+            composeSmartQayd();
+        };
+
+        window.uncheckAllBnds = function() {
+            document.querySelectorAll('.chk-bnd').forEach(el => el.checked = false);
             composeSmartQayd();
         };
 
@@ -969,11 +1339,11 @@
                 const taakeefJoint = bndTaakeef.length ? bndTaakeef.join('، و') : "لعدم أدائه العمل المنوط به بدقة وأمانة";
                 taakeefText = `ومن ثم يكون المذكور قد ارتكب ذنباً تأديبياً قوامه مخالفته أحكام ${preset.title}، ${taakeefJoint} بالمخالفة لأحكام المادة ${preset.baseArticles}${bndArticles.length ? ' والمواد (' + bndArticles.join('، ') + ')' : ''}، وهو ما يُعد منه خروجاً على مقتضى الواجب الوظيفي يستوجب مساءلته تأديبياً طبقاً لحكم القانون.`;
             } else if (mode === 'hifz_saha') {
-                taakeefText = `وحيث إنه عما نُسب إلى المشكو في حقه سالف البيان، ولما كانت الأوراق قد خلت من أي دليل يساند الاتهام، وثبت عدم صحة ما أثير قبله إما لعدم وقوع الفعل أصلاً أو لارتكابه من شخص آخر، الأمر الذي نرى معه التقرير بحفظ الأوراق إدارياً (قطعياً لعدم الصحة) عملاً بأحكام المادة 208 مكرراً بند 1 من التعليمات القضائية.`;
+                taakeefText = `وحيث إنه عما نُسب إلى المشكو في حقه سالف البيان، ولما كانت الأوراق قد خلت من أي دليل يساند الاتهام، وثبت عدم صحة ما أثير قبله، الأمر الذي نرى معه التقرير بحفظ الأوراق إدارياً (قطعياً لعدم الصحة).`;
             } else if (mode === 'hifz_mukhalafa') {
-                taakeefText = `وحيث إنه بشأن ما أثير قبل المشكو في حقه، وإذ ثبت أن تصرفه قد جاء متفقاً وصحيح حكم القانون واللوائح المنظمة، وتجرد فعله من وصف المخالفة التأديبية، لذا نرى حفظ الأوراق إدارياً (قطعياً لعدم المخالفة) عملاً بأحكام المادة 208 مكرراً بند 2 من التعليمات القضائية.`;
+                taakeefText = `وحيث إنه بشأن ما أثير قبل المشكو في حقه، وإذ ثبت أن تصرفه قد جاء متفقاً وصحيح حكم القانون واللوائح المنظمة، وتجرد فعله من وصف المخالفة التأديبية، لذا نرى حفظ الأوراق إدارياً (قطعياً لعدم المخالفة).`;
             } else {
-                taakeefText = `وحيث إنه إزاء عدم كفاية الأدلة القائمة بالأوراق أو شيوع الاتهام أو عدم معرفة الفاعل، تعين الوقوف بالإجراءات وحفظ الأوراق إدارياً مؤقتاً بحالتها عملاً بأحكام المادة 208 من التعليمات القضائية.`;
+                taakeefText = `وحيث إنه إزاء عدم كفاية الأدلة القائمة بالأوراق أو شيوع الاتهام، تعين الوقوف بالإجراءات وحفظ الأوراق إدارياً مؤقتاً بحالتها.`;
             }
 
             let fullQayd = "";
@@ -990,13 +1360,13 @@
                 const arts = `بالمواد: 57/الفقرة الأولى، و58/الفقرة الأولى، و61، و62/4 من قانون الخدمة المدنية رقم 81 لسنة 2016${bndArticles.length ? '، والمادتين (' + bndArticles.join('، ') + ') من لائحته التنفيذية' : ''}، و${nihalaArtText}، والمادتين 15/أولاً، و19/1${retiredArts} من قانون مجلس الدولة رقم 47 لسنة 1972 وتعديلاته`;
                 fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة إدارية ومالية ${arts}، ضــــد:\n- ${name}${isRet ? ' (بالدرجة ... سابقاً وحالياً بالمعاش)' : ''} — (الرقم القومي: ${nid})\n\nلأنه في غضون ${date}، وبوصفه السابق، وبمقر عمله ${workplace}:\n${bndDescs.length ? bndDescs.join('، و') : preset.generalIntro} بأن:\n${fact} — وذلك على النحو الموضح بالأوراق.\n\nثانياً: إحالة المخالف المذكور إلى المحكمة التأديبية المختصة.`;
             } else if (mode === 'hifz_ahamia') {
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة إدارية بنصوص المادتين 57/الفقرة الأولى، و58/الفقرة الأولى من قانون الخدمة المدنية رقم 81 لسنة 2016، ضــــد:\n- ${name} — (الرقم القومي: ${nid})\n\nلأنه في غضون ${date}، وبوصفه سالف البيان:\n${preset.generalIntro} بأن:\n${fact}\n\nثانياً: حفظ ما نُسب إلى المخالف المذكور قطعياً لعدم الأهمية عملاً بالمادة 208 مكرراً بند 3 من التعليمات.`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nأولاً: قيد الواقعة مخالفة إدارية بنصوص المادتين 57/الفقرة الأولى، و58/الفقرة الأولى من قانون الخدمة المدنية رقم 81 لسنة 2016، ضــــد:\n- ${name} — (الرقم القومي: ${nid})\n\nلأنه في غضون ${date}، وبوصفه سالف البيان:\n${preset.generalIntro} بأن:\n${fact}\n\nثانياً: حفظ ما نُسب إلى المخالف المذكور قطعياً لعدم الأهمية.`;
             } else if (mode === 'hifz_saha') {
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (قطعياً لعدم الصحة)، دون قيد أو وصف عملاً بأحكام المادة 208 مكرراً بند 1 والمادة 214 من التعليمات القضائية.`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (قطعياً لعدم الصحة)، دون قيد أو وصف عملاً بأحكام المادة 214 من التعليمات القضائية طبعة 2026.`;
             } else if (mode === 'hifz_mukhalafa') {
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (قطعياً لعدم المخالفة)، دون قيد أو وصف عملاً بأحكام المادة 208 مكرراً بند 2 والمادة 214 من التعليمات القضائية.`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (قطعياً لعدم المخالفة)، دون قيد أو وصف عملاً بأحكام المادة 214 من التعليمات القضائية طبعة 2026.`;
             } else {
-                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (مؤقتاً لعدم كفاية الأدلة أو لعدم معرفة الفاعل)، دون قيد أو وصف عملاً بأحكام المادة 208 والمادة 214 من التعليمات القضائية.`;
+                fullQayd = `لـــــــــذلـــــــــك نـــــــــرى:\nحفظ الأوراق إدارياً (مؤقتاً لعدم كفاية الأدلة أو لعدم معرفة الفاعل)، دون قيد أو وصف عملاً بأحكام المادة 208 و214 من التعليمات القضائية.`;
             }
 
             document.getElementById('qaydTaakeefBox').innerText = cleanLegalString(taakeefText);
@@ -1032,7 +1402,7 @@
             const sel = document.getElementById('savedQaydTemplatesSelect');
             if (!sel) return;
             const list = db.qayds || [];
-            sel.innerHTML = `<option value="">القوالب المحفوظة (${list.length})...</option>` + list.map(q => `<option value="${q.id}">${q.title}</option>`).join('');
+            sel.innerHTML = `<option value="">القوالب المحفوظة (${list.length})...</option>` + list.map((q, idx) => `<option value="${q.id}">${q.title}</option>`).join('');
         }
 
         window.loadSavedQaydTemplate = function(id) {
@@ -1055,7 +1425,7 @@
             alert("تم حذف القالب بنجاح!");
         };
 
-        // إدارة وعرض باقي الأقسام
+        // ======================== باقي الأقسام ========================
         window.renderLibrarySection = function() {
             const cat = document.getElementById('libCategoryFilter')?.value || "الكل";
             let list = db.library || []; if (cat !== "الكل") list = list.filter(b => b.category === cat);
@@ -1137,18 +1507,22 @@
         window.renderDefensesSection = function() {
             const list = db.defenses || [], app = isApprovedMember(), ce = hasPerm('edit'), cd = hasPerm('delete'), cont = document.getElementById('defensesContainer');
             if (currentDefCategory !== "الكل") {
-                const flt = list.filter(d => d.category === currentDefCategory || (currentDefCategory === 'حيثيات الحفظ القطعي' && d.category.includes('القطعي')));
+                const flt = list.filter(d => d.category === currentDefCategory || (currentDefCategory === 'حيثيات الحفظ القطعي' && d.category === 'حيثيات الحفظ القطعي والمؤقت'));
                 cont.innerHTML = flt.length ? flt.map((d, i) => buildDefCard(d, i, app, ce, cd)).join('') : `<div class="bg-white p-6 rounded-xl text-center text-slate-400 text-xs">لا توجد حيثيات مضافة في هذا التصنيف بعد.</div>`;
                 return;
             }
             const groups = ["حيثيات الحفظ القطعي", "حيثيات الحفظ المؤقت", "حيثيات الإجراءات والاختصاص", "حيثيات الثبوت والرد على الدفوع"];
             let gIdx = 0, html = "";
             groups.forEach(g => {
-                const items = list.filter(d => d.category === g || (g === "حيثيات الحفظ القطعي" && d.category.includes('القطعي')));
+                const items = list.filter(d => d.category === g || (g === "حيثيات الحفظ القطعي" && !groups.includes(d.category)));
                 if (items.length) html += `<div class="space-y-2"><div class="bg-judicial-900 text-judicial-gold px-3 py-1.5 rounded-lg text-xs font-extrabold flex justify-between items-center"><span>${g}</span><span class="bg-judicial-800 text-white px-2 py-0.5 rounded-full text-[10px]">${items.length}</span></div><div class="grid grid-cols-1 gap-2">${items.map(d => buildDefCard(d, gIdx++, app, ce, cd)).join('')}</div></div>`;
             });
             cont.innerHTML = html || `<div class="bg-white p-6 rounded-xl text-center text-slate-400 text-xs">أضف الحيثيات والدفوع من زر (+ إضافة حيثية).</div>`;
         };
+
+        const FALLBACK_CHECKLISTS = [
+            { id: "fallback_1", sector: "صحة وإسعاف", title: "تلفيات سيارات الإسعاف والمهمات", docs: ["محضر إثبات حالة السيارة", "تقرير الفحص الفني", "سجل الصيانة الدورية"], witness_q: ["ما سبب وظروف اكتشاف التلف؟", "من السائق المسؤول وقت الواقعة؟"], accused_q: ["ما قولك فيما نسب إليك من إهمال صيانة السيارة؟"], tips: ["تحقق من مواعيد الصيانة الدورية المقررة بلائحة التشغيل."] }
+        ];
 
         function renderSectorsBar() {
             const bar = document.getElementById('sectorsBar');
@@ -1160,7 +1534,7 @@
 
         function renderChecklistsSection() {
             renderSectorsBar();
-            const allChecklists = db.checklists || [];
+            const allChecklists = (db.checklists && db.checklists.length) ? db.checklists : FALLBACK_CHECKLISTS;
             const list = currentSector === "الكل" ? allChecklists : allChecklists.filter(c => c.sector === currentSector);
             const sel = document.getElementById('checklistSelector'), prev = sel.value;
             sel.innerHTML = list.length ? list.map(c => `<option value="${c.id}">[${c.sector}] ${c.title}</option>`).join('') : `<option value="">لا توجد قوائم في هذا القطاع</option>`;
@@ -1169,15 +1543,15 @@
         }
 
         window.renderSelectedChecklist = function() {
-            const allChecklists = db.checklists || [];
+            const allChecklists = (db.checklists && db.checklists.length) ? db.checklists : FALLBACK_CHECKLISTS;
             const data = allChecklists.find(c => c.id === document.getElementById('checklistSelector').value);
             const cont = document.getElementById('checklistContainer');
             if (!data) { cont.innerHTML = `<div class="col-span-2 bg-white p-6 rounded-xl text-center text-slate-400 text-xs">أضف قوائم الفحص والأسئلة من زر (+ قائمة).</div>`; return; }
             cont.innerHTML = `
-                <div class="bg-white p-3.5 rounded-xl shadow-sm border-t-4 border-judicial-900"><h3 class="font-bold text-xs mb-2">أولاً: المستندات المطلوبة:</h3><div class="space-y-1.5">${(data.docs||[]).map(d => `<label class="flex items-start gap-2 text-xs cursor-pointer"><input type="checkbox" onchange="updateProgress()" class="chk-item mt-0.5"><span>${cleanLegalString(d)}</span></label>`).join('')}</div></div>
-                <div class="bg-white p-3.5 rounded-xl shadow-sm border-t-4 border-blue-700"><h3 class="font-bold text-xs mb-2">ثانياً: أسئلة الشهود:</h3><div class="space-y-1.5">${(data.witness_q||[]).map(q => `<label class="flex items-start gap-2 text-xs font-semibold cursor-pointer"><input type="checkbox" onchange="updateProgress()" class="chk-item mt-0.5"><span>"${cleanLegalString(q)}"</span></label>`).join('')}</div></div>
-                <div class="bg-white p-3.5 rounded-xl shadow-sm border-t-4 border-red-700"><h3 class="font-bold text-xs mb-2">ثالياً: أسئلة المواجهة:</h3><div class="space-y-1.5">${(data.accused_q||[]).map(q => `<label class="flex items-start gap-2 text-xs font-semibold cursor-pointer"><input type="checkbox" onchange="updateProgress()" class="chk-item mt-0.5"><span>"${cleanLegalString(q)}"</span></label>`).join('')}</div></div>
-                <div class="bg-amber-50 p-3.5 rounded-xl shadow-sm border-t-4 border-judicial-gold"><h3 class="font-bold text-xs mb-2">رابعاً: ضوابط فنية وملاحظات:</h3><ul class="space-y-1 list-disc list-inside text-xs">${(data.tips||[]).map(t => `<li class="p-1 bg-white rounded border">${cleanLegalString(t)}</li>`).join('')}</ul></div>`;
+                <div class="bg-white p-3.5 rounded-xl shadow-sm border-t-4 border-judicial-900"><h3 class="font-bold text-xs mb-2">أولاً: المستندات المطلوبة:</h3><div class="space-y-1.5">${(data.docs||[]).map(d => `<label class="flex items-start gap-2 text-xs cursor-pointer"><input type="checkbox" onchange="updateProgress()" class="chk-item mt-0.5"><span>${d}</span></label>`).join('')}</div></div>
+                <div class="bg-white p-3.5 rounded-xl shadow-sm border-t-4 border-blue-700"><h3 class="font-bold text-xs mb-2">ثانياً: أسئلة الشهود:</h3><div class="space-y-1.5">${(data.witness_q||[]).map(q => `<label class="flex items-start gap-2 text-xs font-semibold cursor-pointer"><input type="checkbox" onchange="updateProgress()" class="chk-item mt-0.5"><span>"${q}"</span></label>`).join('')}</div></div>
+                <div class="bg-white p-3.5 rounded-xl shadow-sm border-t-4 border-red-700"><h3 class="font-bold text-xs mb-2">ثالياً: أسئلة المواجهة:</h3><div class="space-y-1.5">${(data.accused_q||[]).map(q => `<label class="flex items-start gap-2 text-xs font-semibold cursor-pointer"><input type="checkbox" onchange="updateProgress()" class="chk-item mt-0.5"><span>"${q}"</span></label>`).join('')}</div></div>
+                <div class="bg-amber-50 p-3.5 rounded-xl shadow-sm border-t-4 border-judicial-gold"><h3 class="font-bold text-xs mb-2">رابعاً: ضوابط فنية وملاحظات:</h3><ul class="space-y-1 list-disc list-inside text-xs">${(data.tips||[]).map(t => `<li class="p-1 bg-white rounded border">${t}</li>`).join('')}</ul></div>`;
             updateProgress();
         };
 
@@ -1205,7 +1579,6 @@
                 </div>`).join('') : `<div class="col-span-2 bg-white p-6 rounded-xl text-center text-slate-400 text-xs">أضف النماذج والديباجات من زر (+ إضافة نموذج).</div>`;
         };
 
-        // محرر العناصر الشامل للمدير
         window.openItemEditor = function(type, editId = null) {
             if (editId && !hasPerm('edit')) return alert("لا تملك صلاحية التعديل!");
             if (!editId && !hasPerm('add')) return alert("لا تملك صلاحية الإضافة!");
@@ -1222,15 +1595,6 @@
                     <div>الملخص:<textarea id="ed_desc" rows="3" class="w-full border rounded p-1.5">${item.description}</textarea></div>
                     <div>رابط Google Drive:<input type="url" id="ed_drive" value="${item.driveUrl || ''}" class="w-full border rounded p-1.5 font-mono"></div>`;
                 document.getElementById('ed_sector').value = item.sector; document.getElementById('ed_category').value = item.category;
-            } else if (type === 'jurisdiction') {
-                const item = editId ? db.jurisdictions.find(j => j.id === editId) : { category: "الاختصاص والطلب", title: "", content: "", ref: "" };
-                titleEl.innerText = "قاعدة بالبوصلة / مبدأ إجرائي قضائي";
-                bodyEl.innerHTML = `
-                    <div>التصنيف:<select id="ed_category" class="w-full border rounded p-1.5 font-bold"><option value="الاختصاص والطلب">1. الاختصاص والطلب</option><option value="ضوابط التحقيق">2. التحقيق والإعلان</option><option value="أوجه التصرف">3. عوارض وتصرفات</option><option value="الكتب والقرارات 2026">4. قرارات ومنشورات 2026</option><option value="مبادئ الإدارية العليا">5. الإدارية العليا</option></select></div>
-                    <div>العنوان:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5 font-bold"></div>
-                    <div>النص والقاعدة:<textarea id="ed_content" rows="4" class="w-full border rounded p-1.5">${item.content}</textarea></div>
-                    <div>السند القانوني / رقم الطعن:<input type="text" id="ed_ref" value="${item.ref}" class="w-full border rounded p-1.5"></div>`;
-                document.getElementById('ed_category').value = item.category;
             } else if (type === 'defense') {
                 const item = editId ? db.defenses.find(d => d.id === editId) : { sector: currentSector, category: "حيثيات الحفظ القطعي", title: "", response: "", ref: "", contributor: currentUser?.name || "إدارة المنصة" };
                 titleEl.innerText = "حيثية / رد على دفع";
@@ -1245,7 +1609,7 @@
                 titleEl.innerText = "قائمة فحص وتحقيق (موضوع تخصصي)";
                 bodyEl.innerHTML = `
                     <div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5 font-bold">${sectorOptions}</select></div>
-                    <div>عنوان الموضوع التخصصي:<input type="text" id="ed_title" value="${item.title}" placeholder="اسم الموضوع..." class="w-full border rounded p-1.5 font-bold"></div>
+                    <div>عنوان الموضوع التخصصي:<input type="text" id="ed_title" value="${item.title}" placeholder="اسم الموضوع داخل القطاع..." class="w-full border rounded p-1.5 font-bold"></div>
                     <div>المستندات المطلوبة (سطر لكل مستند):<textarea id="ed_docs" rows="2" class="w-full border rounded p-1.5">${(item.docs||[]).join('\n')}</textarea></div>
                     <div>أسئلة الشهود (سطر لكل سؤال):<textarea id="ed_witness" rows="2" class="w-full border rounded p-1.5">${(item.witness_q||[]).join('\n')}</textarea></div>
                     <div>أسئلة المواجهة (سطر لكل سؤال):<textarea id="ed_accused" rows="2" class="w-full border rounded p-1.5">${(item.accused_q||[]).join('\n')}</textarea></div>
@@ -1270,9 +1634,6 @@
             if (type === 'library') {
                 const obj = { id: editId || "lib_" + Date.now(), sector: document.getElementById('ed_sector').value, category: document.getElementById('ed_category').value, title: cleanLegalString(title), author: cleanLegalString(document.getElementById('ed_author').value.trim()), description: cleanLegalString(document.getElementById('ed_desc').value.trim()), driveUrl: document.getElementById('ed_drive').value.trim() };
                 if (editId) db.library[db.library.findIndex(b => b.id === editId)] = obj; else db.library.unshift(obj);
-            } else if (type === 'jurisdiction') {
-                const obj = { id: editId || "enc_" + Date.now(), category: document.getElementById('ed_category').value, title: cleanLegalString(title), content: cleanLegalString(document.getElementById('ed_content').value.trim()), ref: cleanLegalString(document.getElementById('ed_ref').value.trim()) };
-                if (editId) db.jurisdictions[db.jurisdictions.findIndex(j => j.id === editId)] = obj; else db.jurisdictions.unshift(obj);
             } else if (type === 'defense') {
                 const obj = { id: editId || "def_" + Date.now(), sector: document.getElementById('ed_sector').value, category: document.getElementById('ed_category').value, title: cleanLegalString(title), response: cleanLegalString(document.getElementById('ed_response').value.trim()), ref: cleanLegalString(document.getElementById('ed_ref').value.trim()), contributor: document.getElementById('ed_contrib').value.trim() };
                 if (editId) db.defenses[db.defenses.findIndex(d => d.id === editId)] = obj; else db.defenses.unshift(obj);
@@ -1288,18 +1649,17 @@
 
             toggleModal('itemEditorModal');
             await persistState(editId ? "تعديل" : "إضافة", type, title);
-            alert("✅ تم الحفظ سحابياً بنجاح!");
         };
 
         window.deleteItem = async function(type, id) {
             if (!hasPerm('delete') || !confirm("هل أنت متأكد من الحذف؟")) return;
             if (type === 'library') db.library = db.library.filter(b => b.id !== id);
-            if (type === 'jurisdiction') db.jurisdictions = db.jurisdictions.filter(j => j.id !== id);
             if (type === 'defense') db.defenses = db.defenses.filter(d => d.id !== id);
             if (type === 'form') db.forms = db.forms.filter(f => f.id !== id);
             await persistState("حذف عنصر", type, id);
         };
 
+        window.editCurrentChecklist = () => { const id = document.getElementById('checklistSelector').value; if (id) openItemEditor('checklist', id); };
         window.deleteCurrentChecklist = async () => { if (!hasPerm('delete')) return; const id = document.getElementById('checklistSelector').value; if (id && confirm("حذف القائمة؟")) { db.checklists = db.checklists.filter(c => c.id !== id); await persistState("حذف", "قوائم التحقيق", id); } };
 
         function updateHybridAndAuthUI() {
@@ -1311,10 +1671,12 @@
             document.getElementById('footerBrandText').innerText = b.footerText || "تنظيمٌ يَجمعُ الشتات.. وبحثٌ يختصر الوقت © 2026";
             
             const cloudBadge = document.getElementById('cloudStatusBadge');
-            if (cloudBadge) cloudBadge.innerText = b.cloudStatusText || "سحابي متصل";
+            if (cloudBadge) {
+                cloudBadge.innerText = b.cloudStatusText || "سحابي متصل";
+            }
 
             const footInst = document.getElementById('footerInstructionsDisplay');
-            if (footInst) footInst.innerText = b.footerInstructions || "التعليمات القضائية للنيابة الإدارية ولجان التأديب والتظلمات - معدلة بالقرارين 517 و518 لسنة 2026 النافذين 14/11/2026";
+            if (footInst) footInst.innerText = b.footerInstructions || "طبعة التعليمات القضائية أكتوبر 2026";
 
             const mallawiDisplay = document.getElementById('aboutMallawiTextDisplay');
             if (mallawiDisplay) mallawiDisplay.innerText = b.aboutMallawiText || DEFAULT_MALLAWI_WORD;
@@ -1336,12 +1698,13 @@
             document.getElementById('qaydsLockedBanner').classList.toggle('hidden', approved);
             document.getElementById('qaydsUnlockedContent').classList.toggle('hidden', !approved);
 
+            // رادار المتواجدين الآن (الأعضاء الذين سُجل لهم نشاط خلال آخر 3 دقائق)
             const activeThreshold = Date.now() - (3 * 60 * 1000);
             const onlineCount = (db.members || []).filter(m => m.lastSeen && m.lastSeen > activeThreshold).length || 1;
             const onlineBadge = document.getElementById('onlineMembersCountBadge');
-            if (onlineBadge) onlineBadge.innerText = `المتواجدون الآن: ${onlineCount}`;
+            if (onlineBadge) onlineBadge.innerText = `المتواجدون: ${onlineCount}`;
             const admOnlineBadge = document.getElementById('adminOnlinePresenceBadge');
-            if (admOnlineBadge) admOnlineBadge.innerText = `المتواجدون: ${onlineCount}`;
+            if (admOnlineBadge) admOnlineBadge.innerText = `المتواجدون الآن: ${onlineCount}`;
 
             if (!currentUser) {
                 statusBar.classList.add('hidden');
@@ -1387,7 +1750,7 @@
                 let lastSeenStr = "لم يسجل بعد";
                 if (m.lastSeen) {
                     const diffMin = Math.round((Date.now() - m.lastSeen) / 60000);
-                    if (diffMin <= 3) lastSeenStr = "🟢 متواجد الآن";
+                    if (diffMin <= 3) lastSeenStr = "🟢 متواجد الآن (نشط)";
                     else if (diffMin < 60) lastSeenStr = `منذ ${diffMin} دقيقة`;
                     else lastSeenStr = new Date(m.lastSeen).toLocaleDateString('ar-EG', { hour: '2-digit', minute: '2-digit' });
                 }
@@ -1397,7 +1760,7 @@
                         <td class="p-2.5">
                             <div class="font-bold text-judicial-900 flex items-center gap-1.5">
                                 <span>${m.name}</span>
-                                ${isMallawi ? `<span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.2 rounded font-bold">ملوي</span>` : ''}
+                                ${isMallawi ? `<span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.2 rounded font-bold" title="نيابة ملوي">ملوي</span>` : ''}
                             </div>
                             <div class="text-[10px] text-slate-500">${m.workplace || ''}</div>
                         </td>
@@ -1457,6 +1820,7 @@
 
         window.openMemberAuthModal = function() {
             if (currentUser) { if (confirm(`تسجيل خروج (${currentUser.name})؟`)) logoutUser(); return; }
+            document.getElementById('authAlertBox').classList.add('hidden');
             toggleModal('memberAuthModal');
         };
 
@@ -1486,6 +1850,7 @@
             refreshAllUI();
         };
 
+        // فحص كود الدعوة المعتمد بمرونة كاملة وسريعة
         window.submitMemberRegister = async function() {
             const name = document.getElementById('reg_name').value.trim();
             const title = document.getElementById('reg_title').value.trim();
@@ -1498,23 +1863,28 @@
             if (!name || !title || !workplace || !username || !pin) return alert("يرجى ملء كافة الحقول الأساسية.");
             if (db.members.some(m => m.username.toLowerCase() === username)) return alert("اسم المستخدم مسجل مسبقاً، يرجى اختيار اسم آخر.");
 
+            // 1. فحص كود الدعوة العام أو كود الإعدادات
             const generalCode = (db.settings?.inviteCode || "VIP2026").trim().toUpperCase();
             let isInstantApproved = (inviteRaw === generalCode || inviteRaw === "VIP2026");
 
+            // 2. فحص مصفوفة أكواد الـ VIP المولدة للسادة المستشارين
             let matchedTokenIndex = -1;
             if (!isInstantApproved && inviteRaw && Array.isArray(db.vipTokens)) {
                 matchedTokenIndex = db.vipTokens.findIndex(t => {
                     const tokenCode = (t.token || t.code || "").trim().toUpperCase();
                     if (tokenCode !== inviteRaw) return false;
+                    // فحص عدد الاستخدامات
                     const maxUses = parseInt(t.maxUses || 1);
                     const usesCount = parseInt(t.usesCount || 0);
                     if (usesCount >= maxUses) return false;
+                    // فحص قفل الهاتف إن وجد
                     if (t.phoneLock && t.phoneLock.trim() && phone !== t.phoneLock.trim()) return false;
                     return true;
                 });
 
                 if (matchedTokenIndex >= 0) {
                     isInstantApproved = true;
+                    // زيادة عداد الاستخدام في الكود
                     db.vipTokens[matchedTokenIndex].usesCount = (db.vipTokens[matchedTokenIndex].usesCount || 0) + 1;
                 }
             }
@@ -1536,17 +1906,17 @@
             };
 
             db.members.push(newMem);
-            await persistState("تسجيل عضو", "الأعضاء", `${name} (VIP: ${inviteRaw || 'بدون'})`);
+            await persistState("تسجيل عضو", "الأعضاء", `${name} (كود دعوة: ${inviteRaw || 'بدون'})`);
 
             if (isInstantApproved) {
                 currentUser = newMem;
                 sessionStorage.setItem("moawen_v12_uid", newMem.id);
                 toggleModal('memberAuthModal');
                 refreshAllUI();
-                alert(`مرحباً بمعاليكم سيادة المستشار / ${name}\n✅ تم تفعيل العضوية فورياً بكود الدعوة بنجاح!`);
+                alert(`مرحباً بمعاليكم سيادة المستشار / ${name}\n✅ تم تفعيل واعتماد عضويتكم بالمنصة بنجاح بواسطة كود الدعوة المعتمد!`);
             } else {
                 switchAuthTab('login');
-                alert("✅ تم إرسال طلب الاعتماد بنجاح! سيتم التفعيل بعد المراجعة.");
+                alert("✅ تم إرسال طلب اعتماد العضوية بنجاح! سيتم تفعيل حسابك فور مراجعة إدارة المنصة، أو يمكنك استخدام كود دعوة معتمد لتفعيله لحظياً.");
             }
         };
 
@@ -1558,10 +1928,18 @@
             const tokenCode = "VIP-" + Math.random().toString(36).substring(2, 7).toUpperCase();
 
             if (!db.vipTokens) db.vipTokens = [];
-            db.vipTokens.unshift({ token: tokenCode, label, maxUses, usesCount: 0, phoneLock, createdAt: new Date().toLocaleDateString('ar-EG') });
+            db.vipTokens.unshift({
+                token: tokenCode,
+                label,
+                maxUses,
+                usesCount: 0,
+                phoneLock,
+                createdAt: new Date().toLocaleDateString('ar-EG')
+            });
+
             await persistState("توليد كود دعوة", "VIP", `${tokenCode} لـ ${label}`);
             renderVipTokensTable();
-            alert(`✅ كود الدعوة المعتمد: ${tokenCode}`);
+            alert(`✅ تم توليد كود الدعوة بنجاح:\n\n${tokenCode}\n\nيمكنك نسخه وإرساله لمعالي المستشار لتفعيل حسابه فوراً.`);
         };
 
         function renderVipTokensTable() {
@@ -1574,13 +1952,15 @@
                     <td class="p-2">${t.label}</td>
                     <td class="p-2">${t.phoneLock || 'غير مقيد'}</td>
                     <td class="p-2">${t.usesCount || 0} من ${t.maxUses}</td>
-                    <td class="p-2"><button type="button" onclick="deleteVipToken(${idx})" class="text-red-600 hover:underline cursor-pointer">حذف</button></td>
+                    <td class="p-2">
+                        <button type="button" onclick="deleteVipToken(${idx})" class="text-red-600 hover:underline cursor-pointer">حذف</button>
+                    </td>
                 </tr>`).join('') : `<tr><td colspan="5" class="p-4 text-center text-slate-400">لا توجد أكواد مولدة بعد.</td></tr>`;
         }
 
         window.deleteVipToken = async function(idx) {
             if (!hasPerm('manageUsers')) return;
-            if (!confirm("حذف الكود؟")) return;
+            if (!confirm("هل تريد حذف هذا الكود؟")) return;
             db.vipTokens.splice(idx, 1);
             await persistState("حذف كود دعوة", "VIP", "حذف");
             renderVipTokensTable();
@@ -1588,10 +1968,11 @@
 
         window.logoutUser = function() { currentUser = null; sessionStorage.removeItem("moawen_v12_uid"); refreshAllUI(); };
 
-        // منظومة المساهمات
         window.openContributeModal = function() {
             const authorInput = document.getElementById('contrib_author');
-            if (currentUser) authorInput.value = `${currentUser.name} (${currentUser.title || ''} - ${currentUser.workplace || ''})`;
+            if (currentUser) {
+                authorInput.value = `${currentUser.name} (${currentUser.title || ''} - ${currentUser.workplace || ''})`;
+            }
             const secSel = document.getElementById('contrib_sector');
             secSel.innerHTML = (db.sectors || []).map(s => `<option value="${s}">${s}</option>`).join('');
             toggleModal('contributeModal');
@@ -1606,11 +1987,22 @@
             const ref = document.getElementById('contrib_ref').value.trim() || "مساهمة زميل";
 
             if (!title || !content) return alert("يرجى إدخال العنوان والمحتوى!");
+
             if (!db.pendingContributions) db.pendingContributions = [];
-            db.pendingContributions.unshift({ id: "pend_" + Date.now(), contributor, sectionTarget, sector, title: cleanLegalString(title), content: cleanLegalString(content), ref: cleanLegalString(ref), time: new Date().toLocaleDateString('ar-EG') });
+            db.pendingContributions.unshift({
+                id: "pend_" + Date.now(),
+                contributor,
+                sectionTarget,
+                sector,
+                title: cleanLegalString(title),
+                content: cleanLegalString(content),
+                ref: cleanLegalString(ref),
+                time: new Date().toLocaleDateString('ar-EG')
+            });
+
             await persistState("إرسال مساهمة", "المساهمات", title);
             toggleModal('contributeModal');
-            alert("✅ تم إرسال مساهمتك بنجاح لإدارة المنصة للمراجعة والاعتماد!");
+            alert("✅ تم إرسال مساهمتك بنجاح لإدارة المنصة لمراجعتها واعتمادها! شكراً لحرصك.");
             document.getElementById('contrib_title').value = "";
             document.getElementById('contrib_content').value = "";
             document.getElementById('contrib_ref').value = "";
@@ -1654,9 +2046,6 @@
             } else if (item.sectionTarget === 'library') {
                 if (!db.library) db.library = [];
                 db.library.unshift({ id: "lib_" + Date.now(), sector: item.sector, category: "مؤلفات السادة المستشارين", title: item.title, author: item.contributor, description: item.content, driveUrl: item.ref.startsWith('http') ? item.ref : "" });
-            } else if (item.sectionTarget === 'jurisdictions') {
-                if (!db.jurisdictions) db.jurisdictions = [];
-                db.jurisdictions.unshift({ id: "enc_" + Date.now(), category: "الكتب والقرارات 2026", title: item.title, content: item.content, ref: item.ref });
             } else if (item.sectionTarget === 'forms') {
                 if (!db.forms) db.forms = [];
                 db.forms.unshift({ id: "form_" + Date.now(), sector: item.sector, category: "نماذج المذكرات وتقرير الاتهام", title: item.title, content: item.content });
@@ -1664,17 +2053,16 @@
 
             db.pendingContributions.splice(idx, 1);
             await persistState("اعتماد مساهمة", item.sectionTarget, item.title);
-            alert("✅ تم اعتماد ونشر المساهمة بنجاح!");
+            alert("✅ تم اعتماد ونشر المساهمة في القسم بنجاح!");
         };
 
         window.rejectContribution = async function(idx) {
             if (!hasPerm('approve')) return alert("لا تملك صلاحية الرفض!");
-            if (!confirm("حذف هذه المساهمة؟")) return;
+            if (!confirm("هل تريد حذف هذه المساهمة؟")) return;
             db.pendingContributions.splice(idx, 1);
             await persistState("رفض مساهمة", "المساهمات", "حذف");
         };
 
-        // النسخ الاحتياطي
         window.downloadDatabaseBackup = function() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
             const a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", `moawen_backup_${new Date().toISOString().slice(0,10)}.json`);
@@ -1718,12 +2106,17 @@
             document.getElementById('brand_cloud_status_input').value = b.cloudStatusText || "سحابي متصل";
             document.getElementById('brand_invite_code_input').value = db.settings?.inviteCode || "VIP2026";
             document.getElementById('brand_logo_url_input').value = b.brandLogoUrl || "";
-            document.getElementById('footer_instructions_input').value = b.footerInstructions || "طبعة التعليمات القضائية 2026";
+            document.getElementById('footer_instructions_input').value = b.footerInstructions || "طبعة التعليمات القضائية أكتوبر 2026";
             document.getElementById('about_mallawi_input').value = b.aboutMallawiText || DEFAULT_MALLAWI_WORD;
+            document.getElementById('tab1_input').value = b.tab1 || "";
+            document.getElementById('tab2_input').value = b.tab2 || "";
+            document.getElementById('tab3_input').value = b.tab3 || "";
+            document.getElementById('tab4_input').value = b.tab4 || "";
+            document.getElementById('tab5_input').value = b.tab5 || "";
+            document.getElementById('tab6_input').value = b.tab6 || "";
             document.getElementById('footer_text_input').value = b.footerText || "";
             renderPendingContributions();
             renderVipTokensTable();
-            renderMembersTable();
             toggleModal('adminModal');
         };
 
@@ -1734,34 +2127,32 @@
                 brandSub: document.getElementById('brand_sub_input').value.trim(),
                 cloudStatusText: document.getElementById('brand_cloud_status_input').value.trim() || "سحابي متصل",
                 brandLogoUrl: document.getElementById('brand_logo_url_input').value.trim(),
-                footerInstructions: document.getElementById('footer_instructions_input').value.trim() || "طبعة التعليمات القضائية 2026",
+                footerInstructions: document.getElementById('footer_instructions_input').value.trim() || "طبعة التعليمات القضائية أكتوبر 2026",
                 aboutMallawiText: document.getElementById('about_mallawi_input').value.trim() || DEFAULT_MALLAWI_WORD,
+                tab1: document.getElementById('tab1_input').value.trim(),
+                tab2: document.getElementById('tab2_input').value.trim(),
+                tab3: document.getElementById('tab3_input').value.trim(),
+                tab4: document.getElementById('tab4_input').value.trim(),
+                tab5: document.getElementById('tab5_input').value.trim(),
+                tab6: document.getElementById('tab6_input').value.trim(),
                 footerText: document.getElementById('footer_text_input').value.trim()
             };
             if (!db.settings) db.settings = {};
             db.settings.inviteCode = document.getElementById('brand_invite_code_input').value.trim() || "VIP2026";
 
-            await persistState("تحديث الإعدادات والنصوص", "الإعدادات", db.branding.brandTitle);
-            alert("✅ تم حفظ كافة النصوص السحابية والفوتر بنجاح!");
-        };
-
-        window.syncProceduralCompassData = async function() {
-            if (!hasPerm('manageUsers') && currentUser?.role !== 'super_admin') return alert("مخصص للمدير فقط.");
-            if (!confirm("هل تريد تحديث بيانات البوصلة الإجرائية، والموسوعة إلى طبعة القرارين 517 و518 لسنة 2026 سحابياً الآن؟")) return;
-            db.branding.footerInstructions = "التعليمات القضائية للنيابة الإدارية ولجان التأديب والتظلمات - معدلة بالقرارين 517 و518 لسنة 2026 النافذين 14/11/2026";
-            db.jurisdictions = NOV_2026_ENCYCLOPEDIA;
-            await persistState("تحديث القرارين 517 و518", "البوصلة", "دمج القرارات الجديدة");
-            alert("✅ تم بنجاح تحديث البوصلة الإجرائية والموسوعة سحابياً!");
-            location.reload();
+            await persistState("تحديث الهوية والنصوص", "الإعدادات", db.branding.brandTitle);
+            alert("✅ تم حفظ كافة النصوص السحابية والفوتر وكود الدعوة بنجاح!");
         };
 
         function refreshAllUI() {
             updateHybridAndAuthUI(); 
             renderLibrarySection(); 
-            renderCompass(); 
+            renderCompassEncyclopedia();
             renderDefensesSection(); 
             renderChecklistsSection(); 
             renderFormsSection();
+            renderMembersTable(); 
+            renderPendingContributions();
             renderSavedQaydTemplatesDropdown();
             renderCurrentStage();
             composeSmartQayd();
@@ -1773,23 +2164,6 @@
             document.getElementById(viewId).classList.remove('hidden');
             const activeBtn = document.getElementById('admBtn-' + viewId.replace('adm-', ''));
             if (activeBtn) activeBtn.className = "adm-nav-btn adm-nav-active px-3 py-1.5 rounded-lg cursor-pointer";
-        };
-
-        window.selectHubSection = function(tabId) {
-            document.querySelectorAll('.hub-card').forEach(el => el.classList.remove('hub-card-active'));
-            const card = document.getElementById('hubCard-' + tabId);
-            if (card) card.classList.add('hub-card-active');
-
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            const targetSection = document.getElementById(tabId);
-            if (targetSection) {
-                targetSection.classList.remove('hidden');
-                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        };
-
-        window.scrollToTopHub = function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         window.toggleModal = id => document.getElementById(id).classList.toggle('hidden');
@@ -1813,63 +2187,7 @@
         window.copyAllBasket = () => { if (basket.length) { navigator.clipboard.writeText(basket.map(b => `--- [ ${b.title} ] ---\n${b.content}`).join('\n\n')); alert("تم نسخ المسودة كاملة!"); } };
         window.copyText = id => { navigator.clipboard.writeText(document.getElementById(id).innerText); alert("تم النسخ بنجاح!"); };
 
-        // إدارة القطاعات
-        window.openSectorManagerModal = () => {
-            renderSectorsManageList();
-            toggleModal('sectorManagerModal');
-        };
-        function renderSectorsManageList() {
-            const cont = document.getElementById('sectorsManageList');
-            if(!cont) return;
-            cont.innerHTML = db.sectors.map((s, idx) => `
-                <div class="flex justify-between items-center p-2 bg-slate-50 border rounded">
-                    <span>${s}</span>
-                    ${idx > 0 && hasPerm('delete') ? `<button type="button" onclick="deleteSector(${idx})" class="text-red-600 font-bold hover:underline">حذف</button>` : '<span class="text-slate-400 text-[10px]">افتراضي</span>'}
-                </div>`).join('');
-        }
-        window.addNewSector = async function() {
-            const inp = document.getElementById('newSectorInput');
-            const val = inp.value.trim();
-            if(!val) return alert("أدخل اسم القطاع");
-            if(db.sectors.includes(val)) return alert("القطاع مضاف مسبقاً");
-            db.sectors.push(val);
-            await persistState("إضافة قطاع", "القطاعات", val);
-            inp.value = "";
-            renderSectorsManageList();
-            renderChecklistsSection();
-        };
-        window.deleteSector = async function(idx) {
-            if(!confirm("حذف هذا القطاع؟")) return;
-            const name = db.sectors[idx];
-            db.sectors.splice(idx, 1);
-            await persistState("حذف قطاع", "القطاعات", name);
-            renderSectorsManageList();
-            renderChecklistsSection();
-        };
-
-        window.onload = () => { 
-            let bndHtml = ""; 
-            Object.keys(BND_DETAILS).forEach(k => { 
-                bndHtml += `<label class="flex items-start gap-1.5 cursor-pointer"><input type="checkbox" class="chk-bnd" value="${k}" onchange="composeSmartQayd()"><span class="mt-0.5">${BND_DETAILS[k].desc}</span></label>`; 
-            });
-            // إصلاح معرف الحاوية ليتطابق مع الـ HTML تماماً
-            const bndBox = document.getElementById('bndItemsContainer');
-            if(bndBox) bndBox.innerHTML = bndHtml;
-
-            // إعداد أزرار المحطات الخمس في البوصلة
-            let stageBtns = "";
-            [1, 2, 3, 4, 5].forEach(i => {
-                stageBtns += `
-                    <button type="button" onclick="switchStageStep(${i})" id="stageBtn-${i}" class="stage-step ${i===1?'stage-step-active':''} py-2 px-2 rounded-lg border border-slate-200 transition cursor-pointer flex flex-col items-center gap-1 ${i===1?'':'bg-slate-50'}">
-                        <span class="text-xs font-mono font-extrabold ${i===1?'text-judicial-gold':'text-slate-500'}">المحطة ${i}</span>
-                        <span class="font-bold ${i===1?'text-slate-100':'text-slate-700'}">${i===1?'الورود والطلب':i===2?'التحقيق والإعلان':i===3?'العوارض والتصدي':i===4?'التكييف والقيد':'التصرف والاعتماد'}</span>
-                    </button>`;
-            });
-            const stageTabsCont = document.getElementById('stageTabsContainer');
-            if(stageTabsCont) stageTabsCont.innerHTML = stageBtns;
-
-            initCloudSync(); 
-        };
+        window.addEventListener('DOMContentLoaded', () => { renderBasket(); initCloudSync(); });
     </script>
 </body>
 </html>
